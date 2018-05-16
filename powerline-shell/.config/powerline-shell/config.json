@@ -2,7 +2,6 @@
   "segments": [
     "ssh",
     "git",
-    "git_stash",
     "jobs",
     "cwd",
     "read_only",
