@@ -1,0 +1,9 @@
+*.pyc
+vim/.vim/autoload
+vim/.vim/backups
+vim/.vim/plugged
+vim/.vim/undo
+vim/.vim/.netrwhist
+Session.vim
+*.sw*
+*~

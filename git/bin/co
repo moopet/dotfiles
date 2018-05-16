@@ -1,0 +1,20 @@
+#!/bin/bash
+
+git status >/dev/null || exit 1
+
+matches=$(git branch | grep -i "$1")
+count=$(git branch | grep -ci "$1")
+
+if [ "$#" = "0" ]; then
+  git branch -a
+elif [ "$count" = "1" ]; then
+	shift
+	git checkout $matches $*
+elif [ "$count" = "0" ]; then
+	echo "No match for '$1'"
+else
+	echo "Multiple matches:"
+	for match in $matches; do
+		echo $match
+	done
+fi

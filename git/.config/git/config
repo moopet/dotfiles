@@ -1,0 +1,28 @@
+[core]
+    pager = cat
+    editor = vim -f
+    autocrlf = input
+    filemode = false
+    ignorecase = false
+
+[alias]
+    vimdiff = difftool
+
+[format]
+    pretty = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"
+
+[diff]
+    tool = vimdiff
+
+[difftool]
+    prompt = false
+
+[color]
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+
+[user]
+  name = Ben Sinclair
+  email = ben@moopet.net

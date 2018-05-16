@@ -1,0 +1,18 @@
+{
+  "segments": [
+    "ssh",
+    "git",
+    "git_stash",
+    "jobs",
+    "cwd",
+    "read_only",
+    "root"
+  ],
+  "hostname": {
+    "colorize": false
+  },
+  "cwd": {
+    "max_depth": 3
+  },
+  "theme": "~/.config/powerline-shell/themes/default.py"
+}

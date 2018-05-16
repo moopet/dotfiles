@@ -1,0 +1,10 @@
+alias dropbox-restart='dropbox stop && DBUS_SESSION_BUS_ADDRESS="" dropbox start'
+alias egrep='egrep --colour=auto'
+alias fgrep='fgrep --colour=auto'
+alias gti='git'
+alias grep='grep --colour=auto'
+alias ls='ls --color --group-directories-first -FhN'
+alias pacman='pacman --color=auto'
+alias pdown='cd && fusermount -u ~/.visible && history -c && history -w && clear'
+alias pup='cd && clear && encfs ~/.crypt ~/.visible'
+alias vi=vim

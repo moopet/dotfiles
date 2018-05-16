@@ -1,0 +1,15 @@
+*~
+*.sw*
+*.pyc
+*.bak
+*.old
+*.out
+.svn
+cache
+webroot/static
+*.log
+pip-log.txt
+.DS_Store
+__MACOSX
+thumbs.db
+Session.vim
