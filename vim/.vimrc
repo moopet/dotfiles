@@ -70,6 +70,7 @@ let g:loaded_vimballPlugin = 1
 let g:loaded_rrhelper = 1
 let g:gitgutter_max_signs = 1000
 
+syntax on
 
 " Searching
 set hlsearch
@@ -210,8 +211,6 @@ iabbr :tm: ™
 " inoremap <leader>' `
 " inoremap <m-\> `
 
-filetype plugin indent on     " required!
-
 "{{{ Grep
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
@@ -288,8 +287,6 @@ let g:lightline = {
 "}}}
 
 "{{{ Colorschemes
-syntax on
-
 " Regardless of the colorscheme I'm running, I always want certain things
 function! CustomColorscheme()
   highlight! link Exception Keyword
