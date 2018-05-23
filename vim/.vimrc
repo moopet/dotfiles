@@ -33,6 +33,7 @@ Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
+Plug 'Yggdroot/indentLine'
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
@@ -272,6 +273,7 @@ inoremap <c-e> <esc>A
 
 "{{{ Lightline
 let g:lightline = {
+  \ 'colorscheme': 'gruvbox',
   \ 'component': {
   \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
   \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
@@ -308,9 +310,6 @@ function! CustomColorscheme()
   highlight nontext ctermbg=NONE
   highlight linenr ctermbg=NONE
   highlight cursorline ctermbg=236
-  highlight SyntasticErrorSign ctermbg=red ctermfg=white
-  highlight SyntasticWarningSign ctermbg=yellow ctermfg=white
-  highlight VertSplit ctermbg=NONE ctermfg=23
   highlight visual cterm=NONE ctermbg=162 ctermfg=white
 endfunc
 
