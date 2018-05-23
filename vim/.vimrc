@@ -27,6 +27,7 @@ Plug 'ap/vim-templates'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'gorodinskiy/vim-coloresque' " better than colorizer because it works with Vim 7.3 :)
 Plug 'itchyny/lightline.vim'
+Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'mileszs/ack.vim'
@@ -70,6 +71,7 @@ let g:loaded_2html_plugin = 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_rrhelper = 1
 let g:gitgutter_max_signs = 1000
+let g:SignatureMarkTextHLDynamic = 1
 
 " examples of good indentLine_chars: ¦ ┆ │ ⎸ ▏
 let g:indentLine_char = '▏'
