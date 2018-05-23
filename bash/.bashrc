@@ -55,3 +55,13 @@ function _update_ps1() {
 if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
   PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
+
+if [ "$(uname)" = "Darwin" ]; then
+  if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh ]; then
+    . ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh
+  fi
+else
+  if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette.sh ]; then
+    . ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
+  fi
+fi
