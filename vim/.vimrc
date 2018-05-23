@@ -145,6 +145,8 @@ nnoremap <F2> :set list!<CR>
 inoremap <F3> <esc>:set paste!<CR>i
 nnoremap <F3> :set paste!<CR>
 
+nnoremap <F4> :IndentLinesToggle<CR>
+
 " Completion
 set completeopt=longest,menuone,preview
 
