@@ -71,6 +71,9 @@ let g:loaded_vimballPlugin = 1
 let g:loaded_rrhelper = 1
 let g:gitgutter_max_signs = 1000
 
+" examples of good indentLine_chars: ¦ ┆ │ ⎸ ▏
+let g:indentLine_char = '▏'
+
 syntax on
 
 " Searching
