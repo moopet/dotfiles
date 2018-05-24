@@ -84,6 +84,8 @@ set ignorecase
 set incsearch
 set showmatch
 set smartcase
+nnoremap / /\v
+xnoremap / /\v
 
 " Layout and indenting
 set autoindent
@@ -193,7 +195,6 @@ set backupskip=/tmp/*,/private/tmp/*
 set omnifunc=syntaxcomplete#Complete
 "}}}
 
-
 " Quick way to remember to paste the last yanked item
 nnoremap yp "0p
 
@@ -207,9 +208,6 @@ xnoremap > >gv
 " Add more robustness to <c-l>
 " https://github.com/mhinz/vim-galore#saner-ctrl-l
 nnoremap <c-l> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
-
-" ?
-nnoremap <leader>m  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 
 " Unipoo.
 iabbr :poo: 💩
@@ -298,6 +296,14 @@ let g:lightline = {
 "{{{ Colorschemes
 " Regardless of the colorscheme I'm running, I always want certain things
 function! CustomColorscheme()
+  " Lets us use italics.
+  set t_ZH=[3m
+  set t_ZR=[23m
+
+  set background=dark
+  let g:gruvbox_contrast_dark = 'hard'
+  silent! colorscheme gruvbox
+
   highlight! link Exception Keyword
 
   if has("&colorcolumn")
@@ -315,6 +321,7 @@ function! CustomColorscheme()
   highlight linenr ctermbg=NONE
   highlight cursorline ctermbg=236
   highlight visual cterm=NONE ctermbg=162 ctermfg=white
+  highlight Comment cterm=italic
 endfunc
 
 function! ToggleBackground()
@@ -335,19 +342,13 @@ function! <SID>SynStack()
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
-set t_Ab=^[[48;5;%dm
-set t_Af=^[[38;5;%dm
-set background=dark
-silent! colorscheme gruvbox
-call CustomColorscheme()
 nnoremap <f5> :call ToggleBackground()<cr>
+
+call CustomColorscheme()
 "}}}
 
 " Force redraw to always clear the screen first
 cnoremap redraw redraw!
-
-nnoremap / /\v
-xnoremap / /\v
 
 nnoremap <silent> <BS> :nohlsearch<CR>
 
