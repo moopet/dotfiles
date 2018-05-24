@@ -62,6 +62,9 @@ if [ "$(uname)" = "Darwin" ]; then
   if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh ]; then
     . ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh
   fi
+elif [ "$XDG_SESSION_DESKTOP" = "i3" ]; then
+  dummy=1
+  # figure out how to get this palette working on Termite
 else
   if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette.sh ]; then
     . ~/.vim/plugged/gruvbox/gruvbox_256palette.sh

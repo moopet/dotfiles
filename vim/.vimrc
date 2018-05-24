@@ -72,7 +72,8 @@ let g:gitgutter_max_signs = 1000
 let g:SignatureMarkTextHLDynamic = 1
 
 " examples of good indentLine_chars: ¦ ┆ │ ⎸ ▏
-" let g:indentLine_char = '▏'
+let g:indentLine_char = '┊'
+let g:indentLine_enabled = 0
 
 syntax on
 
