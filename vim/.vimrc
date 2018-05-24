@@ -765,9 +765,11 @@ let g:startify_skiplist = [
 augroup ft_text
     autocmd!
 
-    autocmd FileType text setlocal wrap
-    autocmd FileType text setlocal spell
-    autocmd FileType text setlocal linebreak
+    autocmd FileType text,markdown setlocal wrap
+    autocmd FileType text,markdown setlocal spell
+    autocmd FileType text,markdown setlocal linebreak
+
+    highlight SpellBad cterm=underline,italic ctermfg=darkred
 augroup END
 "}}}
 
