@@ -270,8 +270,8 @@ inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
 
 "{{{ Lightline
+"      \ 'colorscheme': 'gruvbox',
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
       \ 'component': {
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
