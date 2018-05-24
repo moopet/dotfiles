@@ -55,11 +55,9 @@ Plug 'morhetz/gruvbox'
 "Plug 'Valloric/YouCompleteMe'
 "Plug 'vim-scripts/showcolor.vim'
 "Plug 'vim-scripts/YankRing.vim'
-
 "}}}
 
 call plug#end()
-
 "}}}
 
 "{{{ Common settings
@@ -74,7 +72,7 @@ let g:gitgutter_max_signs = 1000
 let g:SignatureMarkTextHLDynamic = 1
 
 " examples of good indentLine_chars: ¦ ┆ │ ⎸ ▏
-let g:indentLine_char = '▏'
+" let g:indentLine_char = '▏'
 
 syntax on
 
@@ -154,7 +152,7 @@ nnoremap <F4> :IndentLinesToggle<CR>
 " Completion
 set completeopt=longest,menuone,preview
 
-au BufEnter * call MyLastWindow()
+autocmd BufEnter * call MyLastWindow()
 function! MyLastWindow()
   " if the window is quickfix go on
   if &buftype=="quickfix" || &buftype=="nofile"
@@ -213,10 +211,6 @@ nnoremap <c-l> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
 iabbr :poo: 💩
 iabbr :tm: ™
 
-" No backticks on my keyboard :(
-" inoremap <leader>' `
-" inoremap <m-\> `
-
 "{{{ Grep
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
@@ -227,7 +221,6 @@ endif
 "}}}
 
 " Persistent undo                                                           
-
 if has('persistent_undo')
   let undodir = expand("~/.vim/undo")
   if !isdirectory(undodir)
@@ -254,8 +247,8 @@ augroup END
 " Make sure Vim returns to the same line when you reopen a file.
 " Thanks, Amit
 augroup line_return
-    autocmd!
-    autocmd BufReadPost *
+  autocmd!
+  autocmd BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
         \     execute 'normal! g`"zvzz' |
         \ endif
@@ -277,29 +270,25 @@ inoremap <c-e> <esc>A
 
 "{{{ Lightline
 let g:lightline = {
-  \ 'colorscheme': 'gruvbox',
-  \ 'component': {
-  \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-  \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-  \ },
-  \ 'component_visible_condition': {
-  \   'readonly': '(&filetype!="help"&& &readonly)',
-  \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-  \ },
-  \ 'separator': { 'left': '', 'right' : '' },
-  \ 'subseparator': { 'left': '', 'right' : '' },
-  \ }
+      \ 'colorscheme': 'gruvbox',
+      \ 'component': {
+      \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+      \ },
+      \ 'component_visible_condition': {
+      \   'readonly': '(&filetype!="help"&& &readonly)',
+      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+      \ },
+      \ 'separator': { 'left': '', 'right' : '' },
+      \ 'subseparator': { 'left': '', 'right' : '' },
+      \ }
 "}}}
 
 "{{{ Colorschemes
 " Regardless of the colorscheme I'm running, I always want certain things
 function! CustomColorscheme()
-  " Lets us use italics.
-  set t_ZH=[3m
-  set t_ZR=[23m
-
   set background=dark
   let g:gruvbox_contrast_dark = 'hard'
   silent! colorscheme gruvbox
@@ -314,14 +303,25 @@ function! CustomColorscheme()
   " Highlight VCS conflict markers
   match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
+  " Lets us use italics.
+  set t_ZH=[3m
+  set t_ZR=[23m
+
   " Customise things so there are nice transparent backgrounds.
   highlight Search cterm=NONE ctermbg=yellow ctermfg=black
-  highlight normal ctermbg=NONE
-  highlight nontext ctermbg=NONE
-  highlight linenr ctermbg=NONE
-  highlight cursorline ctermbg=236
-  highlight visual cterm=NONE ctermbg=162 ctermfg=white
+  highlight Normal ctermbg=NONE
+  highlight NonText ctermbg=NONE
+  highlight LineNr ctermbg=NONE
+  highlight Visual cterm=NONE ctermbg=162 ctermfg=white
+  highlight CursorLine ctermbg=232
+  highlight SignColumn ctermbg=232
+  highlight GitGutterAdd ctermbg=232
+  highlight GitGutterChange ctermbg=232
+  highlight GitGutterDelete ctermbg=232
+  highlight SignatureMarkText ctermbg=232 ctermfg=14
   highlight Comment cterm=italic
+  highlight Folded ctermbg=black
+  highlight SpellBad cterm=underline,italic ctermfg=darkred
 endfunc
 
 function! ToggleBackground()
@@ -337,7 +337,7 @@ endfunc
 nnoremap <leader>ss :call <SID>SynStack()<CR>
 function! <SID>SynStack()
   if !exists("*synstack")
-      return
+    return
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
@@ -346,9 +346,6 @@ nnoremap <f5> :call ToggleBackground()<cr>
 
 call CustomColorscheme()
 "}}}
-
-" Force redraw to always clear the screen first
-cnoremap redraw redraw!
 
 nnoremap <silent> <BS> :nohlsearch<CR>
 
@@ -392,95 +389,81 @@ augroup ft_django
 augroup END
 "}}}
 
-
 augroup ft_css
-    autocmd!
+  autocmd!
 
-    xnoremap <leader>i :s/\v\s+!important;/;/g<cr>gv:s/\v;/ !important;/g<cr>:nohl<cr>
-    xnoremap <leader>I :s/\v\s+\!important;/;/g<cr>:nohl<cr>
+  xnoremap <leader>i :s/\v\s+!important;/;/g<cr>gv:s/\v;/ !important;/g<cr>:nohl<cr>
+  xnoremap <leader>I :s/\v\s+\!important;/;/g<cr>:nohl<cr>
 
-    autocmd BufNewFile,BufRead *.less setlocal filetype=less
-    autocmd BufNewFile,BufRead *.scss setlocal filetype=scss
+  autocmd BufNewFile,BufRead *.less setlocal filetype=less
+  autocmd BufNewFile,BufRead *.scss setlocal filetype=scss
 
-    autocmd Filetype scss,less,css setlocal foldmarker={,}
-    autocmd Filetype scss,less,css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd Filetype scss,less,css setlocal iskeyword+=-
+  autocmd Filetype scss,less,css setlocal foldmarker={,}
+  autocmd Filetype scss,less,css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd Filetype scss,less,css setlocal iskeyword+=-
 
-    " Use <leader>S to sort properties.  Turns this:
-    "
-    "     p {
-    "         width: 200px;
-    "         height: 100px;
-    "         background: red;
-    "
-    "         ...
-    "     }
-    "
-    " into this:
+  " Use <leader>S to sort properties.  Turns this:
+  "
+  "     p {
+  "         width: 200px;
+  "         height: 100px;
+  "         background: red;
+  "
+  "         ...
+  "     }
+  "
+  " into this:
 
-    "     p {
-    "         background: red;
-    "         height: 100px;
-    "         width: 200px;
-    "
-    "         ...
-    "     }
-    autocmd BufNewFile,BufRead *,scss,*.less,*.css nnoremap <buffer> <leader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
+  "     p {
+  "         background: red;
+  "         height: 100px;
+  "         width: 200px;
+  "
+  "         ...
+  "     }
+  autocmd BufNewFile,BufRead *,scss,*.less,*.css nnoremap <buffer> <leader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
-    " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-    " positioned inside of them AND the following code doesn't get unfolded.
-    autocmd BufNewFile,BufRead *.scssm*.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
+  " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
+  " positioned inside of them AND the following code doesn't get unfolded.
+  autocmd BufNewFile,BufRead *.scssm*.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
 augroup END
-
-
-augroup ft_javascript
-    autocmd!
-
-    "au FileType javascript setlocal foldmethod=marker
-    "au FileType javascript setlocal foldmarker={,}
-
-    " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-    " positioned inside of them AND the following code doesn't get unfolded.
-    " autocmd Filetype javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
-augroup END
-
 
 "{{{ Quickfix window
 augroup ft_quickfix
-    autocmd!
-    autocmd Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap
+  autocmd!
+  autocmd Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap
 augroup END
 "}}}
 
 "{{{ Vim
 augroup ft_vim
-    autocmd!
+  autocmd!
 
-    autocmd FileType vim setlocal foldmethod=marker
-    autocmd FileType vim setlocal foldlevel=0
-    autocmd FileType help setlocal textwidth=78
-    autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+  autocmd FileType vim setlocal foldmethod=marker
+  autocmd FileType vim setlocal foldlevel=0
+  autocmd FileType help setlocal textwidth=78
+  autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 "}}}
 
 "{{{ Git
 augroup git
-    autocmd!
+  autocmd!
 
-    autocmd BufNewFile,BufRead .git/index setlocal nolist
+  autocmd BufNewFile,BufRead .git/index setlocal nolist
 augroup END
 "}}}
 
 "{{{ Nginx
 augroup ft_nginx
-    autocmd!
+  autocmd!
 
-    autocmd BufRead,BufNewFile /etc/nginx/conf/*                      set ft=nginx
-    autocmd BufRead,BufNewFile /etc/nginx/sites-available/*           set ft=nginx
-    autocmd BufRead,BufNewFile /usr/local/etc/nginx/sites-available/* set ft=nginx
-    autocmd BufRead,BufNewFile vhost.nginx                            set ft=nginx
+  autocmd BufRead,BufNewFile /etc/nginx/conf/*                      set ft=nginx
+  autocmd BufRead,BufNewFile /etc/nginx/sites-available/*           set ft=nginx
+  autocmd BufRead,BufNewFile /usr/local/etc/nginx/sites-available/* set ft=nginx
+  autocmd BufRead,BufNewFile vhost.nginx                            set ft=nginx
 
-    autocmd FileType nginx setlocal foldmethod=marker foldmarker={,}
+  autocmd FileType nginx setlocal foldmethod=marker foldmarker={,}
 augroup END
 "}}}
 
@@ -501,11 +484,11 @@ function! s:NextTextObject(motion, dir)
   let c = nr2char(getchar())
 
   if c ==# "b"
-   let c = "("
+    let c = "("
   elseif c ==# "B"
-      let c = "{"
+    let c = "{"
   elseif c ==# "d"
-      let c = "["
+    let c = "["
   endif
 
   exe "normal! ".a:dir.c."v".a:motion.c
@@ -531,22 +514,6 @@ noremap <F1> <nop>
 nnoremap j gj
 nnoremap k gk
 
-" Simple window management commands from
-" http://www.agillo.net/simple-vim-window-management/
-
-function! WinMove(key)
-  let t:curwin = winnr()
-  exec "wincmd ".a:key
-  if (t:curwin == winnr()) "we havent moved
-    if (match(a:key,'[jk]')) "were we going up/down
-      wincmd v
-    else
-      wincmd s
-    endif
-    exec "wincmd ".a:key
-  endif
-endfunction
-
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 "{{{ Ctags
@@ -569,6 +536,7 @@ augroup drupal
 
   autocmd BufNewFile *.info setlocal ft=info
   autocmd BufNewFile *.install,*.module setlocal ft=php
+augroup END
 "}}}
 
 "{{{ HTML
@@ -700,6 +668,7 @@ augroup ft_python
 
   " autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType python setlocal define=^\s*\\(def\\\\|class\\)
+
   "au FileType python compiler nose
   autocmd FileType man nnoremap <buffer> <cr> :q<cr>
 
@@ -714,62 +683,36 @@ augroup ft_python
 augroup END
 "}}}
 
-"{{{ Sass
-function! ReformatSassFunc()
-  silent! %s/\s+$//g
-  silent! g/^$/d
-  silent! %s/\s*{$/ {/
-  silent! %s/\s*:\s/: /g
-  silent! %s/\s*;\s/;/g
-  silent! 2,$g/{/normal O
-  silent! %s/([}{;])\ze.+$/\1xxx/g
-  silent! gg=G
-endfunction
-command! ReformatSass :call ReformatSassFunc()
-"}}}
-
-"{{{ Spreadsheets
-"Convert .xls files to CSVs on the fly
-augroup Excel
-  autocmd!
-  autocmd BufReadPre *.xls set ro | setf csv
-  autocmd BufReadPost *.xls silent! %!xls2csv -q -x "%" -c -
-  autocmd BufReadPost *.xls redraw
-augroup END
-"}}}
-
 "{{{ Startify
 let g:startify_custom_header = []
 let g:startify_bookmarks = [
-  \ { 'a': '~/.bash_aliases' },
-  \ { 'b': '~/.bashrc' },
-  \ { 'i': '~/.config/i3/config' },
-  \ { 'r': '~/.config/ranger/rc.conf' },
-  \ { 'p': '~/.config/polybar/config' },
-  \ { 'x': '~/.Xresources' },
-  \ { 'v': '~/.vimrc' },
-  \ ]
+      \ { 'a': '~/.bash_aliases' },
+      \ { 'b': '~/.bashrc' },
+      \ { 'i': '~/.config/i3/config' },
+      \ { 'r': '~/.config/ranger/rc.conf' },
+      \ { 'p': '~/.config/polybar/config' },
+      \ { 'x': '~/.Xresources' },
+      \ { 'v': '~/.vimrc' },
+      \ ]
 
 let g:startify_skiplist = [
-  \ 'COMMIT_EDITMSG',
-  \ $HOME . '/.bashrc',
-  \ $HOME . '/.bash_aliases',
-  \ $HOME . '/.config',
-  \ $HOME . '/.dotfiles',
-  \ $HOME . '/.Xresources',
-  \ $HOME . '/.vimrc',
-  \ ]
+      \ 'COMMIT_EDITMSG',
+      \ $HOME . '/.bashrc',
+      \ $HOME . '/.bash_aliases',
+      \ $HOME . '/.config',
+      \ $HOME . '/.dotfiles',
+      \ $HOME . '/.Xresources',
+      \ $HOME . '/.vimrc',
+      \ ]
 "}}}
 
 "{{{ Text
 augroup ft_text
-    autocmd!
+  autocmd!
 
-    autocmd FileType text,markdown setlocal wrap
-    autocmd FileType text,markdown setlocal spell
-    autocmd FileType text,markdown setlocal linebreak
-
-    highlight SpellBad cterm=underline,italic ctermfg=darkred
+  autocmd FileType text,markdown setlocal wrap
+  autocmd FileType text,markdown setlocal spell
+  autocmd FileType text,markdown setlocal linebreak
 augroup END
 "}}}
 
@@ -787,8 +730,8 @@ nnoremap <leader>ev :vsp $MYVIMRC<cr>
 
 "{{{ Vagrant
 augroup ft_vagrant
-    autocmd!
-    autocmd BufRead,BufNewFile Vagrantfile set ft=ruby
+  autocmd!
+  autocmd BufRead,BufNewFile Vagrantfile set ft=ruby
 augroup END
 "}}}
 
