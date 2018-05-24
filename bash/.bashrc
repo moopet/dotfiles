@@ -26,7 +26,7 @@ shopt -s globstar
 export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.composer/vendor/bin:$PATH"
 export PATH="$PATH:/home/moopet/.gem/ruby/2.5.0/bin"
 export BLOCKSIZE=human-readable
-export TERM=screen-256color
+#export TERM=screen-256color
 export LC_ALL=en_GB.UTF-8
 export VISUAL=vim
 export EDITOR=vim
@@ -62,10 +62,7 @@ if [ "$(uname)" = "Darwin" ]; then
   if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh ]; then
     . ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh
   fi
-elif [ "$XDG_SESSION_DESKTOP" = "i3" ]; then
-  dummy=1
-  # figure out how to get this palette working on Termite
-else
+elif [ "$TERM" = "screen-256color" -o "$TERM" = "xterm-256color" ]; then
   if [ -f ~/.vim/plugged/gruvbox/gruvbox_256palette.sh ]; then
     . ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
   fi
