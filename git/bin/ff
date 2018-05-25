@@ -9,4 +9,4 @@ if ! echo $branch | grep "^feature/" > /dev/null; then
   exit 1
 fi
 
-git flow feature finish "$branch" && git push origin develop
+git flow feature finish "${branch#feature/}" && git push origin develop
