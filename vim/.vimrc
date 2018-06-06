@@ -447,9 +447,17 @@ augroup END
 "}}}
 
 "{{{ Git
+function! PrepopulateGitCommitMessage()
+  if search("On branch feature ")
+    execute "normal! /On branch f/ly$ggP^2f-C "
+    startinsert
+  endif
+endfunction
+
 augroup git
   autocmd!
 
+  autocmd Filetype gitcommit call PrepopulateGitCommitMessage()
   autocmd BufNewFile,BufRead .git/index setlocal nolist
 augroup END
 "}}}
