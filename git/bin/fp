@@ -1,0 +1,13 @@
+#!/bin/bash
+
+git status >/dev/null || exit 1
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+if ! echo $branch | grep "^feature/" > /dev/null; then
+  echo "Not a feature branch."
+  exit 1
+fi
+
+git push origin $branch
+

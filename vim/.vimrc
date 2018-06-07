@@ -448,7 +448,7 @@ augroup END
 
 "{{{ Git
 function! PrepopulateGitCommitMessage()
-  if search("On branch feature ")
+  if search("On branch feature")
     execute "normal! /On branch f/ly$ggP^2f-C "
     startinsert
   endif
