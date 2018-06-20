@@ -1,5 +1,5 @@
 [core]
-    pager = cat
+    pager = less -RSFAi
     editor = vim -f
     autocrlf = input
     filemode = false
