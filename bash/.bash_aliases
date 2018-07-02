@@ -8,3 +8,4 @@ alias pacman='pacman --color=auto'
 alias pdown='cd && fusermount -u ~/.visible && history -c && history -w && clear'
 alias pup='cd && clear && encfs ~/.crypt ~/.visible'
 alias vi=vim
+alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
