@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
+# Edit all the files that differ from a specified branch ('develop' by default).
+
 cd "./$(git rev-parse --show-cdup)" && vim $(git diff --name-only ${1:-develop}) -O
