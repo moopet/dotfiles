@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Checkout a branch based on a partial match.
+# co: "Check Out".
+# Checkout an existing branch based on a partial match.
 
 git status >/dev/null || exit 1
 

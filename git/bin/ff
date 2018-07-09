@@ -1,8 +1,12 @@
 #!/bin/bash
 
-# Finish the current feature branch.
+# ff: "Feature Finish".
+# Finish the current feature branch and push the development changes.
 
-git status >/dev/null || exit 1
+if [ -n "$1" ]; then
+  echo "$(basename "$0") works on the current branch and does not accept arguments."
+  exit 1
+fi
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 

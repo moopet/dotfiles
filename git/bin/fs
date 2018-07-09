@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Start a feature branch.
+# fs: "Feature Start".
+# Start a new feature branch.
 
 git status >/dev/null || exit 1
 

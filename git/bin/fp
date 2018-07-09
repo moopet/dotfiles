@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# fp: "Feature Push".
 # Push the current feature branch.
 
 git status >/dev/null || exit 1
