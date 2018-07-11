@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu
+
+tree -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git "$@"
