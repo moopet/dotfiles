@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s nocasematch
+
+pattern="\([^)]*${1:-origin/develop}.*\)"
+
+if ! (git log | grep -iE "$pattern" >/dev/null); then
+  echo "Tag or branch not found in git log."
+  exit 1
+fi
+
+git log | while read log_line; do
+  echo "$log_line";
+  [[ "$log_line" =~ $pattern ]] && break;
+done

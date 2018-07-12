@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-git log | while read logline; do
-  echo "$logline";
-  [[ "$logline" =~ tag:\ $1 ]] && break;
-done
