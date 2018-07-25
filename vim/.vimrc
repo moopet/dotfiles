@@ -613,6 +613,7 @@ augroup php
   autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
   autocmd FileType php nnoremap <buffer> <leader>dump Oob_get_clean(); echo '<pre>'; var_dump(); die;<esc>F(a
 
+  autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>
   autocmd FileType php nnoremap <buffer> gD :Ack function.<c-r><c-w><cr>
 
   autocmd FileType php set nofoldenable
