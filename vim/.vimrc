@@ -149,6 +149,9 @@ nnoremap <F3> :set paste!<CR>
 
 nnoremap <F4> :IndentLinesToggle<CR>
 
+nnoremap [q :cp<cr>
+nnoremap ]q :cn<cr>
+
 " Completion
 set completeopt=longest,menuone,preview
 
@@ -170,11 +173,14 @@ endfunction
 :command! Todo call ListTodo()
 
 " if we've opened a file and don't have the required root permissions...
-cmap w!! w !sudo tee % >/dev/null
+cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 "}}}
 
 "{{{ Plugin-specific settings
-let g:ackprg = 'ag --nogroup --nocolor --column'
+" I don't know how to make ag exclude junk files yet, so this takes ages to run
+" if there are minified files or SQL dumps lying around. I thought it understood
+" the same arguments as ack, but it seems not...
+"let g:ackprg = 'ag --nogroup --nocolor --column'
 "}}}
 
 "{{{ GVim settings
@@ -607,6 +613,9 @@ augroup php
   autocmd FileType php nnoremap <buffer> <leader>cc :!drush cc all
   autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
   autocmd FileType php nnoremap <buffer> <leader>dump Oob_get_clean(); echo '<pre>'; var_dump(); die;<esc>F(a
+
+  autocmd FileType php nnoremap <buffer> // :Ack <c-r><c-w><cr>
+  autocmd FileType php nnoremap <buffer> gD :Ack function.<c-r><c-w><cr>
 
   autocmd FileType php set nofoldenable
   " autocmd FileType php cnoremap drush !drush scr %
