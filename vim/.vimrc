@@ -149,8 +149,9 @@ nnoremap <F3> :set paste!<CR>
 
 nnoremap <F4> :IndentLinesToggle<CR>
 
-nnoremap [q :cp<cr>
-nnoremap ]q :cn<cr>
+nnoremap // :Ack <c-r><c-w><cr>:cc<cr>*<c-o>
+nnoremap [q :cp<cr>*<c-o>
+nnoremap ]q :cn<cr>*<c-o>
 
 " Completion
 set completeopt=longest,menuone,preview
@@ -614,7 +615,6 @@ augroup php
   autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
   autocmd FileType php nnoremap <buffer> <leader>dump Oob_get_clean(); echo '<pre>'; var_dump(); die;<esc>F(a
 
-  autocmd FileType php nnoremap <buffer> // :Ack <c-r><c-w><cr>
   autocmd FileType php nnoremap <buffer> gD :Ack function.<c-r><c-w><cr>
 
   autocmd FileType php set nofoldenable
