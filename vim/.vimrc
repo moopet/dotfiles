@@ -86,6 +86,14 @@ set smartcase
 nnoremap / /\v
 xnoremap / /\v
 
+command Todo :execute 'vimgrep todo '.expand('%') | :copen | :cc
+nnoremap // :Ack <c-r><c-w><cr>:cc<cr>*<c-o>
+" These mappings are similar to Unimpaired but not quite.
+nnoremap [q :cprevious<cr>*<c-o>
+nnoremap ]q :cnext<cr>*<c-o>
+nnoremap [Q :cfirst<cr>*<c-o>
+nnoremap ]Q :clast<cr>*<c-o>
+
 " Layout and indenting
 set autoindent
 set cursorline
@@ -149,10 +157,6 @@ nnoremap <F3> :set paste!<CR>
 
 nnoremap <F4> :IndentLinesToggle<CR>
 
-nnoremap // :Ack <c-r><c-w><cr>:cc<cr>*<c-o>
-nnoremap [q :cp<cr>*<c-o>
-nnoremap ]q :cn<cr>*<c-o>
-
 " Completion
 set completeopt=longest,menuone,preview
 
@@ -166,12 +170,6 @@ function! MyLastWindow()
     endif
   endif
 endfunction
-
-function! ListTodo()
-  vimgrep TODO **/*.py
-  cw
-endfunction
-:command! Todo call ListTodo()
 
 " if we've opened a file and don't have the required root permissions...
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
