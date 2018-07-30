@@ -31,6 +31,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'mileszs/ack.vim'
+Plug 'mustache/vim-mustache-handlebars'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
@@ -87,12 +88,12 @@ nnoremap / /\v
 xnoremap / /\v
 
 command Todo :execute 'vimgrep todo '.expand('%') | :copen | :cc
-nnoremap // :Ack <c-r><c-w><cr>:cc<cr>*<c-o>
+nnoremap // :Ack <c-r><c-w><cr>:cc<cr>*<c-o>zz
 " These mappings are similar to Unimpaired but not quite.
-nnoremap [q :cprevious<cr>*<c-o>
-nnoremap ]q :cnext<cr>*<c-o>
-nnoremap [Q :cfirst<cr>*<c-o>
-nnoremap ]Q :clast<cr>*<c-o>
+nnoremap [q :cprevious<cr>*<c-o>zz
+nnoremap ]q :cnext<cr>*<c-o>zz
+nnoremap [Q :cfirst<cr>*<c-o>zz
+nnoremap ]Q :clast<cr>*<c-o>zz
 
 " Layout and indenting
 set autoindent
@@ -175,13 +176,6 @@ endfunction
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 "}}}
 
-"{{{ Plugin-specific settings
-" I don't know how to make ag exclude junk files yet, so this takes ages to run
-" if there are minified files or SQL dumps lying around. I thought it understood
-" the same arguments as ack, but it seems not...
-"let g:ackprg = 'ag --nogroup --nocolor --column'
-"}}}
-
 "{{{ GVim settings
 if has('gui_running')
   set guioptions=e
@@ -217,11 +211,15 @@ iabbr :poo: 💩
 iabbr :tm: ™
 
 "{{{ Grep
+" I don't know how to make ag exclude junk files yet, so this takes ages to run
+" if there are minified files or SQL dumps lying around. I thought it understood
+" the same arguments as ack, but it seems not...
 if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
+  let g:ackprg = 'ag --nogroup --nocolor --column --depth 10 --ignore-dir=var --ignore-dir=nbproject --ignore-dir=cache --ignore-dir=migrations --ignore-dir=webroot/static --ignore-dir=vendor'
+  set grepprg=ag\ --vimgrep\ $*
+  set grepformat=%f:%l:%c:%m
 elseif executable('ack')
-  set grepprg=ack\ --nogroup\ --nocolor
-  let g:ack_default_options = " --smart-case --type-add=php=.tpl,.inc,.module,.install --type-set=csv=.csv --type-set=ini=.ini,.cfg,.rc --type-set=min=.min.js --type-set=vim=.vim --type-set=log=.log --type-set=test=.test --type-set=sass=.sass,.scss --type-set=scss=.sass,.scss --nomin --notest --nocsv --nosql --ignore-dir=var --ignore-dir=nbproject --ignore-dir=cache --ignore-dir=migrations --ignore-dir=webroot/static"
+  let g:ackprg = 'ack --nogroup --nocolor --smart-case --type-add=php=.tpl,.inc,.module,.install --type-set=csv=.csv --type-set=ini=.ini,.cfg,.rc --type-set=min=.min.js --type-set=vim=.vim --type-set=log=.log --type-set=test=.test --type-set=sass=.sass,.scss --type-set=scss=.sass,.scss --nomin --notest --nocsv --nosql --ignore-dir=var --ignore-dir=nbproject --ignore-dir=cache --ignore-dir=migrations --ignore-dir=webroot/static --ignore-dir=vendor'
 endif
 "}}}
 
@@ -613,7 +611,7 @@ augroup php
   autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
   autocmd FileType php nnoremap <buffer> <leader>dump Oob_get_clean(); echo '<pre>'; var_dump(); die;<esc>F(a
 
-  autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>
+  autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
   autocmd FileType php nnoremap <buffer> gD :Ack function.<c-r><c-w><cr>
 
   autocmd FileType php set nofoldenable
