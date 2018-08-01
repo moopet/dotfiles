@@ -3,14 +3,23 @@
 set -eu
 shopt -s nocasematch
 
-pattern="\([^)]*${1:-origin/develop}.*\)"
+# This works with tags/branches in parentheses as provided by this config:
+#
+# [format]
+#   pretty = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"
+# 
+# If you're not using my choice of pretty log format, change this, e.g.:
+# pattern=${1:-origin/develop}
+pattern="\\([^)]*${1:-origin/develop}.*\\)"
 
-if ! (git log | grep -iE "$pattern" >/dev/null); then
-  echo "Tag or branch not found in git log."
+shift
+
+if ! (git log --color "$@" | grep -iE "$pattern" >/dev/null); then
+  echo "Pattern not found in git log."
   exit 1
 fi
 
-git log | while read log_line; do
+git log --color "$@" | while read -r log_line; do
   echo "$log_line";
   [[ "$log_line" =~ $pattern ]] && break;
 done
