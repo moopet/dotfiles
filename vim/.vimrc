@@ -150,8 +150,18 @@ set wildmenu
 " sane (bash-like) tab expansion
 set wildmode=longest,list
 
-inoremap <F2> <esc>:set list!<CR>i
-nnoremap <F2> :set list!<CR>
+function! ToggleWhitespaceHints()
+  set list!
+
+  if &list
+    set colorcolumn=+1
+  else
+    set colorcolumn=
+  endif
+endfunction
+
+inoremap <F2> <esc>:call ToggleWhitespaceHints()<CR>i
+nnoremap <F2> :call ToggleWhitespaceHints()<CR>
 
 inoremap <F3> <esc>:set paste!<CR>i
 nnoremap <F3> :set paste!<CR>
@@ -300,6 +310,7 @@ function! CustomColorscheme()
 
   if has("&colorcolumn")
     set colorcolumn=+1
+    call matchadd('ColorColumn', '\%81v', 100)
     highlight ColorColumn ctermbg=52
   endif
 
