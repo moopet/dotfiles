@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# hs: "Hotfix Start".
+# Start a new hotfix branch.
+
+git status >/dev/null || exit 1
+
+if [ "$#" = "1" ]; then
+  git fetch && git checkout master && git pull origin master && git flow hotfix start "$1"
+else
+  echo "Usage: $(basename $0) <hotfix-name>"
+fi

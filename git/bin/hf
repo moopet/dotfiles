@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# hf: "Hotfix Finish".
+# Finish the current hotfix branch and push the changes.
+
+if [ -n "$1" ]; then
+  echo "$(basename "$0") works on the current branch and does not accept arguments."
+  exit 1
+fi
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+if ! echo $branch | grep "^hotfix/" > /dev/null; then
+  echo "Not a hotfix branch."
+  exit 1
+fi
+
+git flow hotfix finish "${branch#hotfix/}" && git checkout master && git push origin master --tags
