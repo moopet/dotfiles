@@ -613,6 +613,14 @@ function! UnMinify()
 endfunction
 "}}}
 
+"{{{ Big files
+augroup sql
+  autocmd!
+  autocmd Filetype xml if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
+  autocmd Filetype sql if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
+"}}}
+"
+"
 "{{{ PHP
 augroup php
   autocmd!
@@ -623,7 +631,7 @@ augroup php
   autocmd FileType php nnoremap <buffer> <leader>dump Oob_get_clean(); echo '<pre>'; var_dump(); die;<esc>F(a
 
   autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
-  autocmd FileType php nnoremap <buffer> gD :Ack function.<c-r><c-w><cr>
+  autocmd FileType php nnoremap <buffer> gD *:Ack function.<c-r><c-w><cr>:cclose<cr>zt
 
   autocmd FileType php set nofoldenable
   " autocmd FileType php cnoremap drush !drush scr %
