@@ -617,8 +617,8 @@ endfunction
 "{{{ Big files
 augroup sql
   autocmd!
-  autocmd Filetype xml if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
-  autocmd Filetype sql if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
+  autocmd Filetype xml if getfsize(@%) > 1000000 | setlocal syntax=OFF | setlocal nowrap | endif
+  autocmd Filetype sql if getfsize(@%) > 1000000 | setlocal syntax=OFF | setlocal nowrap | endif
 "}}}
 "
 "
