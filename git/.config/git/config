@@ -1,28 +1,44 @@
 [core]
-    pager = less -RSFAi
-    editor = vim -f
-    autocrlf = input
-    filemode = false
-    ignorecase = false
-
-[alias]
-    vimdiff = difftool
-
-[format]
-    pretty = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"
-
-[diff]
-    tool = vimdiff
-
-[difftool]
-    prompt = false
-
-[color]
-    branch = auto
-    diff = auto
-    interactive = auto
-    status = auto
+  editor = vim -f
+  autocrlf = input
+  filemode = false
+  ignorecase = false
 
 [user]
   name = Ben Sinclair
   email = ben@moopet.net
+
+[format]
+  pretty = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"
+
+[diff]
+  tool = vimdiff
+  renameLimit = 2000
+
+[difftool]
+  prompt = false
+
+[color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  status = auto
+	ui = true
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[pager]
+  diff = diff-so-fancy | less --tabs=1,5 -RFX
+  show = diff-so-fancy | less --tabs=1,5 -RFX
