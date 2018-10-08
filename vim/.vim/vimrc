@@ -78,6 +78,7 @@ let g:indentLine_char = '┊'
 let g:indentLine_enabled = 0
 
 syntax on
+runtime macros/matchit.vim
 
 " Searching
 set hlsearch
