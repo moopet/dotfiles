@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# List Jira tickets since a specified commit.
+
+since=${1:-master}
+project=${2:-GAL3}
+
+if sed --help >/dev/null 2>&1; then
+  sed="sed"
+elif command -v perl >/dev/null; then
+  sed="perl -pe"
+else
+  printf "This command needs GNU sed or Perl installed to work.\n"
+  exit 1
+fi
+
+print_ticket() {
+  ticket=$(echo "$1" | tr '[a-z]' '[A-Z]')
+  name=$(git log | grep -oi "$1[0-9a-z_-]\+" | head -n1 | $sed "s#$1[_-]\?##i" | tr '-' ' ')
+  count=$(git log | grep -ci "$1")
+
+  [ "$count" = "1" ] && plural='' || plural='s'
+
+  printf "%-10s (%2s commit%1s) %s\n" "$ticket" "$count" "$plural" "$name"
+}
+
+for n in $(git log $since.. | grep -oi "$project-[0-9]\+" | $sed "s/$project-//i" | sort -urg); do
+  print_ticket "$project-$n";
+done
