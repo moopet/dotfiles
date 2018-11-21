@@ -24,16 +24,12 @@ set -o noclobber
 shopt -s globstar
 
 export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.composer/vendor/bin:$PATH"
-export PATH="$PATH:/home/moopet/.gem/ruby/2.5.0/bin"
+export PATH="$PATH:$HOME/.gem/ruby/2.5.0/bin"
 export BLOCKSIZE=human-readable
-#export TERM=screen-256color
 export LC_ALL=en_GB.UTF-8
 export VISUAL=vim
 export EDITOR=vim
 export BROWSER=google-chrome-stable
-
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -69,6 +65,6 @@ elif [ "$TERM" = "screen-256color" -o "$TERM" = "xterm-256color" ]; then
 fi
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
