@@ -5,6 +5,9 @@ vim/.vim/plugged
 vim/.vim/spell
 vim/.vim/undo
 vim/.vim/.netrwhist
+drush/.drush/*.pem
+drush/.drush/*.inc
+drush/.drush/*.drushrc.php
 Session.vim
 *.sw*
 *~
