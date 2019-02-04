@@ -45,6 +45,7 @@ fi
 
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/bin/git-completion ] && . ~/bin/git-completion
+[ -f ~/bin/shore-completion ] && . ~/bin/shore-completion
 
 function _update_ps1() {
   PS1=$(powerline-shell $?)
@@ -68,3 +69,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
+[ -s "/etc/grc.bashrc" ] && . /etc/grc.bashrc

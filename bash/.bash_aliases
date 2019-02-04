@@ -18,3 +18,12 @@ case $OSTYPE in
     alias ls='ls -FhG'
   ;;
 esac
+
+git() {
+  if [ "$1" = "cd" ]; then
+    shift
+    cd "./$(git rev-parse --show-cdup)$*"
+  else
+    command git "$@"
+  fi
+}
