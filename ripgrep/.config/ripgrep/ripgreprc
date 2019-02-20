@@ -1,8 +1,20 @@
 --max-columns=150
 
+# Derpal
+
 --type-add
 php:*.{php,phar,inc,module,install}
 
---colors=line:yellow
+# Mimic colors from ag.
+
+--colors=match:bg:yellow
+--colors=match:fg:black
+--colors=match:style:nobold
+
+--colors=line:fg:yellow
+--colors=line:style:bold
+
+--colors=path:fg:green
+--colors=path:style:bold
 
 --smart-case
