@@ -1,0 +1,8 @@
+--max-columns=150
+
+--type-add
+php:*.{php,phar,inc,module,install}
+
+--colors=line:yellow
+
+--smart-case
