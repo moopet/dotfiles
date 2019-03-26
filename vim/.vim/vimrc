@@ -23,10 +23,11 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
-Plug 'ap/vim-templates'
+" Plug 'ap/vim-templates'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'gorodinskiy/vim-coloresque' " better than colorizer because it works with Vim 7.3 :)
 Plug 'itchyny/lightline.vim'
+Plug 'RRethy/vim-illuminate'
 Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
@@ -116,6 +117,7 @@ set fillchars=diff:⣿
 set hidden
 " set lazyredraw
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
+set list
 set showbreak="↪\ "
 set splitbelow
 set splitright
@@ -222,11 +224,32 @@ nnoremap <c-l> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
 iabbr :poo: 💩
 iabbr :tm: ™
 
+"{{{ MacOS
+" Solve the clipboard issue on shit terminals.
+augroup mac_os
+  autocmd!
+  if executable('rg')
+    let tmpdir = expand("~/.vim/tmp")
+    if !isdirectory(tmpdir)
+      call mkdir(tmpdir)
+    endif
+
+    xnoremap <leader>y y:'<,'>w!~/.vim/tmp/vim-clipboard<cr>:silent !cat ~/.vim/tmp/vim-clipboard \| pbcopy<cr>:redraw!<cr>
+    xnoremap <leader>p :silent r!pbpaste<cr>
+    nnoremap <leader>y y:silent! w!~/.vim/tmp/vim-clipboard<cr>:silent !cat ~/.vim/tmp/vim-clipboard \| pbcopy<cr>:redraw!<cr>
+    nnoremap <leader>p :silent r!pbpaste<cr>
+  endif
+augroup END
+
 "{{{ Grep
 " I don't know how to make ag exclude junk files yet, so this takes ages to run
 " if there are minified files or SQL dumps lying around. I thought it understood
 " the same arguments as ack, but it seems not...
-if executable('ag')
+if executable('rg')
+  let g:ackprg = 'rg --column'
+  set grepprg=rg\ --vimgrep\ $*
+  set grepformat=%f:%l:%c:%m
+elseif executable('ag')
   let g:ackprg = 'ag --nogroup --nocolor --column --depth 10 --ignore-dir=var --ignore-dir=nbproject --ignore-dir=cache --ignore-dir=migrations --ignore-dir=webroot/static --ignore-dir=vendor'
   set grepprg=ag\ --vimgrep\ $*
   set grepformat=%f:%l:%c:%m
@@ -324,6 +347,7 @@ function! CustomColorscheme()
   set t_ZR=[23m
 
   " Customise things so there are nice transparent backgrounds.
+  highlight IlluminatedWord ctermfg=214 ctermbg=237 
   highlight Search cterm=NONE ctermbg=yellow ctermfg=black
   highlight Normal ctermbg=NONE
   highlight NonText ctermbg=NONE
@@ -359,6 +383,7 @@ function! <SID>SynStack()
 endfunc
 
 nnoremap <f5> :call ToggleBackground()<cr>
+nnoremap <f6> :IlluminationToggle<cr>
 
 call CustomColorscheme()
 "}}}
@@ -625,12 +650,20 @@ augroup sql
 "
 "{{{ PHP
 augroup php
-  autocmd!
-  autocmd BufNewFile,BufFilePre,BufRead *.install set filetype=php
-  autocmd BufNewFile,BufFilePre,BufRead *.test set filetype=php
-  autocmd FileType php nnoremap <buffer> <leader>cc :!drush cc all
-  autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
-  autocmd FileType php nnoremap <buffer> <leader>dump Oob_get_clean(); echo '<pre>'; var_dump(); die;<esc>F(a
+	autocmd!
+
+  fun! ShowFuncName()
+    echohl ModeMsg
+    echo substitute(getline(search("^\s*function", "bcnWz")), '^\s*function\s*\|\s*{.*$', '', 'g')
+    echohl None
+  endfun
+  nnoremap <leader>? :call ShowFuncName()<CR>
+
+	autocmd BufNewFile,BufFilePre,BufRead *.install set filetype=php
+	autocmd BufNewFile,BufFilePre,BufRead *.test set filetype=php
+	autocmd FileType php nnoremap <buffer> <leader>cc :!drush cc all
+	autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
+  autocmd FileType php nnoremap <buffer> <leader>dump Oheader('X-XSS-Protection:0');ob_get_clean(); echo '<pre>'; var_dump(); die;<esc>F(a
 
   autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
   autocmd FileType php nnoremap <buffer> gD *:Ack function.<c-r><c-w><cr>:cclose<cr>zt
@@ -727,7 +760,7 @@ let g:startify_bookmarks = [
       \ { 'r': '~/.config/ranger/rc.conf' },
       \ { 'p': '~/.config/polybar/config' },
       \ { 'x': '~/.Xresources' },
-      \ { 'v': '~/.vimrc' },
+      \ { 'v': '~/.vim/vimrc' },
       \ ]
 
 let g:startify_skiplist = [
@@ -741,13 +774,39 @@ let g:startify_skiplist = [
       \ ]
 "}}}
 
+"{{{ Markdown
+augroup ft_text
+  autocmd!
+
+  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+  autocmd FileType markdown setlocal wrap
+  autocmd FileType markdown setlocal spell
+  autocmd FileType markdown setlocal linebreak
+  nnoremap <leader>mdo :w<cr>:silent exec "!killall MacDown"<cr>:silent exec "!open %"<cr>:redraw!<cr>
+  nnoremap <leader>mdc :silent exec "!killall MacDown"<cr>:redraw!<cr>
+
+  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+augroup END
+"}}}
+
+"{{{ Text
+augroup ft_shell
+  autocmd!
+
+  autocmd FileType sh setlocal nowrap
+  autocmd FileType sh setlocal textwidth=0
+  autocmd FileType sh setlocal nolinebreak
+augroup END
+"}}}
+
 "{{{ Text
 augroup ft_text
   autocmd!
 
-  autocmd FileType text,markdown setlocal wrap
-  autocmd FileType text,markdown setlocal spell
-  autocmd FileType text,markdown setlocal linebreak
+  autocmd FileType text setlocal wrap
+  autocmd FileType text setlocal spell
+  autocmd FileType text setlocal linebreak
 augroup END
 "}}}
 
