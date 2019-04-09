@@ -16,4 +16,6 @@ if ! cd "$install_path"; then
   exit 1
 fi
 
-find . -maxdepth 1 -type d \! -name \.git \! -name \. -exec basename {} \; | xargs $stow
+for package in $(find . -maxdepth 1 -type d \! -name \.git \! -name \. -exec basename {} \;); do
+  $stow "$package"
+done
