@@ -38,6 +38,7 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
+Plug 'zxqfl/tabnine-vim'
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
@@ -51,6 +52,9 @@ Plug 'morhetz/gruvbox'
 "Plug 'evanmiller/nginx-vim-syntax'
 "Plug 'joonty/vdebug'
 "Plug 'mbbill/undotree'
+"Plug 'phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
+"Plug 'Shougo/deoplete.nvim'
+"Plug 'kristijanhusak/deoplete-phpactor'
 "Plug 'sodapopcan/vim-twiggy'
 "Plug 'tpope/vim-commentary'
 "Plug 'tpope/vim-surround'

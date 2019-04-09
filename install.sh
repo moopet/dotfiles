@@ -2,20 +2,18 @@
 
 install_path=${BASH_SOURCE%/*}
 
-if ! which stow &> /dev/null; then
+if ! command -v stow &> /dev/null; then
   echo "Please install the 'stow' package."
   exit 1
 fi
 
-mkdir -p $HOME/bin
+mkdir -p "$HOME/bin"
 
-stow="$(which stow) -t $HOME $*"
+stow="$(command -v stow) -t $HOME $*"
 
 if ! cd "$install_path"; then
   echo "Could not find dotfiles directory."
   exit 1
 fi
 
-for package in $(find . -maxdepth 1 -type d \! -name \.git \! -name \. -exec basename {} \;); do
-  $stow "$package"
-done
+find . -maxdepth 1 -type d \! -name \.git \! -name \. -exec basename {} \; | xargs $stow
