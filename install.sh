@@ -19,3 +19,5 @@ fi
 for package in $(find . -maxdepth 1 -type d \! -name \.git \! -name \. -exec basename {} \;); do
   $stow "$package"
 done
+
+vim +PlugInstall +qall
