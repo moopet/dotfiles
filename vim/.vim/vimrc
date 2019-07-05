@@ -771,6 +771,7 @@ let g:startify_bookmarks = [
       \ { 'a': '~/.bash_aliases' },
       \ { 'b': '~/.bashrc' },
       \ { 'i': '~/.config/i3/config' },
+      \ { 'g': '~/.config/git/config' },
       \ { 'r': '~/.config/ranger/rc.conf' },
       \ { 'o': '~/.oh-my-zsh/custom/custom.zsh' },
       \ { 'p': '~/.config/polybar/config' },
@@ -891,3 +892,5 @@ let g:yankring_history_dir=tmpdir
 
 nnoremap <leader>y :YRShow<cr>
 "}}}
+
+let g:coc_node_path = "/Users/bensinclair/.nvm/versions/node/v8.16.0/bin/node"
