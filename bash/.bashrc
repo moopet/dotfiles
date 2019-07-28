@@ -72,3 +72,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/etc/grc.bashrc" ] && . /etc/grc.bashrc
 
 [ -f ~/.config/ripgrep/ripgreprc ] && export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/ripgreprc
+
+export PATH="$PATH:/Applications/DevDesktop/tools"

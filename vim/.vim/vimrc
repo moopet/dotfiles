@@ -28,16 +28,19 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'gorodinskiy/vim-coloresque' " better than colorizer because it works with Vim 7.3 :)
 Plug 'itchyny/lightline.vim'
 Plug 'RRethy/vim-illuminate'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'mileszs/ack.vim'
 "Plug 'mustache/vim-mustache-handlebars'
-Plug 'tpope/vim-fugitive'
-"Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
+" Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
 Plug 'Yggdroot/indentLine'
+
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
@@ -67,6 +70,8 @@ call plug#end()
 "}}}
 
 "{{{ Common settings
+set nomodeline
+
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
@@ -237,9 +242,10 @@ augroup mac_os
       call mkdir(tmpdir)
     endif
 
-    xnoremap <leader>y y:'<,'>w!~/.vim/tmp/vim-clipboard<cr>:silent !cat ~/.vim/tmp/vim-clipboard \| pbcopy<cr>:redraw!<cr>
+    xnoremap <leader>y myy:'<,'>w!~/.vim/tmp/vim-clipboard<cr>:silent !cat ~/.vim/tmp/vim-clipboard \| pbcopy<cr>:redraw!<cr>`y
     xnoremap <leader>p :silent r!pbpaste<cr>
-    nnoremap <leader>y y:silent! w!~/.vim/tmp/vim-clipboard<cr>:silent !cat ~/.vim/tmp/vim-clipboard \| pbcopy<cr>:redraw!<cr>
+    nnoremap <leader>Y y:silent! w!~/.vim/tmp/vim-clipboard<cr>:silent !cat ~/.vim/tmp/vim-clipboard \| pbcopy<cr>:redraw!<cr>
+    nnoremap <leader>yy y:silent! w!~/.vim/tmp/vim-clipboard<cr>:silent !cat ~/.vim/tmp/vim-clipboard \| pbcopy<cr>:redraw!<cr>
     nnoremap <leader>p :silent r!pbpaste<cr>
   endif
 augroup END
@@ -494,7 +500,7 @@ augroup END
 function! PrepopulateGitCommitMessage()
   if search("On branch feature")
     execute "normal! /On branch f/ly$ggP^2f-C "
-    startinsert
+    startinsert!
   endif
 endfunction
 
@@ -662,11 +668,13 @@ augroup php
   endfun
   nnoremap <leader>? :call ShowFuncName()<CR>
 
+  nnoremap <leader>r ggqz/array\s*\(<cr>mzf(%r]`zcf([q9999@q
 	autocmd BufNewFile,BufFilePre,BufRead *.install set filetype=php
 	autocmd BufNewFile,BufFilePre,BufRead *.test set filetype=php
 	autocmd FileType php nnoremap <buffer> <leader>cc :!drush cc all
 	autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
-  autocmd FileType php nnoremap <buffer> <leader>dump Oheader('X-XSS-Protection:0');ob_get_clean(); echo '<pre>'; var_dump(); die;<esc>F(a
+  autocmd FileType php nnoremap <buffer> <leader>dump Oheader('X-XSS-Protection:0');ob_get_clean(); echo '<pre>'; var_dump(); echo '</pre>'; die(__FILE__ . ':' . __LINE__);<esc>2F(a
+  autocmd FileType php nnoremap <buffer> <leader>sdd Osignal_debug_dump();<esc>F(a
 
   autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
   autocmd FileType php nnoremap <buffer> gD *:Ack function.<c-r><c-w><cr>:cclose<cr>zt
@@ -760,10 +768,13 @@ let g:startify_bookmarks = [
       \ { 'a': '~/.bash_aliases' },
       \ { 'b': '~/.bashrc' },
       \ { 'i': '~/.config/i3/config' },
+      \ { 'g': '~/.config/git/config' },
       \ { 'r': '~/.config/ranger/rc.conf' },
+      \ { 'o': '~/.oh-my-zsh/custom/custom.zsh' },
       \ { 'p': '~/.config/polybar/config' },
       \ { 'x': '~/.Xresources' },
       \ { 'v': '~/.vim/vimrc' },
+      \ { 'z': '~/.zshrc' },
       \ ]
 
 let g:startify_skiplist = [
@@ -774,7 +785,12 @@ let g:startify_skiplist = [
       \ $HOME . '/.dotfiles',
       \ $HOME . '/.Xresources',
       \ $HOME . '/.vimrc',
+      \ $HOME . '/.zshrc',
+      \ $HOME . '/.oh-my-zsh/custom/custom.zsh',
       \ ]
+
+let g:startify_custom_header =
+      \ map(split(system('figlet Vim 8 . 1'), '\n'), '"    ". v:val')
 "}}}
 
 "{{{ Markdown
@@ -873,3 +889,5 @@ let g:yankring_history_dir=tmpdir
 
 nnoremap <leader>y :YRShow<cr>
 "}}}
+
+let g:coc_node_path = "/Users/bensinclair/.nvm/versions/node/v8.16.0/bin/node"
