@@ -9,7 +9,7 @@
   email = ben@moopet.net
 
 [format]
-  pretty = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"
+  pretty = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset"
 
 [diff]
   tool = vimdiff

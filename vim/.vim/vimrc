@@ -26,6 +26,7 @@ Plug 'airblade/vim-gitgutter'
 " Plug 'ap/vim-templates'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'gorodinskiy/vim-coloresque' " better than colorizer because it works with Vim 7.3 :)
+Plug 'evidens/vim-twig' 
 Plug 'itchyny/lightline.vim'
 Plug 'RRethy/vim-illuminate'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
@@ -40,7 +41,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
 
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
 " tabnine is really great at autocompletion, but it's also really laggy.
 " Plug 'zxqfl/tabnine-vim'
@@ -794,6 +795,14 @@ let g:startify_skiplist = [
 
 let g:startify_custom_header =
       \ map(split(system('figlet Vim 8 . 1'), '\n'), '"    ". v:val')
+"}}}
+
+"{{{ VSCodium
+augroup ide
+  autocmd!
+
+  nnoremap <leader>vs :silent exec "!open vscodium://file/" . expand("%:p") . ":" . line(".") . ":" . col(".")<cr>:redraw!<cr>
+augroup END
 "}}}
 
 "{{{ Markdown

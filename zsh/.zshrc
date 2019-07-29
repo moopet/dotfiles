@@ -114,7 +114,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git iterm2)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -145,12 +145,4 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
-shore() {
-  if [ "$1" = "site" ]; then
-    shift
-    shore-site $*
-  else
-    (cd ~/shore && ./shore $*)
-  fi
-}
-
+[ -f ~/shore-projects/shore-aliases.sh ] && . ~/shore-projects/shore-aliases.sh
