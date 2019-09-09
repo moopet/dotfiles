@@ -5,7 +5,7 @@ alias gti='git'
 alias grep='grep --colour=auto'
 alias ncdu='ncdu --color dark -rr -x'
 alias pacman='pacman --color=auto'
-alias pdown='cd && fusermount -u ~/.visible && history -c && history -w && clear'
+alias pdown='cd && fusermount -u ~/.visible && history -c && history -w >/dev/null; && clear'
 alias pup='cd && clear && encfs ~/.crypt ~/.visible'
 alias vi='vim'
 alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
@@ -27,3 +27,7 @@ git() {
     command git "$@"
   fi
 }
+
+alias pacman='pacman --color=always'
+# alias yay='yay --color=always'
+alias less='less -R'
