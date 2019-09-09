@@ -26,6 +26,7 @@ Plug 'airblade/vim-gitgutter'
 " Plug 'ap/vim-templates'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'gorodinskiy/vim-coloresque' " better than colorizer because it works with Vim 7.3 :)
+Plug 'evidens/vim-twig' 
 Plug 'itchyny/lightline.vim'
 Plug 'RRethy/vim-illuminate'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
@@ -39,11 +40,14 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'Yggdroot/indentLine'
+Plug 'junegunn/goyo.vim'
+Plug 'Lenovsky/nuake'
 
 "Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
+Plug 'altercation/vim-colors-solarized'
 "}}}
 
 "{{{ Currently unused but good to keep as bookmarked
@@ -75,6 +79,7 @@ set nomodeline
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
+let g:solarized_termcolors = 256
 let g:loaded_getscriptPlugin = 1
 let g:loaded_2html_plugin = 1
 let g:loaded_vimballPlugin = 1
@@ -162,6 +167,9 @@ set wildmenu
 " sane (bash-like) tab expansion
 set wildmode=longest,list
 
+" Set startify like a superpowered vinegar (shift -)
+nnoremap _ :Startify<cr>
+
 function! ToggleWhitespaceHints()
   set list!
 
@@ -179,6 +187,17 @@ inoremap <F3> <esc>:set paste!<CR>i
 nnoremap <F3> :set paste!<CR>
 
 nnoremap <F4> :IndentLinesToggle<CR>
+
+let g:nuake_position = 'top'
+nnoremap <F1> :Nuake<CR>
+inoremap <F1> <C-\><C-n>:Nuake<CR>
+tnoremap <F1> <C-\><C-n>:Nuake<CR>
+
+command Writemode set background=light | colorscheme solarized | setlocal spell | Goyo 70
+command Codemode set background=dark | colorscheme gruvbox | setlocal nospell | Goyo!
+
+nnoremap <F11> :Codemode<cr>
+nnoremap <F12> :Writemode<cr>
 
 " Completion
 set completeopt=longest,menuone,preview
@@ -568,9 +587,11 @@ nnoremap Vat vatV
 nnoremap Vab vabV
 nnoremap VaB vaBV
 
-noremap <F1> <nop>
-nnoremap j gj
-nnoremap k gk
+" Map j and k to gj/gk, but only when no count is given
+" However, for larger jumps like 6j add the current position to the jump list
+" so that you can use <c-o>/<c-i> to jump to the previous position
+nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
+nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
@@ -791,6 +812,14 @@ let g:startify_skiplist = [
 
 let g:startify_custom_header =
       \ map(split(system('figlet Vim 8 . 1'), '\n'), '"    ". v:val')
+"}}}
+
+"{{{ VSCodium
+augroup ide
+  autocmd!
+
+  nnoremap <leader>vs :silent exec "!open vscodium://file/" . expand("%:p") . ":" . line(".") . ":" . col(".")<cr>:redraw!<cr>
+augroup END
 "}}}
 
 "{{{ Markdown

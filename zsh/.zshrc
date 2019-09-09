@@ -114,7 +114,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git iterm2)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -146,5 +146,7 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/shore-projects/shore_aliases.sh ] && . ~/shore-projects/shore_aliases.sh
 
-hostname | figlet | lolcat
-echo
+if [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
+  hostname | figlet | lolcat
+  echo
+fi
