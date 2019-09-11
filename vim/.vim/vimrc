@@ -39,6 +39,7 @@ Plug 'w0rp/ale'
 " Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-commentary'
 Plug 'Yggdroot/indentLine'
 Plug 'junegunn/goyo.vim'
 Plug 'Lenovsky/nuake'
@@ -62,7 +63,6 @@ Plug 'altercation/vim-colors-solarized'
 "Plug 'Shougo/deoplete.nvim'
 "Plug 'kristijanhusak/deoplete-phpactor'
 "Plug 'sodapopcan/vim-twiggy'
-"Plug 'tpope/vim-commentary'
 "Plug 'tpope/vim-surround'
 "Plug 'Valloric/MatchTagAlways'
 "Plug 'Valloric/YouCompleteMe'
@@ -188,7 +188,7 @@ nnoremap <F3> :set paste!<CR>
 
 nnoremap <F4> :IndentLinesToggle<CR>
 
-let g:nuake_position = 'top'
+let g:nuake_position = 'bottom'
 nnoremap <F1> :Nuake<CR>
 inoremap <F1> <C-\><C-n>:Nuake<CR>
 tnoremap <F1> <C-\><C-n>:Nuake<CR>
@@ -323,10 +323,6 @@ augroup END
 " Split line (sister to [J]oin lines)
 " The normal use of S is covered by cc, so don't worry about shadowing it.
 nnoremap S i<cr><esc><right>
-
-" Make K do the same as J just in the opposite direction.
-" I don't usually use the default K action (lookup keyword).
-nnoremap K kJ
 
 " Emacs bindings
 cnoremap <c-a> <home>
@@ -595,13 +591,6 @@ nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
-"{{{ Ctags
-let GtagsCscope_Auto_Load = 1
-let GtagsCscope_Auto_Map = 1
-let GtagsCscope_Quiet = 1
-set cscopetag
-"}}}
-
 "{{{ CtrlP
 let g:ctrlp_working_path_mode = 'rw'
 let g:ctrlp_root_markers = 'all'
@@ -688,6 +677,18 @@ augroup php
     echohl None
   endfun
   nnoremap <leader>? :call ShowFuncName()<CR>
+
+
+  " This doesn't work for gx, because for some reason <cword> doesn't get expanded...
+  " autocmd FileType php let g:netrw_gx="https://www.php.net/search.php?show=quickref&pattern=<cword>"
+  " so instead...
+  nnoremap gx :call PhpManual()<cr>
+
+  fun! PhpManual()
+      let url = "https://www.php.net/manual-lookup.php?scope=quickref&pattern=" . expand("<cword>")
+      exec 'silent !open "' . url . '"'
+      redraw!
+  endfun
 
   nnoremap <leader>r ggqz/array\s*\(<cr>mzf(%r]`zcf([q9999@q
 	autocmd BufNewFile,BufFilePre,BufRead *.install set filetype=php
