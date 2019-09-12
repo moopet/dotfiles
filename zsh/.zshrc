@@ -145,6 +145,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/shore-projects/shore-aliases.sh ] && . ~/shore-projects/shore-aliases.sh
+[ -f ~/.zshrc.local ] && . ~/.zshrc.local
 
 if [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
   hostname | figlet | lolcat
