@@ -44,6 +44,9 @@ Plug 'Yggdroot/indentLine'
 Plug 'junegunn/goyo.vim'
 Plug 'Lenovsky/nuake'
 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
 "Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
 "{{{ Colorschemes
@@ -229,6 +232,15 @@ endif
 set backupskip=/tmp/*,/private/tmp/*
 "}}}
 
+"{{{ Fuzzy finder
+function! s:fzf_root()
+	let path = finddir(".git", expand("%:p:h").";")
+	return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
+endfunction
+
+nnoremap <silent> <Leader>ff :exe 'Files ' . <SID>fzf_root()<CR>
+"}}}
+
 "{{{ Autocomplete
 set omnifunc=syntaxcomplete#Complete
 "}}}
@@ -386,7 +398,7 @@ function! CustomColorscheme()
   highlight Comment cterm=italic
   highlight Folded ctermbg=black
   highlight SpellBad cterm=underline,italic ctermfg=darkred
-endfunc
+endfunction
 
 function! ToggleBackground()
   if &background == 'dark'
@@ -395,7 +407,7 @@ function! ToggleBackground()
     set background=dark
     call CustomColorscheme()
   endif
-endfunc
+endfunction
 
 " Show syntax highlighting groups for word under cursor
 nnoremap <leader>ss :call <SID>SynStack()<CR>
@@ -404,7 +416,7 @@ function! <SID>SynStack()
     return
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
+endfunction
 
 nnoremap <f5> :call ToggleBackground()<cr>
 nnoremap <f6> :IlluminationToggle<cr>
@@ -671,11 +683,11 @@ augroup sql
 augroup php
 	autocmd!
 
-  fun! ShowFuncName()
+  function! ShowFuncName()
     echohl ModeMsg
     echo substitute(getline(search("^\s*function", "bcnWz")), '^\s*function\s*\|\s*{.*$', '', 'g')
     echohl None
-  endfun
+  endfunction
   nnoremap <leader>? :call ShowFuncName()<CR>
 
 
@@ -684,11 +696,11 @@ augroup php
   " so instead...
   nnoremap gx :call PhpManual()<cr>
 
-  fun! PhpManual()
+  function! PhpManual()
       let url = "https://www.php.net/manual-lookup.php?scope=quickref&pattern=" . expand("<cword>")
       exec 'silent !open "' . url . '"'
       redraw!
-  endfun
+  endfunction
 
   nnoremap <leader>r ggqz/array\s*\(<cr>mzf(%r]`zcf([q9999@q
 	autocmd BufNewFile,BufFilePre,BufRead *.install set filetype=php
@@ -754,11 +766,11 @@ augroup END
 "}}}
 
 "{{{ Python
-func! DeleteTrailingWS()
+function! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
   exe "normal `z"
-endfunc
+endfunction
 
 augroup ft_python
   let g:pymode_folding = 0

@@ -80,3 +80,5 @@ fi
 if [ -d "$HOME/.node_modules_global/bin" ]; then
   export PATH="$HOME/.node_modules_global/bin:$PATH"
 fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
