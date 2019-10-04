@@ -10,30 +10,44 @@ if ! git status >/dev/null; then
   exit 1
 fi
 
-if [ "$#" = "0" ]; then
-  if command -v fzf >/dev/null; then
-    branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --preview='git show --color=always --stat {}')"
+case "$1" in
+  --help|-h) 
+    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    ;;
 
-    if [ -n "$branch" ]; then
-      git checkout "$branch"
+  -*)
+    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    exit 1
+    ;;
+
+  "")
+    if command -v fzf >/dev/null; then
+      branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --preview='git show --color=always --stat {}')"
+
+      if [ -n "$branch" ]; then
+        git checkout "$branch"
+      fi
+    else
+      git branch -a
     fi
-  else
-    git branch -a
-  fi
-else
-  matches=$(git branch | grep -i "$1")
-  count=$(git branch | grep -ci "$1")
+    ;;
 
-  if [ "$count" = "1" ]; then
-    shift
-    git checkout $matches $*
-  elif [ "$count" = "0" ]; then
-    printf "No match for '%s'" "$1"
-  else
-    echo "Multiple matches:\n"
+  *)
+    matches=$(git branch | grep -i "$1" | grep -oE '[^ ]+$')
+    count=$(git branch | grep -ci "$1")
 
-    for match in $matches; do
-      printf "%s\n" "$match"
-    done
-  fi
-fi
+    if [ "$count" = "1" ]; then
+      shift
+      git checkout "$matches" "$@"
+    elif [ "$count" = "0" ]; then
+      printf "No match for '%s'" "$1"
+    else
+      printf "Multiple matches:\n"
+
+      for match in $matches; do
+        printf "%s\n" "$match"
+      done
+    fi
+    ;;
+esac
+
