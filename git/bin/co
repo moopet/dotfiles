@@ -12,7 +12,7 @@ fi
 
 if [ "$#" = "0" ]; then
   if command -v fzf >/dev/null; then
-    branch="$(git branch -a | fzf | grep -oE '[^ ]+$')"
+    branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --preview='git show --color=always --stat {}')"
 
     if [ -n "$branch" ]; then
       git checkout "$branch"
