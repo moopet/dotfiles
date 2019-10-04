@@ -34,7 +34,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'mileszs/ack.vim'
-"Plug 'mustache/vim-mustache-handlebars'
+Plug 'mustache/vim-mustache-handlebars'
 Plug 'w0rp/ale'
 " Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
@@ -166,9 +166,6 @@ set wildignorecase
 set wildmenu
 " sane (bash-like) tab expansion
 set wildmode=longest,list
-
-" Set startify like a superpowered vinegar (shift -)
-nnoremap _ :Startify<cr>
 
 function! ToggleWhitespaceHints()
   set list!
@@ -785,6 +782,13 @@ augroup END
 "}}}
 
 "{{{ Startify
+" Set startify like a superpowered vinegar (shift -)
+nnoremap _ :Startify<cr>
+
+highlight StartifyNumber ctermfg=220
+highlight StartifyBracket ctermfg=804
+highlight StartifyFile ctermfg=003
+
 let g:startify_custom_header = []
 let g:startify_bookmarks = [
       \ { 'a': '~/.bash_aliases' },
