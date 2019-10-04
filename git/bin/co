@@ -2,22 +2,38 @@
 
 # co: "Check Out".
 # Checkout an existing branch based on a partial match.
+#
+# If FZF is installed, this script will use it.
 
-git status >/dev/null || exit 1
-
-matches=$(git branch | grep -i "$1")
-count=$(git branch | grep -ci "$1")
+if ! git status >/dev/null; then
+  printf "Not a git repository.\n"
+  exit 1
+fi
 
 if [ "$#" = "0" ]; then
-  git branch -a
-elif [ "$count" = "1" ]; then
-	shift
-	git checkout $matches $*
-elif [ "$count" = "0" ]; then
-	echo "No match for '$1'"
+  if command -v fzf >/dev/null; then
+    branch="$(git branch -a | fzf | grep -oE '[^ ]+$')"
+
+    if [ -n "$branch" ]; then
+      git checkout "$branch"
+    fi
+  else
+    git branch -a
+  fi
 else
-	echo "Multiple matches:"
-	for match in $matches; do
-		echo $match
-	done
+  matches=$(git branch | grep -i "$1")
+  count=$(git branch | grep -ci "$1")
+
+  if [ "$count" = "1" ]; then
+    shift
+    git checkout $matches $*
+  elif [ "$count" = "0" ]; then
+    printf "No match for '%s'" "$1"
+  else
+    echo "Multiple matches:\n"
+
+    for match in $matches; do
+      printf "%s\n" "$match"
+    done
+  fi
 fi

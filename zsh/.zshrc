@@ -163,3 +163,5 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export LESS='-F -i -J -M -R -W -x4 -X -z-4'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export FZF_DEFAULT_COMMAND="rg --files"
