@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Open all files that contain a search pattern.
+#
+# Works with ripgrep or the-silver-searcher if installed.
+# Uses FZF if installed to let you narrow down the results.
+
+search_term="$1"
+shift
+
+if [ -z "$search_term" ]; then
+  printf "Usage: %s <search-term>\n" "$(basename "$0")"
+  exit 1
+fi
+
+if command -v rg >/dev/null; then
+  cmd="rg -l $search_term"
+elif command -v ag >/dev/null; then
+  cmd="ag -l $search_term"
+else
+  cmd="grep -irl $search_term *"
+fi
+
+if command -v fzf >/dev/null; then
+  matches="$($cmd | fzf --select-1 --exit-0 --tac --multi --preview="grep -C3 -i --color=always '$search_term' {}")"
+
+  if [ -z "$matches" ]; then
+    exit 0
+  fi
+
+  # shellcheck disable=SC2086
+  exec vim $matches "+/$search_term" "$@"
+else
+  # shellcheck disable=SC2046
+  exec vim $($cmd) "+/$search_term" "$@"
+fi
