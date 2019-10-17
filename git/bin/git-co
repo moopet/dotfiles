@@ -10,6 +10,18 @@ if ! git status >/dev/null; then
 fi
 
 case "$1" in
+  --stash)
+    if command -v fzf >/dev/null; then
+      stash="$(git stash list | fzf --delimiter=":" --preview="git show --color=always -p {1}" --select-1)"
+
+      if [ -n "$stash" ]; then
+        echo git stash pop "$stash"
+      fi
+    else
+      git stash list
+    fi
+    ;;
+
   --help|-h) 
     printf "Usage: %s [pattern]\n" "$(basename "$0")"
     ;;
@@ -21,7 +33,7 @@ case "$1" in
 
   "")
     if command -v fzf >/dev/null; then
-      branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --preview='git show --color=always --stat {}; printf "\n\n"; git diff --name-only {}')"
+      branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --preview="git show --color=always -p {}" --tac --select-1)"
 
       if [ -n "$branch" ]; then
         branch="$(echo "$branch" | sed -e "s#^remotes/[^/]*/##")"
