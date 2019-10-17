@@ -8,29 +8,50 @@
 search_term="$1"
 shift
 
+if [ -n "$VISUAL" ]; then
+  editor_cmd="$VISUAL"
+elif [ -n "$EDITOR" ]; then
+  editor_cmd="$EDITOR"
+elif command -v vim >/dev/null; then
+  editor_cmd="vim"
+elif command -v vi >/dev/null; then
+  editor_cmd="vi"
+else
+  printf "No editor found. Please set the VISUAL or EDITOR environment variables.\n"
+  exit 1
+fi
+
 if [ -z "$search_term" ]; then
   printf "Usage: %s <search-term>\n" "$(basename "$0")"
   exit 1
 fi
 
 if command -v rg >/dev/null; then
-  cmd="rg -l $search_term"
+  search_cmd="rg -l $search_term"
 elif command -v ag >/dev/null; then
-  cmd="ag -l $search_term"
+  search_cmd="ag -l $search_term"
 else
-  cmd="grep -irl $search_term *"
+  search_cmd="grep -irl $search_term *"
 fi
 
 if command -v fzf >/dev/null; then
-  matches="$($cmd | fzf --select-1 --exit-0 --tac --multi --preview="grep -C3 -i --color=always '$search_term' {}")"
+  matches="$($search_cmd | fzf --select-1 --exit-0 --tac --multi --preview="grep -C3 -i --color=always '$search_term' {}")"
 
   if [ -z "$matches" ]; then
     exit 0
   fi
 
   # shellcheck disable=SC2086
-  exec vim $matches "+/$search_term" "$@"
+  if [ "$editor_cmd" = "vim" ]; then
+    exec vim $matches "+/$search_term" "$@"
+  else
+    exec $editor_cmd $matches "$@"
+  fi
 else
-  # shellcheck disable=SC2046
-  exec vim $($cmd) "+/$search_term" "$@"
+  if [ "$editor_cmd" = "vim" ]; then
+    # shellcheck disable=SC2046
+    exec vim $($search_cmd) "+/$search_term" "$@"
+  else
+    exec $editor_cmd $($search_cmd) "$@"
+  fi
 fi
