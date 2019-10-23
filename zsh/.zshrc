@@ -114,7 +114,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git iterm2)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -146,10 +146,29 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/shore-projects/shore_aliases.sh ] && . ~/shore-projects/shore_aliases.sh
 
+[ -f ~/.zshrc.local ] && . ~/.zshrc.local
+
+if [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
+  hostname | figlet | lolcat
+  echo
 # WSL leaves you in the stupid Windows home.
-if [ -d /mnt/c/WINDOWS ]; then
+elif [ -d /mnt/c/WINDOWS ]; then
   cd
 
   echo arcade | figlet | lolcat
   echo
 fi
+
+# Set colors for less. Borrowed from https://wiki.archlinux.org/index.php/Color_output_in_console#less .
+export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
+export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
+export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+export LESS='-F -i -J -M -R -W -x4 -X -z-4'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export FZF_DEFAULT_COMMAND="rg --files"

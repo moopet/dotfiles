@@ -73,4 +73,14 @@ export NVM_DIR="$HOME/.nvm"
 
 [ -f ~/.config/ripgrep/ripgreprc ] && export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/ripgreprc
 
-export PATH="$PATH:/Applications/DevDesktop/tools"
+export FZF_DEFAULT_COMMAND="rg --files"
+
+if [ -d "/Applications/DevDesktop/tools" ]; then
+  export PATH="$PATH:/Applications/DevDesktop/tools"
+fi
+
+if [ -d "$HOME/.node_modules_global/bin" ]; then
+  export PATH="$HOME/.node_modules_global/bin:$PATH"
+fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

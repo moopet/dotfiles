@@ -24,29 +24,35 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
 " Plug 'ap/vim-templates'
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'christoomey/vim-tmux-navigator'
 Plug 'gorodinskiy/vim-coloresque' " better than colorizer because it works with Vim 7.3 :)
+" Plug 'evidens/vim-twig' 
 Plug 'itchyny/lightline.vim'
 Plug 'RRethy/vim-illuminate'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'kshenoy/vim-signature'
-Plug 'mbbill/undotree'
+" Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
+" Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-commentary'
 Plug 'Yggdroot/indentLine'
+Plug 'junegunn/goyo.vim'
+Plug 'Lenovsky/nuake'
 
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
-" tabnine is really great at autocompletion, but it's also really laggy.
-" Plug 'zxqfl/tabnine-vim'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
+Plug 'altercation/vim-colors-solarized'
 "}}}
 
 "{{{ Currently unused but good to keep as bookmarked
@@ -61,7 +67,6 @@ Plug 'morhetz/gruvbox'
 "Plug 'Shougo/deoplete.nvim'
 "Plug 'kristijanhusak/deoplete-phpactor'
 "Plug 'sodapopcan/vim-twiggy'
-"Plug 'tpope/vim-commentary'
 "Plug 'tpope/vim-surround'
 "Plug 'Valloric/MatchTagAlways'
 "Plug 'Valloric/YouCompleteMe'
@@ -78,6 +83,7 @@ set nomodeline
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
+let g:solarized_termcolors = 256
 let g:loaded_getscriptPlugin = 1
 let g:loaded_2html_plugin = 1
 let g:loaded_vimballPlugin = 1
@@ -183,6 +189,19 @@ nnoremap <F3> :set paste!<CR>
 
 nnoremap <F4> :IndentLinesToggle<CR>
 
+inoremap <tab> <esc>
+
+let g:nuake_position = 'bottom'
+nnoremap <F1> :Nuake<CR>
+inoremap <F1> <C-\><C-n>:Nuake<CR>
+tnoremap <F1> <C-\><C-n>:Nuake<CR>
+
+command Writemode set background=light | colorscheme solarized | setlocal spell | Goyo 70
+command Codemode set background=dark | colorscheme gruvbox | setlocal nospell | Goyo!
+
+nnoremap <F11> :Codemode<cr>
+nnoremap <F12> :Writemode<cr>
+
 " Completion
 set completeopt=longest,menuone,preview
 
@@ -211,6 +230,55 @@ endif
 "{{{ Mac fixes
 " Macs are dumb and crontab -e fails with "temp file must be edited in place"
 set backupskip=/tmp/*,/private/tmp/*
+"}}}
+
+"{{{ Fuzzy finder
+function! s:fzf_root()
+	let path = finddir(".git", expand("%:p:h").";")
+	return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
+endfunction
+
+" Command for git grep
+" - fzf#vim#grep(command, with_column, [options], [fullscreen])
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number '.shellescape(<q-args>), 0,
+  \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
+
+" Override Colors command. You can safely do this in your .vimrc as fzf.vim
+" will not override existing commands.
+command! -bang Colors
+  \ call fzf#vim#colors({'options': '--reverse --margin 30%,0'}, <bang>0)
+
+" Augmenting Ag command using fzf#vim#with_preview function
+"   * fzf#vim#with_preview([[options], [preview window], [toggle keys...]])
+"     * For syntax-highlighting, Ruby and any of the following tools are required:
+"       - Bat: https://github.com/sharkdp/bat
+"       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
+"       - CodeRay: http://coderay.rubychan.de/
+"       - Rouge: https://github.com/jneen/rouge
+"
+"   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
+"   :Ag! - Start fzf in fullscreen and display the preview window above
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
+  \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+  \   <bang>0)
+
+" Likewise, Files command with preview window
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+nnoremap <c-p> :exe 'Files ' . <SID>fzf_root()<CR>
 "}}}
 
 "{{{ Autocomplete
@@ -259,11 +327,11 @@ augroup END
 " the same arguments as ack, but it seems not...
 if executable('rg')
   let g:ackprg = 'rg --column'
-  set grepprg=rg\ --vimgrep\ $*
+  set grepprg=rg\ --vimgrep
   set grepformat=%f:%l:%c:%m
 elseif executable('ag')
   let g:ackprg = 'ag --nogroup --nocolor --column --depth 10 --ignore-dir=var --ignore-dir=nbproject --ignore-dir=cache --ignore-dir=migrations --ignore-dir=webroot/static --ignore-dir=vendor'
-  set grepprg=ag\ --vimgrep\ $*
+  set grepprg=ag\ --vimgrep
   set grepformat=%f:%l:%c:%m
 elseif executable('ack')
   let g:ackprg = 'ack --nogroup --nocolor --smart-case --type-add=php=.tpl,.inc,.module,.install --type-set=csv=.csv --type-set=ini=.ini,.cfg,.rc --type-set=min=.min.js --type-set=vim=.vim --type-set=log=.log --type-set=test=.test --type-set=sass=.sass,.scss --type-set=scss=.sass,.scss --nomin --notest --nocsv --nosql --ignore-dir=var --ignore-dir=nbproject --ignore-dir=cache --ignore-dir=migrations --ignore-dir=webroot/static --ignore-dir=vendor'
@@ -307,10 +375,6 @@ augroup END
 " Split line (sister to [J]oin lines)
 " The normal use of S is covered by cc, so don't worry about shadowing it.
 nnoremap S i<cr><esc><right>
-
-" Make K do the same as J just in the opposite direction.
-" I don't usually use the default K action (lookup keyword).
-nnoremap K kJ
 
 " Emacs bindings
 cnoremap <c-a> <home>
@@ -374,7 +438,7 @@ function! CustomColorscheme()
   highlight Comment cterm=italic
   highlight Folded ctermbg=black
   highlight SpellBad cterm=underline,italic ctermfg=darkred
-endfunc
+endfunction
 
 function! ToggleBackground()
   if &background == 'dark'
@@ -383,7 +447,7 @@ function! ToggleBackground()
     set background=dark
     call CustomColorscheme()
   endif
-endfunc
+endfunction
 
 " Show syntax highlighting groups for word under cursor
 nnoremap <leader>ss :call <SID>SynStack()<CR>
@@ -392,7 +456,7 @@ function! <SID>SynStack()
     return
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
+endfunction
 
 nnoremap <f5> :call ToggleBackground()<cr>
 nnoremap <f6> :IlluminationToggle<cr>
@@ -571,18 +635,13 @@ nnoremap Vat vatV
 nnoremap Vab vabV
 nnoremap VaB vaBV
 
-noremap <F1> <nop>
-nnoremap j gj
-nnoremap k gk
+" Map j and k to gj/gk, but only when no count is given
+" However, for larger jumps like 6j add the current position to the jump list
+" so that you can use <c-o>/<c-i> to jump to the previous position
+nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
+nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
-
-"{{{ Ctags
-let GtagsCscope_Auto_Load = 1
-let GtagsCscope_Auto_Map = 1
-let GtagsCscope_Quiet = 1
-set cscopetag
-"}}}
 
 "{{{ CtrlP
 let g:ctrlp_working_path_mode = 'rw'
@@ -640,6 +699,7 @@ augroup END
 "}}}
 
 "{{{ Javascript
+  autocmd FileType javascript nnoremap <buffer> <leader>cl mzyiWoconsole.log('TCL: ', <esc>pa);<esc>`z
 " Simple re-format for minified Javascript
 command! UnMinify call UnMinify()
 function! UnMinify()
@@ -664,12 +724,24 @@ augroup sql
 augroup php
 	autocmd!
 
-  fun! ShowFuncName()
+  function! ShowFuncName()
     echohl ModeMsg
     echo substitute(getline(search("^\s*function", "bcnWz")), '^\s*function\s*\|\s*{.*$', '', 'g')
     echohl None
-  endfun
+  endfunction
   nnoremap <leader>? :call ShowFuncName()<CR>
+
+
+  " This doesn't work for gx, because for some reason <cword> doesn't get expanded...
+  " autocmd FileType php let g:netrw_gx="https://www.php.net/search.php?show=quickref&pattern=<cword>"
+  " so instead...
+  nnoremap gx :call PhpManual()<cr>
+
+  function! PhpManual()
+      let url = "https://www.php.net/manual-lookup.php?scope=quickref&pattern=" . expand("<cword>")
+      exec 'silent !open "' . url . '"'
+      redraw!
+  endfunction
 
   nnoremap <leader>r ggqz/array\s*\(<cr>mzf(%r]`zcf([q9999@q
 	autocmd BufNewFile,BufFilePre,BufRead *.install set filetype=php
@@ -677,6 +749,7 @@ augroup php
 	autocmd FileType php nnoremap <buffer> <leader>cc :!drush cc all
 	autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
   autocmd FileType php nnoremap <buffer> <leader>dump Oheader('X-XSS-Protection:0');ob_get_clean(); echo '<pre>'; var_dump(); echo '</pre>'; die(__FILE__ . ':' . __LINE__);<esc>2F(a
+  autocmd FileType php nnoremap <buffer> <leader>dog Owatchdog('devel', '', [var_export(, 1)], WATCHDOG_DEBUG);<esc>F(a
   autocmd FileType php nnoremap <buffer> <leader>sdd Osignal_debug_dump();<esc>F(a
 
   autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
@@ -735,11 +808,11 @@ augroup END
 "}}}
 
 "{{{ Python
-func! DeleteTrailingWS()
+function! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
   exe "normal `z"
-endfunc
+endfunction
 
 augroup ft_python
   let g:pymode_folding = 0
@@ -766,6 +839,13 @@ augroup END
 "}}}
 
 "{{{ Startify
+" Set startify like a superpowered vinegar (shift -)
+nnoremap _ :Startify<cr>
+
+highlight StartifyNumber ctermfg=220
+highlight StartifyBracket ctermfg=804
+highlight StartifyFile ctermfg=003
+
 let g:startify_custom_header = []
 let g:startify_bookmarks = [
       \ { 'a': '~/.bash_aliases' },
@@ -794,6 +874,14 @@ let g:startify_skiplist = [
 
 let g:startify_custom_header =
       \ map(split(system('figlet Vim 8 . 1'), '\n'), '"    ". v:val')
+"}}}
+
+"{{{ VSCodium
+augroup ide
+  autocmd!
+
+  nnoremap <leader>vs :silent exec "!open vscodium://file/" . expand("%:p") . ":" . line(".") . ":" . col(".")<cr>:redraw!<cr>
+augroup END
 "}}}
 
 "{{{ Markdown

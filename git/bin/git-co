@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# co: "Check Out".
+# Checkout an existing branch based on a partial match.
+#
+# If FZF is installed, this script will use it.
+
+if ! git status >/dev/null; then
+  exit 1
+fi
+
+case "$1" in
+  --stash)
+    if command -v fzf >/dev/null; then
+      stash="$(git stash list | fzf --delimiter=":" --preview="git show --color=always -p {1}" --select-1)"
+
+      if [ -n "$stash" ]; then
+        echo git stash pop "$stash"
+      fi
+    else
+      git stash list
+    fi
+    ;;
+
+  --help|-h) 
+    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    ;;
+
+  -*)
+    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    exit 1
+    ;;
+
+  "")
+    if command -v fzf >/dev/null; then
+      branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --preview="git show --color=always -p {}" --tac --select-1)"
+
+      if [ -n "$branch" ]; then
+        branch="$(echo "$branch" | sed -e "s#^remotes/[^/]*/##")"
+        git checkout "$branch"
+      fi
+    else
+      git branch -a
+    fi
+    ;;
+
+  *)
+    matches=$(git branch | grep -i "$1" | grep -oE '[^ ]+$')
+    count=$(git branch | grep -ci "$1")
+
+    if [ "$count" = "1" ]; then
+      shift
+      git checkout "$matches" "$@"
+    elif [ "$count" = "0" ]; then
+      printf "No match for '%s'" "$1"
+    else
+      printf "Multiple matches:\n"
+
+      for match in $matches; do
+        printf "%s\n" "$match"
+      done
+    fi
+    ;;
+esac
+

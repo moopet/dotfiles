@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Inspired by https://github.com/SidOfc/dotfiles/blob/d07fa3862ed065c2a5a7f1160ae98416bfe2e1ee/zsh/kp
+
+if ! command -v fzf >/dev/null; then
+  printf "FZF must be installed to use this command\n"
+  exit 1
+fi
+
+pid=$(ps -ef | sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
+
+if [ -n "$pid" ]; then
+  echo "$pid" | xargs kill "$@"
+  kp
+fi
+
