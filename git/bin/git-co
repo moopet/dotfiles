@@ -10,6 +10,18 @@ if ! git status >/dev/null; then
 fi
 
 case "$1" in
+  --commit|--commits)
+    if command -v fzf >/dev/null; then
+      commit="$(git log | fzf --preview="git show --color=always -p {1}" --select-1)"
+
+      if [ -n "$commit" ]; then
+        echo git checkout "$commit"
+      fi
+    else
+      git log
+    fi
+    ;;
+
   --stash)
     if command -v fzf >/dev/null; then
       stash="$(git stash list | fzf --delimiter=":" --preview="git show --color=always -p {1}" --select-1)"

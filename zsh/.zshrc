@@ -144,11 +144,18 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-[ -f ~/shore-projects/shore-aliases.sh ] && . ~/shore-projects/shore-aliases.sh
+[ -f ~/shore-projects/shore_aliases.sh ] && . ~/shore-projects/shore_aliases.sh
+
 [ -f ~/.zshrc.local ] && . ~/.zshrc.local
 
 if [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
   hostname | figlet | lolcat
+  echo
+# WSL leaves you in the stupid Windows home.
+elif [ -d /mnt/c/WINDOWS ]; then
+  cd
+
+  echo arcade | figlet | lolcat
   echo
 fi
 
