@@ -23,32 +23,22 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
-" Plug 'ap/vim-templates'
-" Plug 'christoomey/vim-tmux-navigator'
+Plug 'blueyed/vim-diminactive'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'gorodinskiy/vim-coloresque' " better than colorizer because it works with Vim 7.3 :)
-" Plug 'evidens/vim-twig' 
 Plug 'itchyny/lightline.vim'
 Plug 'RRethy/vim-illuminate'
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'kshenoy/vim-signature'
-" Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
-" Plug 'mileszs/ack.vim'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'w0rp/ale'
-" Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
-" Plug 'tpope/vim-commentary'
 Plug 'Yggdroot/indentLine'
-Plug 'junegunn/goyo.vim'
 Plug 'Lenovsky/nuake'
-
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'junegunn/goyo.vim'
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
@@ -57,21 +47,20 @@ Plug 'altercation/vim-colors-solarized'
 
 "{{{ Currently unused but good to keep as bookmarked
 
-"Plug 'junegunn/vim-emoji'
 "Plug 'chrisbra/vim-diff-enhanced'
-"Plug 'ctrlpvim/ctrlp.vim'
 "Plug 'evanmiller/nginx-vim-syntax'
 "Plug 'joonty/vdebug'
 "Plug 'mbbill/undotree'
 "Plug 'phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
-"Plug 'Shougo/deoplete.nvim'
-"Plug 'kristijanhusak/deoplete-phpactor'
-"Plug 'sodapopcan/vim-twiggy'
 "Plug 'tpope/vim-surround'
 "Plug 'Valloric/MatchTagAlways'
 "Plug 'Valloric/YouCompleteMe'
-"Plug 'vim-scripts/showcolor.vim'
 "Plug 'vim-scripts/YankRing.vim'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-rhubarb'
+" Plug 'mileszs/ack.vim'
+" Plug 'ap/vim-templates'
 "}}}
 
 call plug#end()
@@ -117,7 +106,8 @@ nnoremap ]Q :clast<cr>*<c-o>zz
 
 " Layout and indenting
 set autoindent
-set cursorline
+" Override cursorline later so it's only there on active windows.
+set nocursorline
 set expandtab
 set formatoptions=tcqrn1j
 set scrolloff=2
@@ -383,21 +373,7 @@ inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
 
 "{{{ Lightline
-"      \ 'colorscheme': 'gruvbox',
-let g:lightline = {
-      \ 'component': {
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-      \ },
-      \ 'separator': { 'left': '', 'right' : '' },
-      \ 'subseparator': { 'left': '', 'right' : '' },
-      \ }
+set noshowmode
 "}}}
 
 "{{{ Colorschemes
@@ -425,11 +401,13 @@ function! CustomColorscheme()
   " Customise things so there are nice transparent backgrounds.
   highlight IlluminatedWord ctermfg=214 ctermbg=237 
   highlight Search cterm=NONE ctermbg=yellow ctermfg=black
-  highlight Normal ctermbg=NONE
+  highlight Normal ctermbg=235
+  " ColorColumn is used by the dim-inactive plugin to change background colors.
+  highlight ColorColumn ctermbg=236
   highlight NonText ctermbg=NONE
   highlight LineNr ctermbg=NONE
   highlight Visual cterm=NONE ctermbg=162 ctermfg=white
-  highlight CursorLine ctermbg=232
+  highlight CursorLine ctermbg=23
   highlight SignColumn ctermbg=232
   highlight GitGutterAdd ctermbg=232
   highlight GitGutterChange ctermbg=232
@@ -462,6 +440,12 @@ nnoremap <f5> :call ToggleBackground()<cr>
 nnoremap <f6> :IlluminationToggle<cr>
 
 call CustomColorscheme()
+
+augroup ActiveWindowHighlight
+  autocmd!
+  autocmd WinEnter * set cursorline
+  autocmd WinLeave * set nocursorline
+augroup END
 "}}}
 
 nnoremap <silent> <BS> :nohlsearch<CR>
