@@ -37,6 +37,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'Yggdroot/indentLine'
 Plug 'Lenovsky/nuake'
 Plug 'junegunn/goyo.vim'
+Plug 'mustache/vim-mustache-handlebars'
 
 if v:version > 802 || has("patch1593") || has('nvim')
   Plug 'Lenovsky/nuake'
@@ -655,6 +656,7 @@ augroup END
 augroup ft_html
   autocmd!
 
+  autocmd FileType html,htmldjango set filetype=html.mustache
   autocmd FileType html setlocal indentkeys-=*<Return>
   autocmd BufNewFile,BufRead *.html setlocal filetype=htmldjango
   autocmd FileType html,jinja,htmldjango setlocal foldmethod=manual
