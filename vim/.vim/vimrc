@@ -849,6 +849,7 @@ let g:startify_bookmarks = [
       \ { 'r': '~/.config/ranger/rc.conf' },
       \ { 'o': '~/.oh-my-zsh/custom/custom.zsh' },
       \ { 'p': '~/.config/polybar/config' },
+      \ { 't': '~/.tmux.conf' },
       \ { 'x': '~/.Xresources' },
       \ { 'v': '~/.vim/vimrc' },
       \ { 'z': '~/.zshrc' },
