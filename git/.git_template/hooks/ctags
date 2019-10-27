@@ -1,20 +1,21 @@
 #!/bin/sh
 
-# See: https://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
-
-# Silence in the library!
-if ! command -v ctags >/dev/null; then
-  exit 0
-fi
-
 set -e
 
-PATH="/usr/local/bin:$PATH"
-dir="`git rev-parse --git-dir`"
+if [ -d doc -a \( -d autoload -o -d ftdetect -o -d plugin \) ]; then
+  nohup vim -u NONE -c 'helptags doc' -cq >/dev/null 2>&1 </dev/null &
+fi
 
-trap 'rm -f "$dir/$$.tags"' EXIT
-
-git ls-files | \
-  ctags --tag-relative -L - -f"$dir/$$.tags" --languages=-javascript,sql
-
-mv "$dir/$$.tags" "$dir/tags"
+optfiles=`git ls-files -oc --directory -- .ctags '*/.ctags'`
+IFS='
+'
+for optfile in ${optfiles:-./fake}; do
+  (
+  unset GIT_DIR GIT_WORK_TREE
+  tmpfile=`mktemp ${TMPDIR:-/tmp}/tags.XXXXXXXXXX~`
+  cd `dirname $optfile`
+  trap 'rm -f $tmpfile' EXIT INT TERM
+  git ls-files | ctags -L - -f $tmpfile "$@"
+  mv $tmpfile tags
+)
+done
