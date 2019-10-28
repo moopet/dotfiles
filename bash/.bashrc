@@ -45,7 +45,7 @@ fi
 
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/bin/git-completion ] && . ~/bin/git-completion
-[ -f ~/bin/shore-completion ] && . ~/bin/shore-completion
+[ -f ~/shore-projects/shore_aliases.sh ] && . ~/shore-projects/shore_aliases.sh
 
 function _update_ps1() {
   PS1=$(powerline-shell $?)

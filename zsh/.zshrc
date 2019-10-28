@@ -22,17 +22,6 @@ alias vi='vim'
 alias gi=vim
 alias i=vim
 
-shore() {
-  if [ "$1" = "site" ]; then
-    shift
-    shore-site $*
-  else
-    (cd ~/shore && ./shore $*)
-  fi
-}
-
-alias drush='shore-site exec drush -y'
-
 [ -f ~/.config/ripgrep/ripgreprc ] && export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/ripgreprc
 
 [ -d "/usr/local/opt/grep/libexec/gnubin" ] && export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
