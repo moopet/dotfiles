@@ -133,7 +133,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-[ -f ~/shore-projects/shore_aliases.sh ] && . ~/shore-projects/shore_aliases.sh
+[ -f ~/shore-projects/shore-aliases.sh ] && . ~/shore-projects/shore-aliases.sh
 
 [ -f ~/.zshrc.local ] && . ~/.zshrc.local
 
@@ -160,4 +160,10 @@ export LESS='-F -i -J -M -R -W -x4 -X -z-4'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export FZF_DEFAULT_COMMAND="rg --files"
+if command -v rg >/dev/null; then
+  export FZF_DEFAULT_COMMAND="rg --files"
+fi
+
+if [ -d /usr/local/opt/mysql-client/bin ]; then
+  export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+fi

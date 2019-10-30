@@ -73,7 +73,9 @@ export NVM_DIR="$HOME/.nvm"
 
 [ -f ~/.config/ripgrep/ripgreprc ] && export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/ripgreprc
 
-export FZF_DEFAULT_COMMAND="rg --files"
+if command -v rg >/dev/null; then
+  export FZF_DEFAULT_COMMAND="rg --files"
+fi
 
 if [ -d "/Applications/DevDesktop/tools" ]; then
   export PATH="$PATH:/Applications/DevDesktop/tools"
@@ -84,3 +86,7 @@ if [ -d "$HOME/.node_modules_global/bin" ]; then
 fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+if [ -d /usr/local/opt/mysql-client/bin ]; then
+  export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+fi
