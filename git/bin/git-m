@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# co: "Check Out".
-# Checkout an existing branch based on a partial match.
+# m: "Check Out".
+# Merge in an existing branch based on a partial match.
 #
 # If FZF is installed, this script will use it.
 
@@ -9,25 +9,15 @@ if ! git status >/dev/null; then
   exit 1
 fi
 
+current_branch="$(git symbolic-ref --short HEAD)"
+
 case "$1" in
-  --commit|--commits)
-    if command -v fzf >/dev/null; then
-      commit="$(git log | fzf --prompt="Checkout commit > " --preview="git show --color=always -p {1}" --select-1)"
-
-      if [ -n "$commit" ]; then
-        echo git checkout "$commit"
-      fi
-    else
-      git log
-    fi
-    ;;
-
   --stash)
     if command -v fzf >/dev/null; then
-      stash="$(git stash list | fzf --delimiter=":" --prompt="Pop stash > " --preview="git show --color=always -p {1}" --select-1)"
+      stash="$(git stash list | fzf --delimiter=":" --prompt="Apply stash to $current_branch > " --preview="git show --color=always -p {1}" --select-1)"
 
       if [ -n "$stash" ]; then
-        echo git stash pop "$stash"
+        echo git stash apply "$stash"
       fi
     else
       git stash list
@@ -45,11 +35,11 @@ case "$1" in
 
   "")
     if command -v fzf >/dev/null; then
-      branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --prompt="Checkout branch > " --preview="git show --color=always -p {}" --tac --select-1)"
+      branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --prompt="Merge into $current_branch > " --preview="git diff --name-only --color=always {}" --tac --select-1)"
 
       if [ -n "$branch" ]; then
         branch="$(echo "$branch" | sed -e "s#^remotes/[^/]*/##")"
-        git checkout "$branch"
+        git merge "$branch"
       fi
     else
       git branch -a
@@ -62,7 +52,7 @@ case "$1" in
 
     if [ "$count" = "1" ]; then
       shift
-      git checkout "$matches" "$@"
+      git merge "$matches"
     elif [ "$count" = "0" ]; then
       printf "No match for '%s'" "$1"
     else
