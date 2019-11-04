@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# m: "Check Out".
+# Merge in an existing branch based on a partial match.
+#
+# If FZF is installed, this script will use it.
+
+if ! git status >/dev/null; then
+  exit 1
+fi
+
+case "$1" in
+  --stash)
+    if command -v fzf >/dev/null; then
+      dummy="$(git stash list | fzf --delimiter=":"  --preview="git show --color=always -p {1}" --select-1)"
+    else
+      git stash list
+    fi
+    ;;
+
+  --help|-h) 
+    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    ;;
+
+  "")
+    if command -v fzf >/dev/null; then
+      dummy="$(git log --no-merges --oneline | fzf --delimiter=" " --preview="git show --color=always {1}" --select-1)"
+    else
+      git log --color=alway --oneline
+    fi
+    ;;
+
+  *)
+    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    exit 1
+    ;;
+esac
+
