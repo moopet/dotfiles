@@ -15,7 +15,7 @@ case "$1" in
       commit="$(git log | fzf --prompt="Checkout commit > " --preview="git show --color=always -p {1}" --select-1)"
 
       if [ -n "$commit" ]; then
-        echo git checkout "$commit"
+        git checkout "$commit"
       fi
     else
       git log
@@ -27,7 +27,8 @@ case "$1" in
       stash="$(git stash list | fzf --delimiter=":" --prompt="Pop stash > " --preview="git show --color=always -p {1}" --select-1)"
 
       if [ -n "$stash" ]; then
-        echo git stash pop "$stash"
+        stash="$(echo "$stash" | sed 's/stash..\([0-9]*\).*/\1/')"
+        git stash pop "$stash"
       fi
     else
       git stash list
