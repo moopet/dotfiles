@@ -106,7 +106,7 @@ nnoremap / /\v
 xnoremap / /\v
 
 command Todo :execute 'vimgrep todo '.expand('%') | :copen | :cc
-nnoremap // :Ack <c-r><c-w><cr>:cc<cr>*<c-o>zz
+nnoremap // :Rg <c-r><c-w><cr>
 " These mappings are similar to Unimpaired but not quite.
 nnoremap [q :cprevious<cr>*<c-o>zz
 nnoremap ]q :cnext<cr>*<c-o>zz
@@ -269,15 +269,17 @@ command! -bang -nargs=* Ag
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
-  \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+  \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%:hidden')
+  \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%', '?'),
   \   <bang>0)
 
 " Likewise, Files command with preview window
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+nnoremap <c-p> :exe 'Files ' . <SID>fzf_root()<cr>
 
-nnoremap <c-p> :exe 'Files ' . <SID>fzf_root()<CR>
+" This nonsense right here, "π", is alt-p on a Mac.
+nnoremap π :Rg<cr>
 "}}}
 
 "{{{ Autocomplete
@@ -712,8 +714,7 @@ augroup sql
   autocmd Filetype xml if getfsize(@%) > 1000000 | setlocal syntax=OFF | setlocal nowrap | endif
   autocmd Filetype sql if getfsize(@%) > 1000000 | setlocal syntax=OFF | setlocal nowrap | endif
 "}}}
-"
-"
+
 "{{{ PHP
 augroup php
 	autocmd!
@@ -747,7 +748,7 @@ augroup php
   autocmd FileType php nnoremap <buffer> <leader>sdd Osignal_debug_dump();<esc>F(a
 
   autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
-  autocmd FileType php nnoremap <buffer> gD *:Ack function.<c-r><c-w><cr>:cclose<cr>zt
+  autocmd FileType php nnoremap <buffer> gD *:Rg function.<c-r><c-w><cr>zt
 
   autocmd FileType php set nofoldenable
   " autocmd FileType php cnoremap drush !drush scr %
