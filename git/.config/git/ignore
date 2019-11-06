@@ -15,3 +15,4 @@ thumbs.db
 Session.vim
 .vscode
 *.code-workspace
+tags
