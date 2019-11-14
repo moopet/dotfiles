@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# tidy: "Tidy".
+# Remove all local merged branches and run garbage collection.
+
+git status >/dev/null || exit
+
+if git branch --merged | egrep -v -q "\*|develop|master"; then
+  printf "The following (merged) branches will be deleted:\n"
+  git branch --merged | egrep -v "\*|develop|master" 
+
+  read -r -p "Are you sure? [y|N] " input
+
+  case $input in
+    [yY][eE][sS]|[yY])
+      git branch --merged | egrep -v "\*|develop|master" | xargs echo git branch -d
+      git gc
+      ;;
+
+    *)
+      printf "Branch deletion cancelled.\n"
+      ;;
+  esac
+else
+  printf "There are no merged branches to clean up.\n"
+fi
+
