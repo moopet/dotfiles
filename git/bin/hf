@@ -3,15 +3,17 @@
 # hf: "Hotfix Finish".
 # Finish the current hotfix branch and push the changes.
 
+git status > /dev/null || exit
+
 if [ -n "$1" ]; then
-  echo "$(basename "$0") works on the current branch and does not accept arguments."
+  printf "%s works on the current branch and does not accept arguments.\n" "$(basename "$0")"
   exit 1
 fi
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if ! echo $branch | grep "^hotfix/" > /dev/null; then
-  echo "Not a hotfix branch."
+if ! printf "%s" "$branch" | grep "^hotfix/" > /dev/null; then
+  printf "Not a hotfix branch.\n"
   exit 1
 fi
 

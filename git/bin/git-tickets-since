@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# List Jira tickets since a specified commit.
+
+# tickets-since: List Jira tickets since a specified commit.
 
 since=${1:-master}
-project=${2:-GAL3}
+project=${2}
 
 if sed --help >/dev/null 2>&1; then
   sed="sed"
@@ -14,7 +15,7 @@ else
 fi
 
 print_ticket() {
-  ticket=$(echo "$1" | tr '[a-z]' '[A-Z]')
+  ticket=$(echo "$1" | tr '[:lower:]' '[:upper:]')
   name=$(git log | grep -oi "$1[0-9a-z_-]\+" | head -n1 | $sed "s#$1[_-]\?##i" | tr '-' ' ')
   count=$(git log | grep -ci "$1")
 
@@ -23,6 +24,7 @@ print_ticket() {
   printf "%-10s (%2s commit%1s) %s\n" "$ticket" "$count" "$plural" "$name"
 }
 
+# shellcheck disable=SC2086
 for n in $(git log $since.. | grep -oi "$project-[0-9]\+" | $sed "s/$project-//i" | sort -urg); do
   print_ticket "$project-$n";
 done

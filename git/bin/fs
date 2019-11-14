@@ -3,10 +3,10 @@
 # fs: "Feature Start".
 # Start a new feature branch.
 
-git status >/dev/null || exit 1
+git status >/dev/null || exit
 
 if [ "$#" = "1" ]; then
   git fetch && git checkout develop && git pull origin develop && git flow feature start "$1"
 else
-  echo "Usage: $(basename $0) <feature-name>"
+  printf "Usage: %s <feature-name>\n" "$(basename "$0")"
 fi

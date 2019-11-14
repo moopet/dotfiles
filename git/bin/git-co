@@ -27,7 +27,7 @@ case "$1" in
       stash="$(git stash list | fzf --delimiter=":" --prompt="Pop stash > " --preview="git show --color=always -p {1}" --select-1)"
 
       if [ -n "$stash" ]; then
-        stash="$(echo "$stash" | sed 's/stash..\([0-9]*\).*/\1/')"
+        stash="$(printf "%s" "$stash" | sed 's/stash..\([0-9]*\).*/\1/')"
         git stash pop "$stash"
       fi
     else
@@ -49,7 +49,7 @@ case "$1" in
       branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --prompt="Checkout branch > " --preview="git show --color=always -p {}" --tac --select-1)"
 
       if [ -n "$branch" ]; then
-        branch="$(echo "$branch" | sed -e "s#^remotes/[^/]*/##")"
+        branch="$(printf "%s" "$branch" | sed -e "s#^remotes/[^/]*/##")"
         git checkout "$branch"
       fi
     else

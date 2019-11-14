@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# rs: "Release Start".
+# Start a new release branch.
+
+git status >/dev/null || exit
+
+if [ "$#" = "1" ]; then
+  git fetch && git checkout develop && git pull origin develop && git flow release start "$1"
+else
+  printf "Usage: %s <feature-name>\n" "$(basename "$0")"
+fi

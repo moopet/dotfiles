@@ -3,16 +3,18 @@
 # ff: "Feature Finish".
 # Finish the current feature branch and push the development changes.
 
+git status > /dev/null || exit
+
 if [ -n "$1" ]; then
-  echo "$(basename "$0") works on the current branch and does not accept arguments."
+  printf "%s works on the current branch and does not accept arguments.\n" "$(basename "$0")"
   exit 1
 fi
 
-branch=$(git rev-parse --abbrev-ref HEAD)
+branch="$(git rev-parse --abbrev-ref HEAD)"
 
-if ! echo $branch | grep "^feature/" > /dev/null; then
-  echo "Not a feature branch."
-  exit 1
+if ! grep "^feature/" <<< "$branch" > /dev/null; then
+  printf "Not a feature branch.\n"
+  exit 2
 fi
 
 git flow feature finish "${branch#feature/}" && git push origin develop

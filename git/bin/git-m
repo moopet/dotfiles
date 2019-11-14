@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# m: "Check Out".
+# m: "Merge".
 # Merge in an existing branch based on a partial match.
 #
 # If FZF is installed, this script will use it.

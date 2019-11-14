@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+# grab: "Make sure master and develop are up to date".
+#
+# @TODO: make this bail if the WD isn't clean.
+
+git status > /dev/null || exit
+
+current_branch="$(git symbolic-ref --short HEAD)"
+
 git fetch
+
 git checkout master && git pull origin master
 git checkout develop && git pull origin develop
+
+git checkout "$current_branch"

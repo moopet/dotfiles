@@ -3,14 +3,14 @@
 # fp: "Feature Push".
 # Push the current feature branch.
 
-git status >/dev/null || exit 1
+git status >/dev/null || exit
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if ! echo $branch | grep "^feature/" > /dev/null; then
-  echo "Not a feature branch."
+if ! printf "%s" "$branch" | grep "^feature/" > /dev/null; then
+  printf "Not a feature branch.\n"
   exit 1
 fi
 
-git push origin $branch
+git push origin "$branch"
 

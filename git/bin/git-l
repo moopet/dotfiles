@@ -1,18 +1,16 @@
 #!/bin/sh
 
-# m: "Check Out".
-# Merge in an existing branch based on a partial match.
+# l: "Log/list".
+# Show diffs between commits or stashes and the current working tree.
 #
 # If FZF is installed, this script will use it.
 
-if ! git status >/dev/null; then
-  exit 1
-fi
+git status >/dev/null || exit
 
 case "$1" in
   --stash)
     if command -v fzf >/dev/null; then
-      dummy="$(git stash list | fzf --delimiter=":"  --preview="git show --color=always -p {1}" --select-1)"
+      git stash list | fzf --delimiter=":"  --preview="git show --color=always -p {1}" --select-1 > /dev/null
     else
       git stash list
     fi
@@ -24,7 +22,7 @@ case "$1" in
 
   "")
     if command -v fzf >/dev/null; then
-      dummy="$(git log --no-merges --oneline | fzf --delimiter=" " --preview="git show --color=always {1}" --select-1)"
+      git log --no-merges --oneline | fzf --delimiter=" " --preview="git show --color=always {1}" --select-1 > /dev/null
     else
       git log --color=alway --oneline
     fi

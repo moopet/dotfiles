@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# rf: "Release Finish".
+# Finish the current release branch and push the changes.
+
+git status > /dev/null || exit
+
+if [ -n "$1" ]; then
+  printf "%s works on the current branch and does not accept arguments.\n" "$(basename "$0")"
+  exit 1
+fi
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if ! grep "^release/" <<< "$branch" > /dev/null; then
+  printf "Not a release branch.\n"
+  exit 2
+fi
+
+git flow release finish "${branch#release/}" && git push origin master --tags
