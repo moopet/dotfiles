@@ -5,6 +5,11 @@
 
 git status > /dev/null || exit
 
+if git flow init help > /dev/null; then
+  printf "Git-flow is not installed.\n"
+  exit 2
+fi
+
 if [ -n "$1" ]; then
   printf "%s works on the current branch and does not accept arguments.\n" "$(basename "$0")"
   exit 1
