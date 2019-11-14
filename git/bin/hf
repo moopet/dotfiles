@@ -5,7 +5,7 @@
 
 git status > /dev/null || exit
 
-if git flow init help > /dev/null; then
+if ! git flow init help > /dev/null; then
   printf "Git-flow is not installed.\n"
   exit 2
 fi
@@ -17,7 +17,7 @@ fi
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if ! printf "%s" "$branch" | grep "^hotfix/" > /dev/null; then
+if ! grep -q "^hotfix/" <<< "$branch"; then
   printf "Not a hotfix branch.\n"
   exit 1
 fi

@@ -7,7 +7,7 @@ git status >/dev/null || exit
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if ! printf "%s" "$branch" | grep "^feature/" > /dev/null; then
+if ! grep -q "^feature/" <<< "$branch"; then
   printf "Not a feature branch.\n"
   exit 1
 fi

@@ -7,7 +7,7 @@ git status >/dev/null || exit
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if ! printf "%s" "$branch" | grep "^release/" > /dev/null; then
+if ! grep -q "^release/" <<< "$branch"; then
   printf "Not a release branch.\n"
   exit 1
 fi
