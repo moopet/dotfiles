@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# "jira": Open a browser to the current ticket on Jira.
+
+branch=$(git symbolic-ref --short HEAD | sed -e 's#^[a-z]*/##')
+ticket=$(sed -e 's/\([A-Z][A-Z0-9]*-[0-9]*\).*/\1/' <<< "$branch")
+url="https://signal.atlassian.net/browse/${ticket}"
+
+if command -v open >/dev/null; then
+  open "$url"
+elif command -v gnome-open >/dev/null; then
+  gnome-open "$url"
+else
+  printf "Ticket URL: %s\n" "$url"
+fi
