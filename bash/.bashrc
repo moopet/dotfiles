@@ -21,7 +21,9 @@ set -o noclobber
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-shopt -s globstar
+if [ "${BASH_VERSINFO:-0}" -ge 4 ]; then
+  shopt -s globstar
+fi
 
 export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.composer/vendor/bin:$PATH"
 export PATH="$PATH:$HOME/.gem/ruby/2.5.0/bin"
@@ -47,8 +49,14 @@ fi
 [ -f ~/bin/git-completion ] && . ~/bin/git-completion
 [ -f ~/shore-projects/shore_aliases.sh ] && . ~/shore-projects/shore_aliases.sh
 
+if [ -d "$HOME/Library/Python/2.7/bin" ]; then
+  export PATH="$HOME/Library/Python/2.7/bin:$PATH"
+fi
+
 function _update_ps1() {
-  PS1=$(powerline-shell $?)
+  if command -v powerline-shell > /dev/null; then
+    PS1=$(powerline-shell $?)
+  fi
 }
 
 if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
