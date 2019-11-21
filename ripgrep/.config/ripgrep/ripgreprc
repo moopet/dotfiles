@@ -18,3 +18,5 @@ php:*.{php,phar,inc,module,install}
 --colors=path:style:bold
 
 --smart-case
+
+--hidden
