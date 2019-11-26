@@ -84,6 +84,7 @@ set nomodeline
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
+set termguicolors
 let g:solarized_termcolors = 256
 let g:loaded_getscriptPlugin = 1
 let g:loaded_2html_plugin = 1
