@@ -38,6 +38,7 @@ if command -v fzf >/dev/null; then
   matches="$($search_cmd | fzf --select-1 --exit-0 --tac --multi --preview="grep -C3 -i --color=always '$search_term' {}")"
 
   if [ -z "$matches" ]; then
+    printf "No files match the pattern '%s'.\n" "$search_term"
     exit 0
   fi
 

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# edit-command: "Edit a git subcommand".
+
+command="git-$1"
+
+if ! command -v "$command" > /dev/null; then
+  printf "Command %s doesn't exist.\n" "$command"
+  exit 1
+fi
+
+editor="${VISUAL:-${EDITOR:-vim}}"
+
+$editor "$(command -v "$command")"

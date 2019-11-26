@@ -36,11 +36,11 @@ case "$1" in
     ;;
 
   --help|-h) 
-    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    printf "Usage: %s [--commit] [--stash] [<pattern>]\n" "$(basename "$0")"
     ;;
 
   -*)
-    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    printf "Usage: %s [--commit] [--stash] [<pattern>]\n" "$(basename "$0")"
     exit 1
     ;;
 
@@ -65,7 +65,7 @@ case "$1" in
       shift
       git checkout "$matches" "$@"
     elif [ "$count" = "0" ]; then
-      printf "No match for '%s'" "$1"
+      printf "No match for '%s'\n" "$1"
     else
       printf "Multiple matches:\n"
 
