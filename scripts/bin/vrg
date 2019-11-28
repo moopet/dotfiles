@@ -2,7 +2,7 @@
 
 # Open all files that contain a search pattern.
 #
-# Works with ripgrep or the-silver-searcher if installed.
+# Works with ripgrep, ack, or the-silver-searcher if installed.
 # Uses FZF if installed to let you narrow down the results.
 
 search_term="$1"
