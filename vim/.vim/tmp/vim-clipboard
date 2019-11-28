@@ -1,4 +1,0 @@
-function nandos_id_get_userinfo() {
-  return nandos_id_api_call('userinfo', [], 'get', TRUE);
-}
-
