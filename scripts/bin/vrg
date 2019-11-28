@@ -8,51 +8,75 @@
 search_term="$1"
 shift
 
-if [ -n "$VISUAL" ]; then
-  editor_cmd="$VISUAL"
-elif [ -n "$EDITOR" ]; then
-  editor_cmd="$EDITOR"
-elif command -v vim >/dev/null; then
-  editor_cmd="vim"
-elif command -v vi >/dev/null; then
-  editor_cmd="vi"
-else
-  printf "No editor found. Please set the VISUAL or EDITOR environment variables.\n"
-  exit 1
-fi
-
-if [ -z "$search_term" ]; then
+usage() {
   printf "Usage: %s <search-term>\n" "$(basename "$0")"
-  exit 1
-fi
+}
 
-if command -v rg >/dev/null; then
-  search_cmd="rg -l $search_term"
-elif command -v ag >/dev/null; then
-  search_cmd="ag -l $search_term"
-else
-  search_cmd="grep -irl $search_term *"
-fi
-
-if command -v fzf >/dev/null; then
-  matches="$($search_cmd | fzf --select-1 --exit-0 --tac --multi --bind ctrl-a:toggle-all --preview="grep -C3 -i --color=always '$search_term' {}")"
-
-  if [ -z "$matches" ]; then
-    printf "No files match the pattern '%s'.\n" "$search_term"
-    exit 0
-  fi
-
-  # shellcheck disable=SC2086
-  if [ "$editor_cmd" = "vim" ]; then
-    exec vim $matches "+/$search_term" "$@"
+configure_editor() {
+  if [ -n "$VISUAL" ]; then
+    editor_cmd="$VISUAL"
+  elif [ -n "$EDITOR" ]; then
+    editor_cmd="$EDITOR"
+  elif command -v vim >/dev/null; then
+    editor_cmd="vim"
+  elif command -v vi >/dev/null; then
+    editor_cmd="vi"
   else
-    exec $editor_cmd $matches "$@"
+    printf "No editor found. Please set the VISUAL or EDITOR environment variables.\n"
+    exit 1
   fi
-else
-  if [ "$editor_cmd" = "vim" ]; then
-    # shellcheck disable=SC2046
-    exec vim $($search_cmd) "+/$search_term" "$@"
+}
+
+parse_options() {
+  case $search_term in
+    -h|--help)
+      usage
+      exit 0
+    ;;
+
+    "")
+      usage
+      exit 1
+    ;;
+  esac
+}
+
+configure_search_command() {
+  if command -v rg >/dev/null; then
+    search_cmd="rg -l $search_term"
+  elif command -v ag >/dev/null; then
+    search_cmd="ag -l $search_term"
   else
-    exec $editor_cmd $($search_cmd) "$@"
+    search_cmd="grep -irl $search_term *"
   fi
-fi
+}
+
+do_search() {
+  if command -v fzf >/dev/null; then
+    matches="$($search_cmd | fzf --select-1 --exit-0 --tac --multi --bind ctrl-a:toggle-all --preview="grep -C3 -i --color=always '$search_term' {}")"
+
+    if [ -z "$matches" ]; then
+      printf "No files match the pattern '%s'.\n" "$search_term"
+      exit 0
+    fi
+
+    # shellcheck disable=SC2086
+    if [ "$editor_cmd" = "vim" ]; then
+      exec vim $matches "+/$search_term" "$@"
+    else
+      exec $editor_cmd $matches "$@"
+    fi
+  else
+    if [ "$editor_cmd" = "vim" ]; then
+      # shellcheck disable=SC2046
+      exec vim $($search_cmd) "+/$search_term" "$@"
+    else
+      exec $editor_cmd $($search_cmd) "$@"
+    fi
+  fi
+}
+
+parse_options
+configure_search_command
+configure_editor
+do_search
