@@ -5,11 +5,28 @@
 # Works with ripgrep, ack, or the-silver-searcher if installed.
 # Uses FZF if installed to let you narrow down the results.
 
+VERSION="1.0.0"
+
 search_term="$1"
 shift
 
 usage() {
-  printf "Usage: %s <search-term>\n" "$(basename "$0")"
+  command_name="$(basename "$0")"
+  printf "%s %s\n" "$command_name" "$VERSION"
+  printf "Ben Sinclair <ben@moopet.net>\n\n"
+  printf "USAGE:\n"
+  printf "  %s <search-term> [options]\n\n" "$command_name"
+  printf "OPTIONS:\n"
+  printf "  -h, --help\n"
+  printf "    Show this help message.\n\n"
+  printf "Trailing options will be passed to your editor.\n\n"
+  printf "COMPATIBILITY:\n"
+  printf "%s will work with grep, but will use ripgrep, the-silver-searcher, or ack if installed.\n" "$command_name"
+  printf "If fzf is installed, file selection will be interactive.\n"
+  printf "If your editor supports it, the search term will be highlighted.\n\n"
+  printf "\nEXAMPLE:\n"
+  printf "With vim installed and set as your VISUAL editor, search for 'foobar' and\nopen matching files in vertical splits:\n\n"
+  printf "  %s foobar -O\n\n" "$command_name"
 }
 
 configure_editor() {
@@ -71,7 +88,7 @@ do_search() {
   else
     if [ "$editor_cmd" = "vim" ]; then
       # shellcheck disable=SC2046
-      exec vim $($search_cmd) "+/$search_term" "$@"
+      exec vim $($search_cmd) "+/$search_term" -c "set hls" "$@"
     else
       # shellcheck disable=SC2046
       exec $editor_cmd $($search_cmd) "$@"
