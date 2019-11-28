@@ -46,6 +46,8 @@ configure_search_command() {
     search_cmd="rg -l $search_term"
   elif command -v ag >/dev/null; then
     search_cmd="ag -l $search_term"
+  elif command -v ack >/dev/null; then
+    search_cmd="ack -l $search_term"
   else
     search_cmd="grep -irl $search_term *"
   fi
