@@ -71,6 +71,7 @@ do_search() {
       # shellcheck disable=SC2046
       exec vim $($search_cmd) "+/$search_term" "$@"
     else
+      # shellcheck disable=SC2046
       exec $editor_cmd $($search_cmd) "$@"
     fi
   fi
@@ -79,4 +80,4 @@ do_search() {
 parse_options
 configure_search_command
 configure_editor
-do_search
+do_search "$@"
