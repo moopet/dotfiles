@@ -71,7 +71,8 @@ do_search() {
   fi
 
   if ! command -v fzf >/dev/null; then
-    exec $find_command
+    $find_command | sort
+    exit
   fi
 
   match="$($find_command | sort | fzf --tac --exit-0 --preview="$preview_command {}")"
