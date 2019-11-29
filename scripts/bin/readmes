@@ -1,0 +1,89 @@
+#!/bin/sh
+
+# Open all files that contain a search pattern.
+#
+# Works with ripgrep, ack, or the-silver-searcher if installed.
+# Uses FZF if installed to let you narrow down the results.
+
+VERSION="1.0.0"
+
+usage() {
+  command_name="$(basename "$0")"
+  printf "%s %s\n\n" "$command_name" "$VERSION"
+  printf "Preview/open README files.\n\n"
+  printf "USAGE:\n"
+  printf "  %s <path> [options]\n\n" "$command_name"
+  printf "OPTIONS:\n"
+  printf "  -h, --help\n"
+  printf "    Show this help message.\n\n"
+  printf "COMPATIBILITY:\n"
+  printf "%s works best with fzf installed. Without it, a simple list of matching READMEs will be displayed.\n" "$command_name"
+  printf "If VSCode is installed, it will be used to open the selected README.\n"
+  printf "If bat is installed, it will be used for syntax-highlighted previews.\n\n"
+}
+
+parse_options() {
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+
+    "")
+      ;;
+  esac
+}
+
+configure_find_command() {
+  if command -v rg >/dev/null; then
+    find_command="rg --files --iglob readme --iglob readme.md --iglob readme.txt"
+  else
+    find_command="find . -type f -iname readme -o -iname readme.md -o -iname readme.txt"
+  fi
+}
+
+configure_preview_command() {
+  if command -v bat >/dev/null; then
+    preview_command="bat --color=always"
+  else
+    preview_command="head -n100"
+  fi
+}
+
+configure_open_command() {
+  if command -v code >/dev/null; then
+    open_command="code"
+  elif command -v gnome-open >/dev/null; then
+    open_command="gnome-open"
+  elif command -v open >/dev/null; then
+    open_command="open"
+  else
+    open_command="ls -lh"
+  fi
+}
+
+do_search() {
+  if [ -n "$1" ]; then
+    if ! cd "$1" 2>/dev/null; then
+      printf "Path not found: %s\n" "$1"
+      exit 2
+    fi
+  fi
+
+  if ! command -v fzf >/dev/null; then
+    exec $find_command
+  fi
+
+  match="$($find_command | sort | fzf --tac --exit-0 --preview="$preview_command {}")"
+
+  if [ -n "$match" ]; then
+    printf "%s\n" "$match"
+    $open_command "$match"
+  fi
+}
+
+parse_options "$@"
+configure_find_command
+configure_preview_command
+configure_open_command
+do_search "$@"
