@@ -45,7 +45,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.aliases ] && . ~/.aliases
 [ -f ~/bin/git-completion ] && . ~/bin/git-completion
 [ -f ~/shore-projects/shore_aliases.sh ] && . ~/shore-projects/shore_aliases.sh
 

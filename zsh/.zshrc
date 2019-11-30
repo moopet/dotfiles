@@ -125,7 +125,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.aliases ] && . ~/.aliases
 [ -f ~/shore-projects/shore-aliases.sh ] && . ~/shore-projects/shore-aliases.sh
 
 [ -f ~/.zshrc.local ] && . ~/.zshrc.local
