@@ -58,7 +58,7 @@ configure_open_command() {
   elif command -v open >/dev/null; then
     open_command="open"
   else
-    open_command="ls -lh"
+    open_command="${EDITOR:-ls -lh}"
   fi
 }
 
