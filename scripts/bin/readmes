@@ -2,7 +2,8 @@
 
 # Open all files that contain a search pattern.
 #
-# Works with ripgrep, ack, or the-silver-searcher if installed.
+# Works with ripgrep if installed.
+# Uses bat for highlighted previews if installed.
 # Uses FZF if installed to let you narrow down the results.
 
 VERSION="1.0.0"
@@ -19,6 +20,7 @@ usage() {
   printf "COMPATIBILITY:\n"
   printf "%s works best with fzf installed. Without it, a simple list of matching READMEs will be displayed.\n" "$command_name"
   printf "If VSCode is installed, it will be used to open the selected README.\n"
+  printf "If ripgrep is installed, it will be used to ignore VCS files.\n\n"
   printf "If bat is installed, it will be used for syntax-highlighted previews.\n\n"
 }
 
