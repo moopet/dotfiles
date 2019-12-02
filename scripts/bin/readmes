@@ -78,7 +78,6 @@ do_search() {
   match="$($find_command | sort | fzf --tac --exit-0 --preview="$preview_command {}")"
 
   if [ -n "$match" ]; then
-    printf "%s\n" "$match"
     $open_command "$match"
   fi
 }
