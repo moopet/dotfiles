@@ -29,3 +29,4 @@ git() {
   fi
 }
 
+alias tf='ssh scramble -t "tmux attach -d"'
