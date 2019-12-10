@@ -835,6 +835,8 @@ augroup ft_python
   " Jesus, Python.  Five characters of punctuation for a damn string?
   autocmd FileType python inoremap <buffer> <d-'> _(u'')<left><left>
 
+  autocmd FileType python nnoremap <f5> :execute '!ipdb3 -c "break ' . line(".") . '" -c "continue" %'<cr>
+
   autocmd bufwrite *.py :call DeleteTrailingWS()
 augroup END
 "}}}
