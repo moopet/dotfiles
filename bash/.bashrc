@@ -101,6 +101,10 @@ if [ -d /usr/local/opt/mysql-client/bin ]; then
   export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 fi
 
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
 if [ -d "$HOME/npm/bin" ]; then
   export PATH="$PATH:$HOME/npm/bin"
   export NODE_PATH="$NODE_PATH:$HOME/npm/lib/node_modules"
