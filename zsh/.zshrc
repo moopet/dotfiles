@@ -160,6 +160,10 @@ if command -v rg >/dev/null; then
   export FZF_DEFAULT_COMMAND="rg --files"
 fi
 
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
 if [ -d "$HOME/npm/bin" ]; then
   export PATH="$PATH:$HOME/npm/bin"
   export NODE_PATH="$NODE_PATH:$HOME/npm/lib/node_modules"
