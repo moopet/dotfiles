@@ -851,7 +851,7 @@ highlight StartifyFile ctermfg=003
 
 let g:startify_custom_header = []
 let g:startify_bookmarks = [
-      \ { 'a': '~/.bash_aliases' },
+      \ { 'a': '~/.aliases' },
       \ { 'b': '~/.bashrc' },
       \ { 'i': '~/.config/i3/config' },
       \ { 'g': '~/.config/git/config' },
