@@ -45,7 +45,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.aliases ] && . ~/.aliases
 [ -f ~/bin/git-completion ] && . ~/bin/git-completion
 [ -f ~/shore-projects/shore_aliases.sh ] && . ~/shore-projects/shore_aliases.sh
 
@@ -103,4 +103,13 @@ fi
 
 if command -v pyenv >/dev/null; then
   eval "$(pyenv init -)"
+fi
+
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -d "$HOME/npm/bin" ]; then
+  export PATH="$PATH:$HOME/npm/bin"
+  export NODE_PATH="$NODE_PATH:$HOME/npm/lib/node_modules"
 fi

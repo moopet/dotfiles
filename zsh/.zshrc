@@ -125,7 +125,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.aliases ] && . ~/.aliases
 [ -f ~/shore-projects/shore-aliases.sh ] && . ~/shore-projects/shore-aliases.sh
 
 [ -f ~/.zshrc.local ] && . ~/.zshrc.local
@@ -162,4 +162,12 @@ fi
 
 if command -v pyenv >/dev/null; then
   eval "$(pyenv init -)"
+
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -d "$HOME/npm/bin" ]; then
+  export PATH="$PATH:$HOME/npm/bin"
+  export NODE_PATH="$NODE_PATH:$HOME/npm/lib/node_modules"
 fi
