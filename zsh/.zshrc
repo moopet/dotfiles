@@ -160,3 +160,6 @@ if command -v rg >/dev/null; then
   export FZF_DEFAULT_COMMAND="rg --files"
 fi
 
+if command -v pyenv >/dev/null; then
+  eval "$(pyenv init -)"
+fi
