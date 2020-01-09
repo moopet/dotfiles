@@ -162,6 +162,7 @@ fi
 
 if command -v pyenv >/dev/null; then
   eval "$(pyenv init -)"
+fi
 
 if [ -d "$HOME/.local/bin" ]; then
   export PATH="$HOME/.local/bin:$PATH"
