@@ -175,17 +175,17 @@ funky_motd() {
     filter="lolcat -S $(hostname | sha512sum | tr -d '[a-f]' | cut -b-4)"
   fi
 
+  printf "\n"
   eval "echo $* | $printer | $filter"
+  printf "\n"
 }
 
 if [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
   funky_motd "$(hostname)"
-  printf "\n"
 
 # WSL leaves you in the stupid Windows home.
 elif [ -d /mnt/c/WINDOWS ]; then
   cd
 
   funky_motd "arcade"
-  printf "\n"
 fi
