@@ -113,3 +113,32 @@ if [ -d "$HOME/npm/bin" ]; then
   export PATH="$PATH:$HOME/npm/bin"
   export NODE_PATH="$NODE_PATH:$HOME/npm/lib/node_modules"
 fi
+
+funky_motd() {
+  printer="cat"
+  filter="cat"
+
+  if command -v toilet >/dev/null; then
+    printer="toilet -t -f future"
+  elif command -v figlet >/dev/null; then
+    printer="figlet"
+  fi
+
+  if command -v lolcat >/dev/null; then
+    filter="lolcat -S $(hostname | sha512sum | tr -d '[a-f]' | cut -b-4)"
+  fi
+
+  eval "echo $* | $printer | $filter"
+}
+
+if [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
+  funky_motd "$(hostname)"
+  printf "\n"
+
+# WSL leaves you in the stupid Windows home.
+elif [ -d /mnt/c/WINDOWS ]; then
+  cd
+
+  funky_motd "arcade"
+  printf "\n"
+fi
