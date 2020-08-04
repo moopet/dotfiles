@@ -72,7 +72,11 @@ configure_search_command() {
 
 do_search() {
   if command -v fzf >/dev/null; then
-    matches="$($search_cmd | fzf --select-1 --exit-0 --tac --multi --bind ctrl-a:toggle-all --preview="grep -C3 -i --color=always '$search_term' {}")"
+    if command -v bat >/dev/null; then
+      matches="$($search_cmd | fzf --select-1 --exit-0 --tac --multi --bind ctrl-a:toggle-all --preview="bat --color=always {} | grep -C3 -i --color=always '$search_term'")"
+    else
+      matches="$($search_cmd | fzf --select-1 --exit-0 --tac --multi --bind ctrl-a:toggle-all --preview="grep -C3 -i --color=always '$search_term' {}")"
+    fi
 
     if [ -z "$matches" ]; then
       printf "No files match the pattern '%s'.\n" "$search_term"

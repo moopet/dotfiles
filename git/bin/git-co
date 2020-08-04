@@ -9,16 +9,31 @@ if ! git status >/dev/null; then
   exit 1
 fi
 
+# Pass "-" through to the standard checkout command.
+if [ "$1" = "-" ]; then
+  git checkout -
+  exit
+fi
+
 case "$1" in
   --commit|--commits)
+    filter=cat
+
+    if [ -n "$2" ]; then
+      filter="grep -i '$2'"
+    fi
+
+      echo "git log | $filter"
+    exit 1
+
     if command -v fzf >/dev/null; then
-      commit="$(git log | fzf --prompt="Checkout commit > " --preview="git show --color=always -p {1}" --select-1)"
+      commit="$(git log | $filter | fzf --prompt="Checkout commit > " --preview="git show --color=always -p {1}" --select-1)"
 
       if [ -n "$commit" ]; then
         git checkout "$commit"
       fi
     else
-      git log
+      git log | $filter
     fi
     ;;
 
@@ -58,6 +73,12 @@ case "$1" in
     ;;
 
   *)
+    # In case it's a literal commit-ish...
+    if message=$(git checkout "$@" 2>/dev/null); then
+      printf "%s\n" "$message"
+      exit
+    fi
+
     matches=$(git branch | grep -i "$1" | grep -oE '[^ ]+$')
     count=$(git branch | grep -ci "$1")
 
@@ -75,4 +96,3 @@ case "$1" in
     fi
     ;;
 esac
-

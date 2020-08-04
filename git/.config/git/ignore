@@ -1,5 +1,5 @@
 *~
-*.sw*
+*.swp
 *.pyc
 *.bak
 *.old
@@ -16,3 +16,6 @@ Session.vim
 .vscode
 *.code-workspace
 tags
+private.key
+public.key
+*.css.map

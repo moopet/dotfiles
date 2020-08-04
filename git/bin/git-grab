@@ -11,6 +11,4 @@ current_branch="$(git symbolic-ref --short HEAD)"
 git fetch
 
 git checkout master && git pull origin master
-git checkout develop && git pull origin develop
-
-git checkout "$current_branch"
+git checkout develop && git pull origin develop && git checkout "$current_branch"

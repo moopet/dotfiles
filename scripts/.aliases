@@ -11,6 +11,10 @@ alias vi='vim'
 alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
 alias co='git co'
 
+if command -v bat >/dev/null; then
+  alias cat='bat'
+fi
+
 case $OSTYPE in 
   linux-gnu)
     alias ls='ls --color --group-directories-first -FhN'

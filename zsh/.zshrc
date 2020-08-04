@@ -1,6 +1,8 @@
 export EDITOR=vim
 export VISUAL=vim
 export PATH=$HOME/bin:$HOME/.gem/ruby/2.0.0/bin:$HOME/vendor/bin:$PATH
+export LC_CTYPE=en_GB.UTF-8
+export LC_ALL=en_GB.UTF-8
 
 alias ls='ls -FG'
 
@@ -172,7 +174,7 @@ funky_motd() {
   fi
 
   if command -v lolcat >/dev/null; then
-    filter="lolcat -S $(hostname | sha512sum | tr -d '[a-f]' | cut -b-4)"
+    filter="lolcat -S $(hostname | shasum | tr -d '[a-f]' | cut -b-4)"
   fi
 
   printf "\n"
@@ -180,7 +182,10 @@ funky_motd() {
   printf "\n"
 }
 
-if [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
+# My work laptop has a dumb corporate name.
+if [[ "$(hostname)" =~ "\.local$" ]]; then
+  funky_motd "Macbook"
+elif [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
   funky_motd "$(hostname)"
 
 # WSL leaves you in the stupid Windows home.
@@ -189,3 +194,8 @@ elif [ -d /mnt/c/WINDOWS ]; then
 
   funky_motd "arcade"
 fi
+
+if command -v thefuck >/dev/null; then
+  eval $(thefuck --alias)
+fi
+

@@ -23,22 +23,19 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
-Plug 'blueyed/vim-diminactive'
-Plug 'christoomey/vim-tmux-navigator'
-"Plug 'gorodinskiy/vim-coloresque' " better than colorizer because it works with Vim 7.3 :)
+" Plug 'christoomey/vim-tmux-navigator'
+Plug 'freitass/todo.txt-vim'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'itchyny/lightline.vim'
 Plug 'RRethy/vim-illuminate'
 Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-startify'
 Plug 'mustache/vim-mustache-handlebars'
+Plug 'lumiliet/vim-twig'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'Yggdroot/indentLine'
-Plug 'Lenovsky/nuake'
-Plug 'junegunn/goyo.vim'
-Plug 'mustache/vim-mustache-handlebars'
 
 if v:version > 802 || has("patch1593") || has('nvim')
   Plug 'Lenovsky/nuake'
@@ -49,13 +46,10 @@ endif
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-Plug 'junegunn/goyo.vim'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
-Plug 'altercation/vim-colors-solarized'
 "}}}
 
 "{{{ Currently unused but good to keep as bookmarked
@@ -64,16 +58,9 @@ Plug 'altercation/vim-colors-solarized'
 "Plug 'evanmiller/nginx-vim-syntax'
 "Plug 'joonty/vdebug'
 "Plug 'mbbill/undotree'
-"Plug 'phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
 "Plug 'tpope/vim-surround'
 "Plug 'Valloric/MatchTagAlways'
-"Plug 'Valloric/YouCompleteMe'
-"Plug 'vim-scripts/YankRing.vim'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'tpope/vim-commentary'
-" Plug 'tpope/vim-rhubarb'
-" Plug 'mileszs/ack.vim'
-" Plug 'ap/vim-templates'
 "}}}
 
 call plug#end()
@@ -101,6 +88,12 @@ let g:indentLine_enabled = 0
 
 syntax on
 runtime macros/matchit.vim
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 
 " Searching
 set hlsearch
@@ -194,18 +187,10 @@ nnoremap <F3> :set paste!<CR>
 
 nnoremap <F4> :IndentLinesToggle<CR>
 
-inoremap <tab> <esc>
-
 let g:nuake_position = 'bottom'
 nnoremap <F1> :Nuake<CR>
 inoremap <F1> <C-\><C-n>:Nuake<CR>
 tnoremap <F1> <C-\><C-n>:Nuake<CR>
-
-command Writemode set background=light | colorscheme solarized | setlocal spell | Goyo 70
-command Codemode set background=dark | colorscheme gruvbox | setlocal nospell | Goyo!
-
-nnoremap <F11> :Codemode<cr>
-nnoremap <F12> :Writemode<cr>
 
 " Completion
 set completeopt=longest,menuone,preview
@@ -417,7 +402,7 @@ function! CustomColorscheme()
 
   " Customise things so there are nice transparent backgrounds.
   highlight IlluminatedWord ctermfg=214 ctermbg=237 
-  highlight Search cterm=NONE ctermbg=yellow ctermfg=black
+  " highlight Search cterm=NONE ctermbg=yellow ctermfg=black
   highlight Normal ctermbg=235
   " ColorColumn is used by the dim-inactive plugin to change background colors.
   highlight ColorColumn ctermbg=236
@@ -727,10 +712,14 @@ augroup php
 
   function! ShowFuncName()
     echohl ModeMsg
-    echo substitute(getline(search("^\s*function", "bcnWz")), '^\s*function\s*\|\s*{.*$', '', 'g')
+    echo substitute(getline(search("function", "bcnWz")), '^\s*\|\s*{.*$', '', 'g')
     echohl None
   endfunction
   nnoremap <leader>? :call ShowFuncName()<CR>
+  nnoremap <leader>= ggqz/ array(<cr>mzf(%r]`zcf([<esc>q9999@q
+
+  nnoremap n nzzzv:call ShowFuncName()<CR>
+  nnoremap N Nzzzv:call ShowFuncName()<CR>
 
 
   " This doesn't work for gx, because for some reason <cword> doesn't get expanded...
@@ -744,12 +733,14 @@ augroup php
       redraw!
   endfunction
 
+  nnoremap <leader>zt :call search('^\s*fu\%[nction]\>', "bW")<cr>zt
   nnoremap <leader>r ggqz/array\s*\(<cr>mzf(%r]`zcf([q9999@q
 	autocmd BufNewFile,BufFilePre,BufRead *.install set filetype=php
 	autocmd BufNewFile,BufFilePre,BufRead *.test set filetype=php
 	autocmd FileType php nnoremap <buffer> <leader>cc :!drush cc all
 	autocmd FileType php nnoremap <buffer> <leader>f ?}o/**/function () {}kf(:nohl<cr>i
   autocmd FileType php nnoremap <buffer> <leader>dump Oheader('X-XSS-Protection:0');ob_get_clean(); echo '<pre>'; var_dump(); echo '</pre>'; die(__FILE__ . ':' . __LINE__);<esc>2F(a
+  autocmd FileType php nnoremap <buffer> <leader>back Oheader('X-XSS-Protection:0');ob_get_clean(); echo '<pre>'; foreach (debug_backtrace() as $d) { echo $d['file'] . ':' . $d['line'] . ' ' . $d['function'] . "()\n"; } echo '</pre>'; die(__FILE__ . ':' . __LINE__);<esc>^
   autocmd FileType php nnoremap <buffer> <leader>dog Owatchdog('devel', '', [var_export(, 1)], WATCHDOG_DEBUG);<esc>F(a
   autocmd FileType php nnoremap <buffer> <leader>sdd Osignal_debug_dump();<esc>F(a
 
@@ -760,49 +751,6 @@ augroup php
   " autocmd FileType php cnoremap drush !drush scr %
 
   " Dirty text object for PHP functions
-  autocmd FileType php,javascript nnoremap <buffer> cif $?^\s*function<CR>:noh<CR>$ci{
-  autocmd FileType php,javascript nnoremap <buffer> caf $?^\s*function<CR>:noh<CR>$V%c
-  autocmd FileType php,javascript nnoremap <buffer> dif $?^\s*function<CR>:noh<CR>$di{
-  autocmd FileType php,javascript nnoremap <buffer> daf $?^\s*function<CR>:noh<CR>$V%d
-  autocmd FileType php,javascript nnoremap <buffer> yif mz$?^\s*function<CR>:noh<CR>$yi{`z
-  autocmd FileType php,javascript nnoremap <buffer> yaf mz$?^\s*function<CR>:noh<CR>V$%y`z
-  autocmd FileType php,javascript nnoremap <buffer> vif $?^\s*function<CR>:noh<CR>$vi{
-  autocmd FileType php,javascript nnoremap <buffer> vaf $?^\s*function<CR>:noh<CR>$v%
-  autocmd FileType php,javascript nnoremap <buffer> Vif $?^\s*function<CR>:noh<CR>$V%
-  autocmd FileType php,javascript nnoremap <buffer> Vaf $?^\s*function<CR>:noh<CR>$V%
-
-  autocmd FileType php,javascript nnoremap <buffer> ciF $?^\s*function<CR>?^\s*$<CR>j:noh<CR>$ci{
-  autocmd FileType php,javascript nnoremap <buffer> caF $?^\s*function<CR>?^\s*$<CR>j:noh<CR>$V%c
-  autocmd FileType php,javascript nnoremap <buffer> diF $?^\s*function<CR>?^\s*$<CR>j:noh<CR>$di{
-  autocmd FileType php,javascript nnoremap <buffer> daF $?^\s*function<CR>?^\s*$<CR>j:noh<CR>$V%d
-  autocmd FileType php,javascript nnoremap <buffer> yiF mz$?^\s*function<CR>?^\s*$<CR>j:noh<CR>$yi{`z
-  autocmd FileType php,javascript nnoremap <buffer> yaF mz$?^\s*function<CR>?^\s*$<CR>j:noh<CR>V$%y`z
-  autocmd FileType php,javascript nnoremap <buffer> viF $?^\s*function<CR>?^\s*$<CR>j:noh<CR>$vi{
-  autocmd FileType php,javascript nnoremap <buffer> vaF $?^\s*function<CR>?^\s*$<CR>j:noh<CR>$v%
-  autocmd FileType php,javascript nnoremap <buffer> ViF $?^\s*function<CR>?^\s*$<CR>j:noh<CR>$V%
-  autocmd FileType php,javascript nnoremap <buffer> VaF $?^\s*function<CR>?^\s*$<CR>j:noh<CR>$V%
-
-  autocmd FileType php,javascript nnoremap <buffer> cinf $/^\s*function<CR>:noh<CR>$ci{
-  autocmd FileType php,javascript nnoremap <buffer> canf $/^\s*function<CR>:noh<CR>$V%c
-  autocmd FileType php,javascript nnoremap <buffer> dinf $/^\s*function<CR>:noh<CR>$di{
-  autocmd FileType php,javascript nnoremap <buffer> danf $/^\s*function<CR>:noh<CR>$V%d
-  autocmd FileType php,javascript nnoremap <buffer> yinf mz$/^\s*function<CR>:noh<CR>$yi{`z
-  autocmd FileType php,javascript nnoremap <buffer> yanf mz$/^\s*function<CR>:noh<CR>V$%y`z
-  autocmd FileType php,javascript nnoremap <buffer> vinf $/^\s*function<CR>:noh<CR>$vi{
-  autocmd FileType php,javascript nnoremap <buffer> vanf $/^\s*function<CR>:noh<CR>$v%
-  autocmd FileType php,javascript nnoremap <buffer> Vinf $/^\s*function<CR>:noh<CR>$V%
-  autocmd FileType php,javascript nnoremap <buffer> Vanf $/^\s*function<CR>:noh<CR>$V%
-  autocmd FileType php,javascript nnoremap <buffer> cinF $/^\s*function<CR>?^\s*$<CR>j:noh<CR>$ci{
-  autocmd FileType php,javascript nnoremap <buffer> canF $/^\s*function<CR>?^\s*$<CR>j:noh<CR>$V%c
-  autocmd FileType php,javascript nnoremap <buffer> dinF $/^\s*function<CR>?^\s*$<CR>j:noh<CR>$di{
-  autocmd FileType php,javascript nnoremap <buffer> danF $/^\s*function<CR>?^\s*$<CR>j:noh<CR>$V%d
-  autocmd FileType php,javascript nnoremap <buffer> yinF mz$/^\s*function<CR>?^\s*$<CR>j:noh<CR>$yi{`z
-  autocmd FileType php,javascript nnoremap <buffer> yanF mz$/^\s*function<CR>?^\s*$<CR>j:noh<CR>V$%y`z
-  autocmd FileType php,javascript nnoremap <buffer> vinF $/^\s*function<CR>?^\s*$<CR>j:noh<CR>$vi{
-  autocmd FileType php,javascript nnoremap <buffer> vanF $/^\s*function<CR>?^\s*$<CR>j:noh<CR>$v%
-  autocmd FileType php,javascript nnoremap <buffer> VinF $/^\s*function<CR>?^\s*$<CR>j:noh<CR>$V%
-  autocmd FileType php,javascript nnoremap <buffer> VanF $/^\s*function<CR>?^\s*$<CR>j:noh<CR>$V%
-
   autocmd FileType php,javascript nnoremap <buffer> gf mz$?^\s*function<CR>:noh<CR>w"zyiw`z:echo @z<cr>
   autocmd FileType php,javascript nnoremap <buffer> gnf mz$/^\s*function<CR>:noh<CR>w"zyiw`z:echo @z<cr>
 augroup END
@@ -985,4 +933,63 @@ let g:yankring_history_dir=tmpdir
 nnoremap <leader>y :YRShow<cr>
 "}}}
 
-let g:coc_node_path = "/Users/bensinclair/.nvm/versions/node/v8.16.0/bin/node"
+let g:coc_node_path = "/Users/bensinclair/.nvm/versions/node/v8.16.2/bin/node"
+let g:coc_global_extensions = [
+  \ 'coc-prettier',
+  \ 'coc-eslint',
+  \ 'coc-json',
+  \ 'coc-phpls',
+  \ 'coc-python',
+  \ ]
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+" autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Create mappings for function text object, requires document symbols feature of languageserver.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)

@@ -7,6 +7,13 @@
 
 git status >/dev/null || exit
 
+usage() {
+  printf "Usage: %s [options] [pattern]\n" "$(basename "$0")"
+  printf "Options:\n"
+  printf "%-25s - %s\n" "--stash" "diff against stashes instead of commits"
+  printf "%-25s - %s\n" "--help" "show this help message"
+}
+
 case "$1" in
   --stash)
     if command -v fzf >/dev/null; then
@@ -17,7 +24,7 @@ case "$1" in
     ;;
 
   --help|-h) 
-    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    usage
     ;;
 
   "")
@@ -29,7 +36,7 @@ case "$1" in
     ;;
 
   *)
-    printf "Usage: %s [pattern]\n" "$(basename "$0")"
+    usage
     exit 1
     ;;
 esac
