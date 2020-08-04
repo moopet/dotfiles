@@ -10,8 +10,15 @@ if ! git flow init help > /dev/null; then
   exit 2
 fi
 
+main_branch=$(git config --local --get gitflow.branch.master)
+
+if [ -z "$main_branch" ]; then
+  printf "Git flow has not been set up yet. Run 'git flow init' and then try again.\n"
+  exit 1
+fi
+
 if [ "$#" = "1" ]; then
-  git fetch && git checkout master && git pull origin master && git flow hotfix start "$1"
+  git fetch && git checkout "$main_branch" && git pull origin "$main_branch" && git flow hotfix start "$1"
 else
   printf "Usage: %s <hotfix-name>\n" "$(basename "$0")"
 fi

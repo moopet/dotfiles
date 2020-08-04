@@ -22,4 +22,7 @@ if ! grep -q "^release/" <<< "$branch"; then
   exit 2
 fi
 
-git flow release finish "${branch#release/}" && git push origin master --tags
+if git flow release finish "${branch#release/}"; then
+  main_branch=$(git rev-parse --abbrev-ref HEAD)
+  git push origin "$main_branch" --tags
+fi

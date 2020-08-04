@@ -5,15 +5,15 @@
 
 git status >/dev/null || exit
 
-if git branch --merged | grep -v -E -q "\*|develop|master"; then
+if git branch --merged | grep -v -E -q "\*|develop|master|main"; then
   printf "The following (merged) branches will be deleted:\n"
-  git branch --merged | grep -v -E "\*|develop|master" 
+  git branch --merged | grep -v -E "\*|develop|master|main" 
 
   read -r -p "Are you sure? [y|N] " input
 
   case $input in
     [yY][eE][sS]|[yY])
-      git branch --merged | grep -v -E "\*|develop|master" | xargs git branch -d
+      git branch --merged | grep -v -E "\*|develop|master|main" | xargs git branch -d
       git gc
       ;;
 

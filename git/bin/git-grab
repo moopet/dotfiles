@@ -7,8 +7,14 @@
 git status > /dev/null || exit
 
 current_branch="$(git symbolic-ref --short HEAD)"
+main_branch=$(git config --local --get gitflow.branch.master)
+
+if [ -z "$main_branch" ]; then
+  printf "Git flow has not been set up yet. Run 'git flow init' and then try again.\n"
+  exit 1
+fi
 
 git fetch
 
-git checkout master && git pull origin master
+git checkout "$main_branch" && git pull origin "$main_branch"
 git checkout develop && git pull origin develop && git checkout "$current_branch"

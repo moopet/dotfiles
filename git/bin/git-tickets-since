@@ -2,7 +2,7 @@
 
 # tickets-since: List Jira tickets since a specified commit.
 
-since=${1:-master}
+since=${1:-main}
 project=${2}
 
 if sed --help >/dev/null 2>&1; then

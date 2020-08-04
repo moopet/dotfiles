@@ -10,16 +10,23 @@ if ! git flow init help > /dev/null; then
   exit 2
 fi
 
+main_branch=$(git config --local --get gitflow.branch.master)
+
+if [ -z "$main_branch" ]; then
+  printf "Git flow has not been set up yet. Run 'git flow init' and then try again.\n"
+  exit 1
+fi
+
 if [ -n "$1" ]; then
   printf "%s works on the current branch and does not accept arguments.\n" "$(basename "$0")"
   exit 1
 fi
 
-branch=$(git rev-parse --abbrev-ref HEAD)
+current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-if ! grep -q "^hotfix/" <<< "$branch"; then
+if ! grep -q "^hotfix/" <<< "$current_branch"; then
   printf "Not a hotfix branch.\n"
   exit 1
 fi
 
-git flow hotfix finish "${branch#hotfix/}" && git checkout master && git push origin master --tags
+git flow hotfix finish "${current_branch#hotfix/}" && git checkout "$main_branch" && git push origin "$main_branch" --tags
