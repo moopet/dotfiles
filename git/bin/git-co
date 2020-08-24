@@ -17,7 +17,7 @@ fi
 
 case "$1" in
   --commit|--commits)
-    filter=cat
+    filter="cat"
 
     if [ -n "$2" ]; then
       filter="grep -i '$2'"
