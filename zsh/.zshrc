@@ -125,6 +125,11 @@ setup_prompt() {
   fi
 }
 
+setup_autocomplete() {
+  autoload -Uz compinit && compinit
+  zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+}
+
 display_host_info
 setup_node_environment 
 setup_python_environment 
@@ -135,3 +140,4 @@ setup_grep
 setup_prompt
 setup_helpers
 setup_aliases
+setup_autocomplete
