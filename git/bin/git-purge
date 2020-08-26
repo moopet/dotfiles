@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+# Delete all local branches that have been merged into HEAD. Stolen from
+#
+
+main_branch=$(git config --local --get gitflow.branch.master)
+branches=$(git branch --merged "$main_branch" | grep -v "\*\|$main_branch\|unstable\|develop")
+question_color="$(tput setaf 71)"
+answer_color="$(tput setaf 11)"
+normal_color="$(tput sgr0)"
+
+# Return a boolean from a prompted yes-or-no question.
+# Defaults to "yes".
+ask_yes_no() {
+  local question_color="$(tput setaf 71)"
+  local answer_color="$(tput setaf 11)"
+  local normal_color="$(tput sgr0)"
+  local question="$1"
+
+  printf "%s%s %s[%syes%s]: " "$question_color" "$question" "$normal_color" "$answer_color" "$normal_color"
+
+  read -r input
+
+  case $input in
+    [yY][eE][sS]|[yY])
+      return 0 
+      ;;
+
+    "")
+      return 0
+      ;;
+
+    *)
+      return 1
+      ;;
+  esac
+}
+
+if ! git status >/dev/null; then
+  exit 1
+fi
+
+if ! git flow init help > /dev/null; then
+  printf "Git-flow is not installed.\n"
+  exit 2
+fi
+
+if [ -z "$branches" ]; then
+  printf 'No merged branches to delete.\n'
+	exit
+fi
+
+printf "The following local branches have been merged and can be safely deleted:\n"
+printf '%s\n' "$branches"
+
+if ! ask_yes_no "Are you sure?"; then
+	printf "Aborted.\n"
+  exit 0
+fi
+
+printf "Safely deleting merged local branches..."
+
+git branch -d $branches
