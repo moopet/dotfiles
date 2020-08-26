@@ -33,7 +33,8 @@ warn_if_missing() {
   fi
 }
 
-warn_if_missing rg bat
+warn_if_missing bat
+warn_if_missing delta git-delta
 warn_if_missing fzf
 warn_if_missing rg ripgrep
 warn_if_missing starship
