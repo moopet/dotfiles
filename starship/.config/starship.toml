@@ -1,10 +1,50 @@
 #add_newline = false
 
-[nodejs]
-disabled = true
-
-[php]
-disabled = true
+prompt_order = [
+    "time",
+#    "username",
+    "hostname",
+#    "kubernetes",
+    "env_var",
+    "git_branch",
+    "git_commit",
+    "git_state",
+    "git_status",
+#    "hg_branch",
+#    "docker_context",
+    "package",
+#    "dotnet",
+#    "elixir",
+#    "elm",
+#    "erlang",
+#    "golang",
+#    "java",
+#    "julia",
+#    "nim",
+#    "nodejs",
+#    "ocaml",
+#    "php",
+#    "purescript",
+    "python",
+    "ruby",
+    "rust",
+#    "terraform",
+#    "zig",
+#    "nix_shell",
+#    "conda",
+    "memory_usage",
+    "aws",
+#    "crystal",
+    "cmd_duration",
+    "custom",
+    "line_break",
+    "jobs",
+    "directory",
+#    "battery",
+    "character",
+]
 
 [env_var]
 variable = "SHORE_PROJECT_TITLE"
+symbol = ""
+

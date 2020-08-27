@@ -804,7 +804,6 @@ let g:startify_bookmarks = [
       \ { 'i': '~/.config/i3/config' },
       \ { 'g': '~/.config/git/config' },
       \ { 'r': '~/.config/ranger/rc.conf' },
-      \ { 'o': '~/.oh-my-zsh/custom/custom.zsh' },
       \ { 'p': '~/.config/polybar/config' },
       \ { 't': '~/.tmux.conf' },
       \ { 'x': '~/.Xresources' },
@@ -821,7 +820,6 @@ let g:startify_skiplist = [
       \ $HOME . '/.Xresources',
       \ $HOME . '/.vimrc',
       \ $HOME . '/.zshrc',
-      \ $HOME . '/.oh-my-zsh/custom/custom.zsh',
       \ ]
 
 let g:startify_custom_header =
