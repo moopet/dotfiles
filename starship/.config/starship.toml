@@ -3,9 +3,10 @@
 prompt_order = [
     "time",
 #    "username",
-    "hostname",
+#   "hostname",
+    "custom.shore",
 #    "kubernetes",
-    "env_var",
+    #"env_var",
     "git_branch",
     "git_commit",
     "git_state",
@@ -36,9 +37,12 @@ prompt_order = [
     "aws",
 #    "crystal",
     "cmd_duration",
-    "custom",
+#    "custom",
     "line_break",
     "jobs",
+    "custom.hostname_win",
+    "custom.hostname_mac",
+    "custom.hostname",
     "directory",
 #    "battery",
     "character",
@@ -47,4 +51,20 @@ prompt_order = [
 [env_var]
 variable = "SHORE_PROJECT_TITLE"
 symbol = ""
+
+[custom.hostname_mac]
+command = "echo Macbook"
+when = """ test -d /Applications """
+
+[custom.hostname_win]
+command = "echo Arcade"
+when = """ test -d /mnt/c/WINDOWS """
+
+[custom.hostname]
+command = "hostname -s"
+when = """ test ! -d /Applications -a ! -d /mnt/c/WINDOWS """
+
+[custom.shore]
+command = "echo $SHORE_PROJECT_TITLE"
+when = """ test -n "$SHORE_PROJECT_TITLE" """
 
