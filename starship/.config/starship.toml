@@ -1,2 +1,10 @@
 #add_newline = false
 
+[nodejs]
+disabled = true
+
+[php]
+disabled = true
+
+[env_var]
+variable = "SHORE_PROJECT_TITLE"

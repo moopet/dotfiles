@@ -130,6 +130,13 @@ setup_autocomplete() {
   zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
 }
 
+set_key_bindings() {
+  bindkey "\e[H" beginning-of-line
+  bindkey "\e[F" end-of-line
+  bindkey "\e[1;5D" backward-word
+  bindkey "\e[1;5C" forward-word
+}
+
 display_host_info
 setup_node_environment 
 setup_python_environment 
@@ -141,3 +148,4 @@ setup_prompt
 setup_helpers
 setup_aliases
 setup_autocomplete
+set_key_bindings
