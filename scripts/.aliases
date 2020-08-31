@@ -18,6 +18,7 @@ fi
 case $OSTYPE in 
   linux-gnu)
     alias ls='ls --color --group-directories-first -FhN'
+    alias pbcopy='xclip -selection clipboard'
     ;;
   darwin*)
     alias ls='ls -FhG'

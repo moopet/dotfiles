@@ -3,18 +3,18 @@
   autocrlf = input
   filemode = false
   ignorecase = false
-  pager = diff-so-fancy | less --tabs=4 -RFX
-  # pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
   pager = delta
 
 [interactive]
   diffFilter = delta --color-only
 
 [delta]
-  side-by-side = true
+  features = side-by-side line-numbers decorations
   line-numbers-left-format = ""
   line-numbers-right-format = "│ "
   syntax-theme = Nord
+  line-numbers = true
+  side-by-side = true
 
 [user]
   name = Ben Sinclair
@@ -24,7 +24,7 @@
   pretty = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset"
 
 [diff]
-  tool = delta
+  tool = vimdiff
   renameLimit = 2000
 
 [difftool]
