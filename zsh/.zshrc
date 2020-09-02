@@ -129,6 +129,8 @@ set_key_bindings() {
   bindkey "\e[F" end-of-line
   bindkey "\e[1;5D" backward-word
   bindkey "\e[1;5C" forward-word
+  bindkey "\e[A" history-beginning-search-backward
+  bindkey "\e[B" history-beginning-search-forward
 }
 
 display_host_info
