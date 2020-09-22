@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Fuzzy-select files to stage
+
+git status > /dev/null || exit
+
+if ! command -v fzf > /dev/null; then
+  printf "fzf is not installed.\n"
+  exit 2
+fi
+
+if [ -n "$1" ]; then
+  printf "%s works on the current branch and does not accept arguments.\n" "$(basename "$0")"
+  exit 1
+fi
+
+files="$(git status -sb | sed -e "1d" | cut -b4- | fzf --multi --header="Choose files to stage")"
+
+if [ -n "$files" ]; then
+  git add $files
+fi
+
