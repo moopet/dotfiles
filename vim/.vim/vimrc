@@ -991,3 +991,7 @@ xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
+
+" Attempt to fix brokenness when using Windows Terminal
+" https://superuser.com/questions/1284561/why-is-vim-starting-in-replace-mode
+set ambw=double
