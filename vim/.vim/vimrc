@@ -994,4 +994,4 @@ omap af <Plug>(coc-funcobj-a)
 
 " Attempt to fix brokenness when using Windows Terminal
 " https://superuser.com/questions/1284561/why-is-vim-starting-in-replace-mode
-set ambw=double
+set t_u7=
