@@ -18,6 +18,11 @@ setup_path() {
     export PATH="$HOME/.local/bin:$PATH"
   fi
 
+  # Local-user PEAR.
+  if [ -d "$HOME/pear/bin" ]; then
+    export PATH="$HOME/pear/bin:$PATH"
+  fi
+
   # Oh you wacky MacOS, you.
   if [ -d /Applications/DevDesktop/tools ]; then
     export PATH="$PATH:/Applications/DevDesktop/tools"

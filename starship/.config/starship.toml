@@ -1,52 +1,25 @@
-#add_newline = false
+add_newline = true
 
-prompt_order = [
-    "time",
-#    "username",
-#   "hostname",
-    "custom.shore",
-#    "kubernetes",
-    #"env_var",
-    "git_branch",
-    "git_commit",
-    "git_state",
-    "git_status",
-#    "hg_branch",
-#    "docker_context",
-    "package",
-#    "dotnet",
-#    "elixir",
-#    "elm",
-#    "erlang",
-#    "golang",
-#    "java",
-#    "julia",
-#    "nim",
-#    "nodejs",
-#    "ocaml",
-#    "php",
-#    "purescript",
-    "python",
-    "ruby",
-    "rust",
-#    "terraform",
-#    "zig",
-#    "nix_shell",
-#    "conda",
-    "memory_usage",
-    "aws",
-#    "crystal",
-    "cmd_duration",
-#    "custom",
-    "line_break",
-    "jobs",
-    "custom.hostname_win",
-    "custom.hostname_mac",
-    "custom.hostname",
-    "directory",
-#    "battery",
-    "character",
-]
+format = """
+$time\
+${custom.shore}\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$python\
+$ruby\
+$rust\
+$memory_usage\
+$cmd_duration\
+$line_break\
+$jobs\
+${custom.hostname_win}\
+${custom.hostname_mac}\
+${custom.hostname}\
+$directory\
+$line_break\
+$character"""
 
 [env_var]
 variable = "SHORE_PROJECT_TITLE"
@@ -68,3 +41,5 @@ when = """ test ! -d /Applications -a ! -d /mnt/c/WINDOWS """
 command = "echo $SHORE_PROJECT_TITLE"
 when = """ test -n "$SHORE_PROJECT_TITLE" """
 
+[character]
+error_symbol = "[✗](bold red)"

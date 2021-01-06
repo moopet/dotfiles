@@ -21,7 +21,7 @@
   email = ben.sinclair@leith.co.uk
 
 [format]
-  pretty = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset"
+  pretty = "%C(yellow)%h%Creset %C(blue)%cd%Creset%C(red)%d%Creset %s %C(blue)<%C(bold blue)%an%Creset%C(blue)>%Creset"
 
 [diff]
   tool = vimdiff
@@ -63,8 +63,13 @@
 [alias]
   uncommit = reset --soft HEAD~1
   unstage = reset HEAD --
+  recommit = commit --amend --no-edit
   taglog = log --tags --simplify-by-decoration --pretty='format:%ci %d'
 	ctags = !.git/hooks/ctags
+  history = log --graph --pretty --abbrev-commit --date=human
+	arrange = rebase -i develop
+	recent = branch --sort=-committerdate
+	graph = log --graph --oneline --decorate --all
 
 [diff-so-fancy]
   changeHunkIndicators = true
@@ -74,3 +79,6 @@
 
 [init]
 	templatedir = ~/.git_template
+
+[log]
+	date = short
