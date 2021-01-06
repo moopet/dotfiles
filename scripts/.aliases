@@ -36,6 +36,10 @@ git() {
 
 alias tf='printf "\033]0; Talkers \007"; ssh scramble -t "tmux attach -d"'
 
+if command -v delta >/dev/null; then
+  alias diff=delta
+fi
+
 if command -v bat >/dev/null; then
   alias cat=bat
 fi
