@@ -119,6 +119,12 @@ setup_prompt() {
   fi
 }
 
+setup_editor() {
+  if [ -d /usr/local/share/vim/vim80 ]; then
+    export VIMRUNTIME=/usr/local/share/vim/vim80
+  fi
+}
+
 setup_autocomplete() {
   autoload -Uz compinit && compinit
   zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
@@ -140,6 +146,7 @@ setup_fuzzy_finder
 setup_path
 setup_colors
 setup_grep
+setup_editor
 setup_prompt
 setup_aliases
 setup_autocomplete
