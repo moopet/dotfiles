@@ -374,8 +374,16 @@ cnoremap <c-e> <end>
 inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
 
-"{{{ Lightline
+"{{{ :set nosmdLightline
 set noshowmode
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'right': [ [ 'percent' ],
+      \              [ 'lineinfo' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ }
 "}}}
 
 "{{{ Colorschemes
