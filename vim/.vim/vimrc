@@ -26,7 +26,6 @@ Plug 'airblade/vim-gitgutter'
 " Plug 'christoomey/vim-tmux-navigator'
 Plug 'freitass/todo.txt-vim'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
-Plug 'itchyny/lightline.vim'
 Plug 'RRethy/vim-illuminate'
 Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-startify'
@@ -373,18 +372,6 @@ cnoremap <c-a> <home>
 cnoremap <c-e> <end>
 inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
-
-"{{{ :set nosmdLightline
-set noshowmode
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'right': [ [ 'percent' ],
-      \              [ 'lineinfo' ],
-      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ }
-"}}}
 
 "{{{ Colorschemes
 " Regardless of the colorscheme I'm running, I always want certain things
@@ -1003,3 +990,7 @@ omap af <Plug>(coc-funcobj-a)
 " Attempt to fix brokenness when using Windows Terminal
 " https://superuser.com/questions/1284561/why-is-vim-starting-in-replace-mode
 set t_u7=
+
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
