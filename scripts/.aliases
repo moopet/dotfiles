@@ -35,7 +35,7 @@ git() {
 }
 
 tf() {
-  if command -v tf >/dev/null; then
+  if type -p tf >/dev/null; then
     command tf "$@"
   else
     printf "\033]0; Talkers \007"
