@@ -34,7 +34,14 @@ git() {
   fi
 }
 
-alias tf='printf "\033]0; Talkers \007"; ssh scramble -t "tmux attach -d"'
+tf() {
+  if command -v tf >/dev/null; then
+    command tf "$@"
+  else
+    printf "\033]0; Talkers \007"
+    ssh scramble -t "tmux attach -d"
+  fi
+}
 
 if command -v delta >/dev/null; then
   alias diff=delta
