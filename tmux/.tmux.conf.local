@@ -346,6 +346,7 @@ tmux_conf_copy_to_os_clipboard=false
 
 # move status line to top
 #set -g status-position top
+set -g terminal-overrides ",xterm-256color:Tc"
 
 
 # -- custom variables ----------------------------------------------------------
