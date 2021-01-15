@@ -144,6 +144,10 @@ set_key_bindings() {
   bindkey "\e[B" history-search-forward
 }
 
+set_timezone() {
+  export TZ='Europe/London'
+}
+
 display_host_info
 setup_node_environment 
 setup_python_environment 
@@ -156,3 +160,4 @@ setup_prompt
 setup_aliases
 setup_autocomplete
 set_key_bindings
+set_timezone
