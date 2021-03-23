@@ -114,7 +114,7 @@ nnoremap ]Q :clast<cr>*<c-o>zz
 " Layout and indenting
 set autoindent
 " Override cursorline later so it's only there on active windows.
-set nocursorline
+set cursorline
 set expandtab
 set formatoptions=tcqrn1j
 set scrolloff=2
@@ -226,6 +226,8 @@ function! s:fzf_root()
 	let path = finddir(".git", expand("%:p:h").";")
 	return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
 endfunction
+
+nnoremap <tab> :Buffers<cr>
 
 " Command for git grep
 " - fzf#vim#grep(command, with_column, [options], [fullscreen])
@@ -409,7 +411,7 @@ function! CustomColorscheme()
   highlight NonText ctermbg=NONE
   highlight LineNr ctermbg=NONE
   highlight Visual cterm=NONE ctermbg=162 ctermfg=white
-  highlight CursorLine ctermbg=23
+  highlight CursorLine ctermbg=23 guibg=#023030
   highlight SignColumn ctermbg=232
   highlight GitGutterAdd ctermbg=232
   highlight GitGutterChange ctermbg=232
