@@ -61,7 +61,7 @@ case "$1" in
 
   "")
     if command -v fzf >/dev/null; then
-      branch="$(git branch -a | grep -oE '[^ ]+$' | fzf --prompt="Checkout branch > " --preview="git show --color=always -p {}" --tac --select-1)"
+      branch="$(git branch -a --sort=committerdate | grep -oE '[^ ]+$' | fzf --prompt="Checkout branch > " --preview="git show --color=always -p {}" --tac --select-1)"
 
       if [ -n "$branch" ]; then
         branch="$(printf "%s" "$branch" | sed -e "s#^remotes/[^/]*/##")"
