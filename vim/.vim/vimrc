@@ -31,6 +31,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-startify'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'lumiliet/vim-twig'
+Plug 'unblevable/quick-scope'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
@@ -291,6 +292,9 @@ xnoremap > >gv
 " Add more robustness to <c-l>
 " https://github.com/mhinz/vim-galore#saner-ctrl-l
 nnoremap <c-l> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
+
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " Unipoo.
 iabbr :poo: 💩
