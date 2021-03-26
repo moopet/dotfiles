@@ -148,6 +148,11 @@ set_timezone() {
   export TZ='Europe/London'
 }
 
+disable_nanny_mode() {
+  # -f means -f and don't you forget it.
+  setopt localoptions rmstarsilent
+}
+
 display_host_info
 setup_node_environment 
 setup_python_environment 
@@ -161,3 +166,4 @@ setup_aliases
 setup_autocomplete
 set_key_bindings
 set_timezone
+disable_nanny_mode
