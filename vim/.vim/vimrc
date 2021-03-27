@@ -798,6 +798,8 @@ augroup END
 "{{{ Startify
 " Set startify like a superpowered vinegar (shift -)
 nnoremap _ :Startify<cr>
+nnoremap <leader>- :Lexplore!<cr>
+nnoremap <leader>_ :vs<cr>:Startify<cr>
 
 highlight StartifyNumber ctermfg=220
 highlight StartifyBracket ctermfg=804
