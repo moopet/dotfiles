@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# pushup: "Push upstream".
+# Pushes a branch if the upstream isn't set yet.
+
+git status >/dev/null || exit
+
+if ! git flow init help > /dev/null; then
+  printf "Git-flow is not installed.\n"
+  exit 2
+fi
+
+if [ "$#" = "0" ]; then
+  git push --set-upstream origin "$(git-branch-current 2> /dev/null)"
+else
+  printf "Usage: %s\n" "$(basename "$0")"
+fi
