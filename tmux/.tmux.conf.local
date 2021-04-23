@@ -348,6 +348,8 @@ tmux_conf_copy_to_os_clipboard=false
 #set -g status-position top
 set -g terminal-overrides ",xterm-256color:Tc"
 
+# In Screen you could double-tap ctrl-A to go to the last active window:
+bind-key C-a last-window
 
 # -- custom variables ----------------------------------------------------------
 # to define a custom #{foo} variable, define a POSIX shell function between the
