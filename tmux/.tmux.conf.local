@@ -351,6 +351,11 @@ set -g terminal-overrides ",xterm-256color:Tc"
 # In Screen you could double-tap ctrl-A to go to the last active window:
 bind-key C-a last-window
 
+# https://superuser.com/questions/252214/slight-delay-when-switching-modes-in-vim-using-tmux-or-screen/252717#252717
+set -s escape-time 0                     
+
+set -g status-keys emacs
+
 # -- custom variables ----------------------------------------------------------
 # to define a custom #{foo} variable, define a POSIX shell function between the
 # '# EOF' and the '# "$@"' lines. Please note that the opening brace { character

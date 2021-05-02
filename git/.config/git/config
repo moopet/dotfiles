@@ -70,6 +70,7 @@
 	arrange = rebase -i develop
 	recent = branch --sort=-committerdate
 	graph = log --graph --oneline --decorate --all
+  incorporates = !git branch -r --merged | grep -q $1 && echo Incorporates $1 || echo Out of date from $1 && :
 
 [diff-so-fancy]
   changeHunkIndicators = true

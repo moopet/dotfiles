@@ -1,6 +1,5 @@
 export EDITOR=vim
 export VISUAL=vim
-export PATH=$HOME/bin:$HOME/.gem/ruby/2.0.0/bin:$HOME/vendor/bin:$PATH
 export LC_CTYPE=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
 
@@ -15,27 +14,41 @@ setup_grep() {
 setup_path() {
   # I can't remember what installs itself here but something used to, so...
   if [ -d "$HOME/.local/bin" ]; then
-    export PATH="$HOME/.local/bin:$PATH"
+    PATH="$HOME/.local/bin:$PATH"
   fi
 
   # Local-user PEAR.
   if [ -d "$HOME/pear/bin" ]; then
-    export PATH="$HOME/pear/bin:$PATH"
+    PATH="$HOME/pear/bin:$PATH"
   fi
 
   # Oh you wacky MacOS, you.
   if [ -d /Applications/DevDesktop/tools ]; then
-    export PATH="$PATH:/Applications/DevDesktop/tools"
+    PATH="$PATH:/Applications/DevDesktop/tools"
   fi
 
   # Prioritise GNU binaries installed through Homebrew on MacOS.
   if [ -d "/usr/local/opt/grep/libexec/gnubin" ]; then
-    export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+    PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
   fi
 
-  if [ -d /usr/local/opt/mysql-client/bin ]; then
-    export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+  if [ -d "/usr/local/opt/mysql-client/bin" ]; then
+    PATH="/usr/local/opt/mysql-client/bin:$PATH"
   fi
+
+  if [ -d "$HOME/.gem/ruby/2.0.0/bin" ]; then
+    PATH="$HOME/.gem/ruby/2.0.0/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/vendor/bin" ]; then
+    PATH="$HOME/vendor/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/bin" ]; then
+    PATH="$HOME/bin:$PATH"
+  fi
+
+  export PATH
 }
 
 setup_aliases() {
