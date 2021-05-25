@@ -101,8 +101,10 @@ if [ -d /usr/local/opt/mysql-client/bin ]; then
   export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 fi
 
-if command -v pyenv >/dev/null; then
-  eval "$(pyenv init -)"
+if [ -x "$PYENV_ROOT/bin/pyenv" ]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init --path)"
 fi
 
 if [ -d "$HOME/.local/bin" ]; then
