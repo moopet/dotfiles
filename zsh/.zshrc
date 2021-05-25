@@ -2,6 +2,7 @@ export EDITOR=vim
 export VISUAL=vim
 export LC_CTYPE=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
+export DISABLE_AUTO_TITLE=true
 
 set -o noclobber
 
