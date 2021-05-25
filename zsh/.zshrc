@@ -85,9 +85,11 @@ setup_node_environment() {
 }
 
 setup_python_environment() {
-  if command -v pyenv >/dev/null; then
-    eval "$(pyenv init -)"
-  fi
+	if [ -x "$PYENV_ROOT/bin/pyenv" ]; then
+		export PYENV_ROOT="$HOME/.pyenv"
+		export PATH="$PYENV_ROOT/bin:$PATH"
+		eval "$(pyenv init --path)"
+	fi
 }
 
 setup_fuzzy_finder() {
