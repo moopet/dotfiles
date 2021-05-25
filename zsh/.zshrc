@@ -12,6 +12,12 @@ setup_grep() {
   fi
 }
 
+setup_x() {
+  if [ "$OSTYPE" = "linux-gnu"  -a -z "$DISPLAY" -a -n "$SSH_CLIENT" ]; then
+    export DISPLAY="$(echo "$SSH_CLIENT" | cut -f1 -d\ ):0.0"
+  fi
+}
+
 setup_path() {
   # I can't remember what installs itself here but something used to, so...
   if [ -d "$HOME/.local/bin" ]; then
@@ -180,6 +186,7 @@ setup_editor
 setup_prompt
 setup_aliases
 setup_autocomplete
+setup_x
 set_key_bindings
 set_timezone
 disable_nanny_mode
