@@ -23,25 +23,15 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
-" Plug 'christoomey/vim-tmux-navigator'
 Plug 'freitass/todo.txt-vim'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'RRethy/vim-illuminate'
 Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-startify'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'lumiliet/vim-twig'
-Plug 'unblevable/quick-scope'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'Yggdroot/indentLine'
-
-if v:version > 802 || has("patch1593") || has('nvim')
-  Plug 'Lenovsky/nuake'
-else
-  command Nuake :echo "Nuake needs vim > 802 with patch 1593 or neovim to run."
-endif
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -53,7 +43,7 @@ Plug 'morhetz/gruvbox'
 "{{{ Currently unused but good to keep as bookmarked
 
 "Plug 'chrisbra/vim-diff-enhanced'
-"Plug 'evanmiller/nginx-vim-syntax'
+"Plug 'christoomey/vim-tmux-navigator'
 "Plug 'joonty/vdebug'
 "Plug 'mbbill/undotree'
 "Plug 'tpope/vim-surround'
