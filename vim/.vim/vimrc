@@ -409,7 +409,7 @@ function! CustomColorscheme()
   highlight GitGutterChange ctermbg=232
   highlight GitGutterDelete ctermbg=232
   highlight SignatureMarkText ctermbg=232 ctermfg=14
-  highlight Comment cterm=italic
+  " highlight Comment cterm=italic
   highlight Folded ctermbg=black
   highlight SpellBad cterm=underline,italic ctermfg=darkred
 endfunction
