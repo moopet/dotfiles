@@ -51,6 +51,10 @@ setup_path() {
     PATH="$HOME/vendor/bin:$PATH"
   fi
 
+  if [ -d "$HOME/Sync/bin" ]; then
+    PATH="$HOME/Sync/bin:$PATH"
+  fi
+
   if [ -d "$HOME/bin" ]; then
     PATH="$HOME/bin:$PATH"
   fi
