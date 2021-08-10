@@ -855,6 +855,9 @@ augroup END
 "}}}
 
 "{{{ Tmux
+autocmd bufwritepost .tmux.conf execute ':!tmux source-file %'
+autocmd bufwritepost .tmux.local.conf execute ':!tmux source-file %'
+
 " Alt + cursor keys to mimic tmux behaviour
 nnoremap <m-left> <c-w>h
 nnoremap <m-right> <c-w>l
