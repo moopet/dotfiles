@@ -34,6 +34,11 @@ setup_path() {
     PATH="$PATH:/Applications/DevDesktop/tools"
   fi
 
+  # Oh you wacky homebrew, you.
+  if [ -d /usr/local/opt/php@8.0/bin ]; then
+    export PATH="/usr/local/opt/php@8.0/bin:$PATH"
+  fi
+
   # Prioritise GNU binaries installed through Homebrew on MacOS.
   if [ -d "/usr/local/opt/grep/libexec/gnubin" ]; then
     PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
@@ -87,6 +92,10 @@ setup_node_environment() {
   if [ -d "$HOME/npm/bin" ]; then
     export PATH="$PATH:$HOME/npm/bin"
     export NODE_PATH="$NODE_PATH:$HOME/npm/lib/node_modules"
+  fi
+
+  if command -v nvm >/dev/null; then
+    nvm use node >/dev/null
   fi
 }
 
