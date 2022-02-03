@@ -257,7 +257,7 @@ command! -bang -nargs=* Rg
 " Likewise, Files command with preview window
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-nnoremap <c-p> :exe 'Files ' . <SID>fzf_root()<cr>
+nnoremap <c-p> :GFiles<cr>
 
 " This nonsense right here, "π", is alt-p on a Mac.
 nnoremap π :Rg<cr>
@@ -855,6 +855,9 @@ augroup END
 "}}}
 
 "{{{ Tmux
+autocmd bufwritepost .tmux.conf execute ':!tmux source-file %'
+autocmd bufwritepost .tmux.local.conf execute ':!tmux source-file %'
+
 " Alt + cursor keys to mimic tmux behaviour
 nnoremap <m-left> <c-w>h
 nnoremap <m-right> <c-w>l
