@@ -32,6 +32,7 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'Yggdroot/indentLine'
+Plug 'vim-airline/vim-airline'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -921,9 +922,3 @@ nnoremap <leader>y :YRShow<cr>
 " Attempt to fix brokenness when using Windows Terminal
 " https://superuser.com/questions/1284561/why-is-vim-starting-in-replace-mode
 set t_u7=
-
-if has('python3')
-  python3 from powerline.vim import setup as powerline_setup
-  python3 powerline_setup()
-  python3 del powerline_setup
-endif
