@@ -15,6 +15,8 @@ setup_grep() {
 setup_x() {
   if [ "$OSTYPE" = "linux-gnu"  -a -z "$DISPLAY" -a -n "$SSH_CLIENT" ]; then
     export DISPLAY="$(echo "$SSH_CLIENT" | cut -f1 -d\ ):0.0"
+  elif [ "$OSTYPE" = "linux-gnu"  -a -z "$DISPLAY" ]; then
+    export DISPLAY="192.168.0.46:0.0"
   fi
 }
 
@@ -49,6 +51,14 @@ setup_path() {
 
   if [ -d "$HOME/vendor/bin" ]; then
     PATH="$HOME/vendor/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/.local/bin" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/.npm/bin" ]; then
+    PATH="$HOME/.npm/bin:$PATH"
   fi
 
   if [ -d "$HOME/Sync/bin" ]; then
@@ -137,7 +147,7 @@ display_host_info() {
     funky_motd "$(hostname)"
 
   # WSL leaves you in the stupid Windows home.
-  elif [ -d /mnt/c/WINDOWS ]; then
+  elif [ -d /mnt/c/Windows ]; then
     cd
 
     funky_motd "arcade"

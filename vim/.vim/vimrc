@@ -38,6 +38,8 @@ Plug 'junegunn/fzf.vim'
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
+Plug 'romainl/flattened'
+Plug 'tssm/fairyfloss.vim'
 "}}}
 
 "{{{ Currently unused but good to keep as bookmarked
@@ -62,6 +64,7 @@ let maplocalleader = "\\"
 
 set termguicolors
 let g:Hexokinase_highlighters = [ 'backgroundfull' ]
+let g:Hexokinase_ftEnabled = [ 'css', 'html', 'javascript', 'php' ]
 let g:solarized_termcolors = 256
 let g:loaded_getscriptPlugin = 1
 let g:loaded_2html_plugin = 1
@@ -377,7 +380,11 @@ function! CustomColorscheme()
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-  silent! colorscheme gruvbox
+  silent! colorscheme flattened_dark
+
+  highlight Normal ctermbg=NONE guibg=NONE
+  highlight LineNr guibg=#1c1c1c
+  highlight CursorLine guibg=#3c3836
 
   highlight! link Exception Keyword
 
@@ -927,3 +934,10 @@ if has('python3')
   python3 powerline_setup()
   python3 del powerline_setup
 endif
+
+function! ChtSh(keyword)
+  silent execute "!clear"
+  execute "!curl cht.sh/" . &filetype . "/" . a:keyword 
+endfunction
+
+nnoremap <c-k> :call ChtSh("<c-r><c-w>")<cr>
