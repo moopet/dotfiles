@@ -338,18 +338,21 @@ tmux_conf_copy_to_os_clipboard=false
 #set -g mode-keys vi
 
 # replace C-b by C-a instead of using both prefixes
-# set -gu prefix2
-# unbind C-a
-# unbind C-b
-# set -g prefix C-a
-# bind C-a send-prefix
+set -gu prefix2
+unbind C-a
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# Shut up damn it
+set -g bell-action none
 
 # move status line to top
 #set -g status-position top
 set -g terminal-overrides ",xterm-256color:Tc"
 
 # In Screen you could double-tap ctrl-A to go to the last active window:
-bind-key C-a last-window
+# bind-key C-a last-window
 
 # https://superuser.com/questions/252214/slight-delay-when-switching-modes-in-vim-using-tmux-or-screen/252717#252717
 set -s escape-time 0                     

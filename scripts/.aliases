@@ -22,6 +22,7 @@ case $OSTYPE in
     ;;
   darwin*)
     alias ls='ls -FhG'
+    alias unlock-keychain='security -v unlock-keychain ~/Library/Keychains/login.keychain-db'
   ;;
 esac
 

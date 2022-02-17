@@ -15,6 +15,8 @@ setup_grep() {
 setup_x() {
   if [ "$OSTYPE" = "linux-gnu"  -a -z "$DISPLAY" -a -n "$SSH_CLIENT" ]; then
     export DISPLAY="$(echo "$SSH_CLIENT" | cut -f1 -d\ ):0.0"
+  elif [ "$OSTYPE" = "linux-gnu"  -a -z "$DISPLAY" ]; then
+    export DISPLAY="192.168.0.46:0.0"
   fi
 }
 
@@ -34,6 +36,11 @@ setup_path() {
     PATH="$PATH:/Applications/DevDesktop/tools"
   fi
 
+  # Oh you wacky homebrew, you.
+  if [ -d /usr/local/opt/php@8.0/bin ]; then
+    export PATH="/usr/local/opt/php@8.0/bin:$PATH"
+  fi
+
   # Prioritise GNU binaries installed through Homebrew on MacOS.
   if [ -d "/usr/local/opt/grep/libexec/gnubin" ]; then
     PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
@@ -49,6 +56,14 @@ setup_path() {
 
   if [ -d "$HOME/vendor/bin" ]; then
     PATH="$HOME/vendor/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/.local/bin" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/.npm/bin" ]; then
+    PATH="$HOME/.npm/bin:$PATH"
   fi
 
   if [ -d "$HOME/Sync/bin" ]; then
@@ -97,6 +112,10 @@ setup_node_environment() {
     export PATH="$PATH:$HOME/.npm-global/bin"
     export NODE_PATH="$NODE_PATH:$HOME/npm-global/lib/node_modules"
   fi
+
+  if command -v nvm >/dev/null; then
+    nvm use node >/dev/null
+  fi
 }
 
 setup_python_environment() {
@@ -142,7 +161,7 @@ display_host_info() {
     funky_motd "$(hostname)"
 
   # WSL leaves you in the stupid Windows home.
-  elif [ -d /mnt/c/WINDOWS ]; then
+  elif [ -d /mnt/c/Windows ]; then
     cd
 
     funky_motd "arcade"
