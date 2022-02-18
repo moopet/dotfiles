@@ -37,6 +37,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'StanAngeloff/php.vim'
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
 Plug 'romainl/flattened'
@@ -214,13 +218,31 @@ endif
 set backupskip=/tmp/*,/private/tmp/*
 "}}}
 
+"{{{ Completion
+" Use <TAB> to select the popup menu:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+
+" gd to go to definition 
+nmap <silent> gd <Plug>(coc-definition)
+" gr to go to reference
+nmap <silent> gr <Plug>(coc-references)
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+"}}}
+
 "{{{ Fuzzy finder
 function! s:fzf_root()
 	let path = finddir(".git", expand("%:p:h").";")
 	return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
 endfunction
 
-nnoremap <tab> :Buffers<cr>
+" nnoremap <tab> :Buffers<cr>
 
 " Command for git grep
 " - fzf#vim#grep(command, with_column, [options], [fullscreen])
@@ -381,7 +403,7 @@ function! CustomColorscheme()
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-  silent! colorscheme flattened_dark
+  silent! colorscheme gruvbox
 
   highlight Normal ctermbg=NONE guibg=NONE
   highlight LineNr guibg=#1c1c1c
@@ -472,6 +494,12 @@ nnoremap <leader>u :UndotreeToggle<CR>
 " select the last changed (or pasted) text, and the visual mode will be the same
 " as was last used http://vim.wikia.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+"{{{ ctags 
+if filereadable('/usr/local/Cellar/ctags/5.8_2/bin/ctags')
+  let g:gutentags_ctags_executable='/usr/local/Cellar/ctags/5.8_2/bin/ctags'
+endif
+"}}}
 
 "{{{ Django
 augroup ft_django
@@ -734,7 +762,7 @@ augroup php
   autocmd FileType php nnoremap <buffer> <leader>dog Owatchdog('devel', '', [var_export(, 1)], WATCHDOG_DEBUG);<esc>F(a
   autocmd FileType php nnoremap <buffer> <leader>sdd Osignal_debug_dump();<esc>F(a
 
-  autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
+  " autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
   autocmd FileType php nnoremap <buffer> gD *:Rg function.<c-r><c-w><cr>zt
 
   autocmd FileType php set nofoldenable
