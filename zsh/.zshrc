@@ -108,6 +108,11 @@ setup_node_environment() {
     export NODE_PATH="$NODE_PATH:$HOME/npm/lib/node_modules"
   fi
 
+  if [ -d "$HOME/.npm-global/bin" ]; then
+    export PATH="$PATH:$HOME/.npm-global/bin"
+    export NODE_PATH="$NODE_PATH:$HOME/npm-global/lib/node_modules"
+  fi
+
   if command -v nvm >/dev/null; then
     nvm use node >/dev/null
   fi
