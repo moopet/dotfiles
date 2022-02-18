@@ -359,6 +359,8 @@ set -s escape-time 0
 
 set -g status-keys emacs
 
+set -g status-right '#(gitmux "#{pane_current_path}")'
+
 # -- custom variables ----------------------------------------------------------
 # to define a custom #{foo} variable, define a POSIX shell function between the
 # '# EOF' and the '# "$@"' lines. Please note that the opening brace { character
