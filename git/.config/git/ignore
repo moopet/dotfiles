@@ -1,3 +1,6 @@
+tags.lock
+tags.temp
+tags.temp.tmp
 *~
 *.swp
 *.pyc
