@@ -71,6 +71,8 @@
 	recent = branch --sort=-committerdate
 	graph = log --graph --oneline --decorate --all
   incorporates = !git branch -r --merged | grep -q $1 && echo Incorporates $1 || echo Out of date from $1 && :
+  pushup = "!git push --set-upstream origin $(git symbolic-ref --short HEAD)"
+  track = "!git branch --set-upstream-to origin/$(git symbolic-ref --short HEAD)"
 
 [diff-so-fancy]
   changeHunkIndicators = true
