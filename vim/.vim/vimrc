@@ -23,12 +23,11 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
-Plug 'freitass/todo.txt-vim'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'RRethy/vim-illuminate'
 Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-startify'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'Yggdroot/indentLine'
@@ -37,14 +36,14 @@ Plug 'vim-airline/vim-airline'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'StanAngeloff/php.vim'
+"Plug 'ludovicchabant/vim-gutentags'
+"Plug 'StanAngeloff/php.vim'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
 Plug 'romainl/flattened'
-Plug 'tssm/fairyfloss.vim'
+"Plug 'tssm/fairyfloss.vim'
 "}}}
 
 "{{{ Currently unused but good to keep as bookmarked
@@ -499,6 +498,8 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 if filereadable('/usr/local/Cellar/ctags/5.8_2/bin/ctags')
   let g:gutentags_ctags_executable='/usr/local/Cellar/ctags/5.8_2/bin/ctags'
 endif
+
+let g:gutentags_resolve_symlinks=0
 "}}}
 
 "{{{ Django
