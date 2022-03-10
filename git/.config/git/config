@@ -65,7 +65,6 @@
   unstage = reset HEAD --
   recommit = commit --amend --no-edit
   taglog = log --tags --simplify-by-decoration --pretty='format:%ci %d'
-	ctags = !.git/hooks/ctags
   history = log --graph --pretty --abbrev-commit --date=human
 	arrange = rebase -i develop
 	recent = branch --sort=-committerdate
