@@ -113,6 +113,10 @@ setup_node_environment() {
     export NODE_PATH="$NODE_PATH:$HOME/npm-global/lib/node_modules"
   fi
 
+  if [ -f "/usr/share/nvm/init-nvm.sh" ]; then
+    source /usr/share/nvm/init-nvm.sh
+  fi
+
   if command -v nvm >/dev/null; then
     nvm use node >/dev/null
   fi
