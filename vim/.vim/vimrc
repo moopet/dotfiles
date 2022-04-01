@@ -218,6 +218,8 @@ set backupskip=/tmp/*,/private/tmp/*
 "}}}
 
 "{{{ Completion
+let g:coc_disable_startup_warning = 1
+
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
