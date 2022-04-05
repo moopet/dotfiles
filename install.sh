@@ -35,8 +35,10 @@ warn_if_missing() {
 
 warn_if_missing bat
 warn_if_missing delta git-delta
+warn_if_missing dunk
 warn_if_missing fzf
 warn_if_missing gitmux
+warn_if_missing pipx
 warn_if_missing rg ripgrep
 warn_if_missing starship
 warn_if_missing tmux
