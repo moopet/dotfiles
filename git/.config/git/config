@@ -55,12 +55,6 @@
 [difftool]
   prompt = false
 
-[diff-so-fancy]
-  changeHunkIndicators = true
-  markEmptyLines = true
-	stripLeadingSymbols = true
-  useUnicodeRuler = true
-
 [format]
   pretty = "%C(yellow)%h%Creset %C(blue)%cd%Creset%C(red)%d%Creset %s %C(blue)<%C(bold blue)%an%Creset%C(blue)>%Creset"
 
@@ -80,7 +74,7 @@
 [pager]
   branch = less -sRXF
   log = less -sRXF
-  show = diff-so-fancy | less --tabs=1,5 -RFX
+  show = less --tabs=1,5 -RFX
 
 [push]
 	default = current
