@@ -342,7 +342,8 @@ set -gu prefix2
 unbind C-a
 unbind C-b
 set -g prefix C-a
-bind C-a send-prefix
+bind C-a send Home
+bind -n C-e send End
 
 # Shut up damn it
 set -g bell-action none
