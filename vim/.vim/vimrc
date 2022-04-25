@@ -194,7 +194,8 @@ inoremap <F1> <C-\><C-n>:Nuake<CR>
 tnoremap <F1> <C-\><C-n>:Nuake<CR>
 
 " Completion
-set completeopt=longest,menuone,preview
+" Doesn't work with COC, but keep it here in case COC isn't available.
+"set completeopt=longest,menuone,preview
 
 autocmd BufEnter * call MyLastWindow()
 function! MyLastWindow()
