@@ -48,8 +48,8 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 "{{{ Colorschemes
 Plug 'morhetz/gruvbox'
-Plug 'romainl/flattened'
-"Plug 'tssm/fairyfloss.vim'
+Plug 'tssm/fairyfloss.vim'
+"Plug 'romainl/flattened'
 "}}}
 
 "{{{ Currently unused but good to keep as bookmarked
@@ -412,6 +412,7 @@ function! CustomColorscheme()
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
   silent! colorscheme gruvbox
+  "silent! colorscheme fairyfloss
 
   highlight Normal ctermbg=NONE guibg=NONE
   highlight LineNr guibg=#1c1c1c
@@ -976,3 +977,19 @@ endfunction
 
 nnoremap <c-k> :call ChtSh("<c-r><c-w>")<cr>
 
+
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <silent> <C-w>o :ZoomToggle<CR>
+nnoremap <silent> <C-w><C-o> :ZoomToggle<CR>
