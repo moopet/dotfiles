@@ -196,6 +196,8 @@ set_key_bindings() {
   bindkey "\e[1;5C" forward-word
   bindkey "\e[A" history-search-backward
   bindkey "\e[B" history-search-forward
+
+  bindkey -e
 }
 
 set_timezone() {
