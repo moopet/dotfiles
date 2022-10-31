@@ -113,6 +113,10 @@ setup_node_environment() {
     export NODE_PATH="$NODE_PATH:$HOME/npm-global/lib/node_modules"
   fi
 
+  if [ -d "$HOME/.yarn/bin" ]; then
+    export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+  fi
+
   if [ -f "/usr/share/nvm/init-nvm.sh" ]; then
     source /usr/share/nvm/init-nvm.sh
   fi
@@ -128,6 +132,10 @@ setup_python_environment() {
 		export PATH="$PYENV_ROOT/bin:$PATH"
 		eval "$(pyenv init --path)"
 	fi
+
+  if [ -d "$HOME/.poetry/bin" ]; then
+    export PATH="$HOME/.poetry/bin:$PATH"
+  fi
 }
 
 setup_fuzzy_finder() {
@@ -222,3 +230,4 @@ setup_x
 set_key_bindings
 set_timezone
 disable_nanny_mode
+
