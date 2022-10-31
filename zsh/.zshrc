@@ -198,6 +198,14 @@ set_key_bindings() {
   bindkey "\e[B" history-search-forward
 
   bindkey -e
+
+  # Remote-specific settings.
+  if [ -z "$SSH_CLIENT" -a -z "$SSH_TTY" ]; then
+    # xinitrc/xsessionrc don't work on PopOS :/
+    if command -v setxkbmap > /dev/null; then
+      setxkbmap -option caps:escape
+    fi
+  fi
 }
 
 set_timezone() {
