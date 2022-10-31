@@ -190,14 +190,14 @@ setup_autocomplete() {
 }
 
 set_key_bindings() {
+  bindkey -e
+
   bindkey "\e[H" beginning-of-line
   bindkey "\e[F" end-of-line
   bindkey "\e[1;5D" backward-word
   bindkey "\e[1;5C" forward-word
   bindkey "\e[A" history-search-backward
   bindkey "\e[B" history-search-forward
-
-  bindkey -e
 }
 
 set_timezone() {
