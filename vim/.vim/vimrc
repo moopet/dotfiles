@@ -774,7 +774,7 @@ augroup php
   autocmd FileType php nnoremap <buffer> <leader>sdd Osignal_debug_dump();<esc>F(a
 
   " autocmd FileType php nnoremap <buffer> gd :cclose<cr>:set nohlsearch<cr>/function <c-r><c-w><cr>:set hlsearch<cr>w*<c-o>zz
-  autocmd FileType php nnoremap <buffer> gD *:Rg function.<c-r><c-w><cr>zt
+  autocmd FileType php nnoremap <buffer> gD *:Rg function.<c-r><c-w><cr>
 
   autocmd FileType php set nofoldenable
   " autocmd FileType php cnoremap drush !drush scr %
