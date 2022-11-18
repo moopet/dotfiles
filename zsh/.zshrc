@@ -209,9 +209,11 @@ set_key_bindings() {
 
   # Remote-specific settings.
   if [ -z "$SSH_CLIENT" -a -z "$SSH_TTY" ]; then
-    # xinitrc/xsessionrc don't work on PopOS :/
-    if command -v setxkbmap > /dev/null; then
-      setxkbmap -option caps:escape
+    if [ "$OSTYPE" = "linux-gnu" ]; then
+      # xinitrc/xsessionrc don't work on PopOS :/
+      if command -v setxkbmap > /dev/null; then
+        setxkbmap -option caps:escape
+      fi
     fi
   fi
 }
