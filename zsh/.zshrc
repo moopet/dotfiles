@@ -1,5 +1,3 @@
-export EDITOR=vim
-export VISUAL=vim
 export LC_CTYPE=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
 export DISABLE_AUTO_TITLE=true
@@ -52,6 +50,18 @@ setup_path() {
 
   if [ -d "$HOME/.gem/ruby/2.0.0/bin" ]; then
     PATH="$HOME/.gem/ruby/2.0.0/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/.gem/ruby/2.7.0/bin" ]; then
+    PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
+  fi
+
+  if [ -d "/usr/local/go/bin" ]; then
+    PATH="/usr/local/go/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/.cargo/bin" ]; then
+    PATH="$HOME/.cargo/bin:$PATH"
   fi
 
   if [ -d "$HOME/vendor/bin" ]; then
@@ -190,6 +200,16 @@ setup_editor() {
   if [ -d /usr/local/share/vim/vim80 ]; then
     export VIMRUNTIME=/usr/local/share/vim/vim80
   fi
+
+  if command -v lvim > /dev/null; then
+    export EDITOR=lvim
+  elif command -v nvim > /dev/null; then
+    export EDITOR=nvim
+  else
+    export EDITOR=vim
+  fi
+
+  export VISUAL="$EDITOR"
 }
 
 setup_autocomplete() {
