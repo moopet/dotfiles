@@ -71,7 +71,7 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
-  "c",
+  -- "c",
   "javascript",
   "json",
   "lua",
@@ -80,7 +80,7 @@ lvim.builtin.treesitter.ensure_installed = {
   "tsx",
   "css",
   "rust",
-  "java",
+  -- "java",
   "yaml",
 }
 
@@ -164,16 +164,17 @@ lvim.builtin.treesitter.highlight.enable = true
 
 -- Additional Plugins
 lvim.plugins = {
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
-    },
-    { "ellisonleao/gruvbox.nvim" },
-    { "NvChad/nvim-colorizer.lua" },
-    { "tpope/vim-vinegar" },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  { "tpope/vim-vinegar" },
+  { "kiyoon/treesitter-indent-object.nvim" },
+  --    { "lukas-reineke/indent-blankline.nvim" },
+  --    { "ellisonleao/gruvbox.nvim" },
 }
 
-require 'colorizer'.setup()
+vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
