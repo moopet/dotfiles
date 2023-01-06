@@ -11,7 +11,8 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = false
-lvim.colorscheme = "lunar"
+lvim.colorscheme = "gruvbox"
+-- lvim.colorscheme = "lunar"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -129,7 +130,7 @@ lvim.builtin.treesitter.highlight.enable = true
 -- end
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
--- local formatters = require "lvim.lsp.null-ls.formatters"
+-- local formatters = equire "lvim.lsp.null-ls.formatters"
 -- formatters.setup {
 --   { command = "black", filetypes = { "python" } },
 --   { command = "isort", filetypes = { "python" } },
@@ -170,11 +171,21 @@ lvim.plugins = {
   },
   { "tpope/vim-vinegar" },
   { "kiyoon/treesitter-indent-object.nvim" },
+  {
+    "folke/todo-comments.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("todo-comments").setup {
+        -- config here
+      }
+    end
+  },
+  { "gruvbox-community/gruvbox" },
   --    { "lukas-reineke/indent-blankline.nvim" },
-  --    { "ellisonleao/gruvbox.nvim" },
 }
 
 vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
+vim.cmd [[nnoremap <silent> <BS> :nohlsearch<CR> ]]
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
