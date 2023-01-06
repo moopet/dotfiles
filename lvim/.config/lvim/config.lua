@@ -170,6 +170,8 @@ lvim.plugins = {
     cmd = "TroubleToggle",
   },
   { "tpope/vim-vinegar" },
+  { "andymass/vim-matchup" },
+  { "norcalli/nvim-colorizer.lua" },
   { "kiyoon/treesitter-indent-object.nvim" },
   {
     "folke/todo-comments.nvim",
