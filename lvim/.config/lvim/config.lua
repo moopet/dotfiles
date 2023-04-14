@@ -11,12 +11,13 @@ vim.opt.relativenumber = true
 vim.g.node_host_prog = "~/.config/yarn/global/node_modules/neovim/bin/cli.js"
 
 -- general
-lvim.log.level = "info"
+lvim.log.level = "warn"
 lvim.format_on_save = {
   enabled = true,
   pattern = "*.lua",
   timeout = 1000,
 }
+-- lvim.colorscheme = "lunar"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -65,8 +66,8 @@ lvim.builtin.autopairs.active = false
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
 
--- -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
--- local formatters = require "lvim.lsp.null-ls.formatters"
+-- -- set a formatter, this will override the language server formatting capabilities (if it exists)
+-- local formatters = equire "lvim.lsp.null-ls.formatters"
 -- formatters.setup {
 --   { command = "stylua" },
 --   {
@@ -84,14 +85,17 @@ lvim.builtin.autopairs.active = false
 --   },
 -- }
 
--- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = "zsh",
---   callback = function()
---     -- let treesitter use bash highlight for zsh files as well
---     require("nvim-treesitter.highlight").attach(0, "bash")
---   end,
+vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
+
+-- Autocommands (https://neovim.io/doc/user/autocmd.html)
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   pattern = { "*.json", "*.jsonc" },
+--   -- enable wrap mode for json files only
+--   command = "setlocal wrap",
 -- })
+
+vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
+vim.cmd [[nnoremap <silent> <BS> :nohlsearch<CR> ]]
 
 local has_dap, dap = pcall(require, "dap")
 if not has_dap then
