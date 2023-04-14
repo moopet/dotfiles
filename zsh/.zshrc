@@ -242,6 +242,12 @@ set_timezone() {
   export TZ='Europe/London'
 }
 
+setup_credentials() {
+  if [ -f ~/.credentials ]; then
+    . ~/.credentials
+  fi
+}
+
 disable_nanny_mode() {
   # -f means -f and don't you forget it.
   setopt localoptions rmstarsilent
@@ -262,4 +268,5 @@ setup_x
 set_key_bindings
 set_timezone
 disable_nanny_mode
+setup_credentials
 
