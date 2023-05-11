@@ -84,15 +84,15 @@ do_search() {
     fi
 
     # shellcheck disable=SC2086
-    if [ "$editor_cmd" = "vim" ]; then
-      exec vim $matches "+/$search_term" "$@"
+    if [ -z "${editor_cmd##*vim*}" ]; then
+      exec $editor_cmd $matches "+/$search_term" "$@"
     else
       exec $editor_cmd $matches "$@"
     fi
   else
-    if [ "$editor_cmd" = "vim" ]; then
-      # shellcheck disable=SC2046
-      exec vim $($search_cmd) "+/$search_term" -c "set hls" "$@"
+    # shellcheck disable=SC2046
+    if [ -z "${editor_cmd##*vim*}" ]; then
+      exec $editor_cmd $($search_cmd) "+/$search_term" -c "set hls" "$@"
     else
       # shellcheck disable=SC2046
       exec $editor_cmd $($search_cmd) "$@"
