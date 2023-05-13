@@ -5,6 +5,7 @@ lvim.plugins = {
     cmd = "TroubleToggle",
   },
   { "akinsho/git-conflict.nvim" },
+  { "jose-elias-alvarez/typescript.nvim" },
   {
     'stevearc/aerial.nvim',
     opts = {},
@@ -13,5 +14,20 @@ lvim.plugins = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons"
     },
-  }
+  },
+  { "christoomey/vim-tmux-navigator" },
+  {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    config = function()
+      require("todo-comments").setup()
+    end
+  },
+  {
+    "phaazon/hop.nvim",
+    branch = "v2",
+    config = function()
+      require("hop").setup()
+    end
+  },
 }

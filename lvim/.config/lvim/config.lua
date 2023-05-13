@@ -91,6 +91,7 @@ vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
 vim.cmd [[nnoremap <silent> <BS> :nohlsearch<CR> ]]
 
 reload "user.plugins"
-reload "user.keymaps"
+reload "user.hop"
 reload "user.treesitter"
 reload "user.telescope"
+reload "user.keymaps"
