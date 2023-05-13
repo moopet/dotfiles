@@ -14,3 +14,5 @@ lvim.builtin.telescope.pickers = {
     },
   },
 }
+
+require('telescope').load_extension('aerial')
