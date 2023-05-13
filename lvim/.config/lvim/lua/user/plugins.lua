@@ -5,7 +5,6 @@ lvim.plugins = {
     cmd = "TroubleToggle",
   },
   { "akinsho/git-conflict.nvim" },
-  { "theHamsta/nvim-dap-virtual-text" },
   {
     'stevearc/aerial.nvim',
     opts = {},

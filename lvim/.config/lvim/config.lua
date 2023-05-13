@@ -1,8 +1,3 @@
---[[
- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
- `lvim` is the global options object
-]]
-
 -- vim options
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
@@ -85,8 +80,6 @@ lvim.builtin.autopairs.active = false
 --   },
 -- }
 
-vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
-
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
@@ -96,97 +89,6 @@ vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
 
 vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
 vim.cmd [[nnoremap <silent> <BS> :nohlsearch<CR> ]]
-
-local has_dap, dap = pcall(require, "dap")
-if not has_dap then
-  return
-end
-
-local has_dap_ui, dapui = pcall(require, "dapui")
-if not has_dap_ui then
-  return
-end
-
-dap.adapters.php = {
-  type = "executable",
-  command = "node",
-  args = { os.getenv("HOME") .. "/build/vscode-php-debug/out/phpDebug.js" }
-}
-
-dap.configurations.php = {
-  {
-    type = "php",
-    request = "launch",
-    name = "Listen for Xdebug",
-    port = 9003,
-    pathMappings = {
-      ["/var/www/html"] = "${workspaceFolder}"
-    }
-  }
-}
-
-dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
-end
-
-dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
-end
-
-dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
-end
-
-require "dapui".setup {
-  layouts = {
-    {
-      elements = {
-        { id = "scopes", size = 0.25 },
-        "breakpoints",
-        "stacks",
-        "watches",
-      },
-      size = 40, -- 40 columns
-      position = "left",
-    },
-    {
-      elements = {
-        "repl",
-        "console",
-      },
-      size = 0.25, -- 25% of total lines
-      position = "bottom",
-    },
-  }
-}
-
--- require "nvim-dap-virtual-text".setup {}
-
--- local yaml = require("yaml")
-
--- function ConvertYamlToDrupalArray(yaml_str)
---   -- Load the YAML string into a Lua table.
---   local yaml_table = yaml.parse(yaml_str)
-
---   -- Start building the Drupal array.
---   local drupal_arr = "{\n"
-
---   -- Loop through the top-level items in the YAML table.
---   for key, value in pairs(yaml_table) do
---     -- Check the type of the value and add it to the Drupal array.
---     if type(value) == "string" then
---       drupal_arr = drupal_arr .. "  ['" .. key .. "'] = '" .. value .. "',\n"
---     elseif type(value) == "table" then
---       drupal_arr = drupal_arr .. "  ['" .. key .. "'] = " .. ConvertYamlToDrupalArray(yaml.dump(value)) .. ",\n"
---     end
---   end
-
---   -- End the Drupal array.
---   drupal_arr = drupal_arr .. "}"
-
---   -- Return the Drupal array.
---   return drupal_arr
--- end
 
 reload "user.plugins"
 reload "user.keymaps"
