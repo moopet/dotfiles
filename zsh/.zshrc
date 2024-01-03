@@ -128,7 +128,7 @@ setup_node_environment() {
   fi
 
   if [ -f "/usr/share/nvm/init-nvm.sh" ]; then
-    source /usr/share/nvm/init-nvm.sh
+    . /usr/share/nvm/init-nvm.sh
   fi
 
   if command -v nvm >/dev/null; then
@@ -153,7 +153,9 @@ setup_fuzzy_finder() {
     export FZF_DEFAULT_COMMAND="rg --files"
   fi
 
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  if [ -f ~/.fzf.zsh ]; then
+    . ~/.fzf.zsh
+  fi
 }
 
 funky_motd() {
@@ -201,9 +203,7 @@ setup_editor() {
     export VIMRUNTIME=/usr/local/share/vim/vim80
   fi
 
-  if command -v lvim > /dev/null; then
-    export EDITOR=lvim
-  elif command -v nvim > /dev/null; then
+  if command -v nvim > /dev/null; then
     export EDITOR=nvim
   else
     export EDITOR=vim
