@@ -203,9 +203,7 @@ setup_editor() {
     export VIMRUNTIME=/usr/local/share/vim/vim80
   fi
 
-  if command -v lvim > /dev/null; then
-    export EDITOR=lvim
-  elif command -v nvim > /dev/null; then
+  if command -v nvim > /dev/null; then
     export EDITOR=nvim
   else
     export EDITOR=vim

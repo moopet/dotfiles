@@ -12,6 +12,10 @@ alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
 alias co='git co'
 alias t='tmux attach'
 
+if command -v nvim; then
+  alias vim='nvim'
+fi
+
 if command -v batcat >/dev/null; then
   alias cat='batcat'
 elif command -v bat >/dev/null; then
