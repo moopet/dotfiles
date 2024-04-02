@@ -177,7 +177,7 @@ funky_motd() {
 
 display_host_info() {
   # My work laptop has a dumb corporate name.
-  if [[ "$(hostname)" =~ "\.local$" ]]; then
+  if [[ "$(hostname)" =~ "LUM-" ]]; then
     funky_motd "Macbook"
   elif [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
     funky_motd "$(hostname)"
