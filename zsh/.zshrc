@@ -1,5 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 export LC_CTYPE=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
 export DISABLE_AUTO_TITLE=true
@@ -273,6 +271,3 @@ set_key_bindings
 set_timezone
 disable_nanny_mode
 setup_credentials
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
