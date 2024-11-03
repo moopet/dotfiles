@@ -30,6 +30,7 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
 lvim.builtin.autopairs.active = false
+lvim.leader = "space"
 
 
 -- lvim.builtin.treesitter.ignore_install = { "haskell" }
@@ -88,10 +89,8 @@ lvim.builtin.autopairs.active = false
 -- })
 
 vim.cmd [[highlight IndentBlanklineChar guifg=#282828 gui=nocombine]]
-vim.cmd [[nnoremap <silent> <BS> :nohlsearch<CR> ]]
 
 reload "user.plugins"
-reload "user.hop"
 reload "user.treesitter"
 reload "user.telescope"
 reload "user.keymaps"

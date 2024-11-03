@@ -35,7 +35,7 @@
 
 [core]
   autocrlf = input
-  editor = vim -f
+	editor = nvim
   filemode = false
   ignorecase = false
   pager = delta

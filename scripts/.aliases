@@ -11,6 +11,10 @@ alias co='git co'
 alias t='tmux attach'
 alias shortwave='flatpak run de.haeckerfelix.Shortwave'
 
+if command -v nvim; then
+  alias vim='nvim'
+fi
+
 if command -v batcat >/dev/null; then
   alias cat='batcat'
 elif command -v bat >/dev/null; then

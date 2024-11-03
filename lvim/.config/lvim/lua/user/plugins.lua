@@ -4,6 +4,7 @@ lvim.plugins = {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
+  { "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
   { "akinsho/git-conflict.nvim" },
   { "jose-elias-alvarez/typescript.nvim" },
   {
@@ -23,11 +24,6 @@ lvim.plugins = {
       require("todo-comments").setup()
     end
   },
-  {
-    "phaazon/hop.nvim",
-    branch = "v2",
-    config = function()
-      require("hop").setup()
-    end
-  },
+  { "Exafunction/codeium.vim" },
+  { "sindrets/diffview.nvim" },
 }

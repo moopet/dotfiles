@@ -201,7 +201,7 @@ funky_motd() {
 
 display_host_info() {
   # My work laptop has a dumb corporate name.
-  if [[ "$(hostname)" =~ "\.local$" ]]; then
+  if [[ "$(hostname)" =~ "LUM-" ]]; then
     funky_motd "Macbook"
   elif [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
     funky_motd "$(hostname)"
@@ -237,6 +237,10 @@ setup_editor() {
 setup_autocomplete() {
   autoload -Uz compinit && compinit
   zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+
+    if command -v ngrok &>/dev/null; then
+      eval "$(ngrok completion)"
+    fi
 }
 
 setup_applications() {
