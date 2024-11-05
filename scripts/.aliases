@@ -5,14 +5,12 @@ alias grep='grep --colour=auto'
 alias ncdu='ncdu --color dark -rr -x'
 alias pacman='pacman --color=always'
 # alias yay='yay --color=always'
-alias pdown='cd && fusermount -u ~/.visible && history -c && history -w >/dev/null; clear'
-alias pup='cd && clear && encfs ~/.crypt ~/.visible'
 alias vi="$EDITOR"
 alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
 alias co='git co'
-alias t='tmux attach'
+alias shortwave='flatpak run de.haeckerfelix.Shortwave'
 
-if command -v nvim; then
+if command -v nvim >/dev/null; then
   alias vim='nvim'
 fi
 
@@ -34,21 +32,20 @@ case $OSTYPE in
   ;;
 esac
 
+t() {
+  if command -v zellij >/dev/null; then
+    zellij attach || zellij
+  else
+    tmux attach || tmux
+  fi
+}
+
 git() {
   if [ "$1" = "cd" ]; then
     shift
     cd "./$(command git rev-parse --show-cdup)$*"
   else
     command git "$@"
-  fi
-}
-
-tf() {
-  if type -p tf >/dev/null; then
-    command tf "$@"
-  else
-    printf "\033]0; Talkers \007"
-    ssh scramble -t "tmux attach -d"
   fi
 }
 

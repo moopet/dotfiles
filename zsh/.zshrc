@@ -4,6 +4,30 @@ export DISABLE_AUTO_TITLE=true
 
 set -o noclobber
 
+setup_zsh() {
+  export ZSH=$HOME/.zsh
+
+  export HISTFILE=$ZSH/.zsh_history
+  export HISTSIZE=10000
+  export SAVEHIST=10000
+  setopt HIST_IGNORE_ALL_DUPS
+  setopt HIST_FIND_NO_DUPS
+}
+
+setup_plugins() {
+  if [ -f "$ZSH/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]; then
+    . "$ZSH/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+  fi
+
+  if [ -f "$ZSH/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    . "$ZSH/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  fi
+
+  if [ -d "$ZSH/plugins/zsh-completions/src" ]; then
+    fpath=($ZSH/plugins/zsh-completions/src $fpath)
+  fi
+}
+
 setup_grep() {
   if [ -f ~/.config/ripgrep/ripgreprc ]; then
     export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
@@ -89,7 +113,6 @@ setup_path() {
 
 setup_aliases() {
   [ -f ~/.aliases ] && . ~/.aliases
-  [ -f ~/shore-projects/shore-aliases.sh ] && . ~/shore-projects/shore-aliases.sh
 }
 
 setup_colors() {
@@ -133,6 +156,13 @@ setup_node_environment() {
 
   if command -v nvm >/dev/null; then
     nvm use node >/dev/null
+  fi
+
+  if [ -s "$HOME/.bun/_bun" ]; then
+    . "$HOME/.bun/_bun"
+
+    export BUN_INSTALL="$HOME/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
   fi
 }
 
@@ -221,6 +251,12 @@ setup_autocomplete() {
     fi
 }
 
+setup_applications() {
+  if command -v zoxide > /dev/null; then
+    eval "$(zoxide init zsh)"
+  fi
+}
+
 set_key_bindings() {
   bindkey -e
 
@@ -258,6 +294,7 @@ disable_nanny_mode() {
 }
 
 display_host_info
+setup_zsh
 setup_node_environment 
 setup_python_environment 
 setup_fuzzy_finder 
@@ -273,3 +310,6 @@ set_key_bindings
 set_timezone
 disable_nanny_mode
 setup_credentials
+setup_plugins
+setup_applications
+

@@ -405,3 +405,6 @@ bind-key -T copy-mode-vi 'C-\' select-pane -l
 #
 # "$@"
 # # /!\ do not remove the previous line
+
+set -g lock-after-time 300
+set -g lock-command "cmatrix -s -C blue"
