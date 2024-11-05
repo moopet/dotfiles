@@ -75,3 +75,8 @@ st() {
 			;;
 esac
 }
+
+if mysql --version | grep -i macos >/dev/null; then
+  alias mysql='docker run -it --rm joseluisq/mysql-client mysql'
+  alias mysqldump='docker run -it --rm joseluisq/mysql-client mysqldump'
+fi
