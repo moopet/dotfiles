@@ -108,6 +108,10 @@ setup_path() {
     PATH="$HOME/bin:$PATH"
   fi
 
+  if [ -d "/Applications/WezTerm.app/Contents/MacOS" ]; then
+    PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
+  fi
+
   export PATH
 }
 
@@ -131,10 +135,18 @@ setup_colors() {
 
 setup_node_environment() {
   export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-    [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  
+
+  if [ -s "$NVM_DIR/nvm.sh" ]; then
+    . "$NVM_DIR/nvm.sh"
+  elif [ -s "/usr/local/opt/nvm/nvm.sh" ]; then
+    . "/usr/local/opt/nvm/nvm.sh"  
+  fi
+
+  if [ -s "$NVM_DIR/bash_completion" ]; then
+    . "$NVM_DIR/bash_completion"
+  elif [ -s "/usr/local/opt/nvm/etc/bash_completion" ]; then
+    . "/usr/local/opt/nvm/etc/bash_completion"
+  fi
 
   if [ -d "$HOME/npm/bin" ]; then
     export PATH="$PATH:$HOME/npm/bin"
@@ -186,6 +198,10 @@ setup_fuzzy_finder() {
   if [ -f ~/.fzf.zsh ]; then
     . ~/.fzf.zsh
   fi
+
+  if command -v fzf >/dev/null; then
+    source <(fzf --zsh)
+  fi
 }
 
 funky_motd() {
@@ -209,7 +225,11 @@ funky_motd() {
 
 display_host_info() {
   # My work laptop has a dumb corporate name.
-  if [[ "$(hostname)" =~ "LUM-" ]]; then
+  if [[ "$(hostname)" =~ "\.LUM-UK$" ]]; then
+    funky_motd "Macbook"
+  elif [[ "$(hostname)" =~ "^LUM-UK" ]]; then
+    funky_motd "Macbook"
+  elif [[ "$(hostname)" =~ "\.local$" ]]; then
     funky_motd "Macbook"
   elif [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
     funky_motd "$(hostname)"
@@ -257,6 +277,12 @@ setup_applications() {
   fi
 }
 
+setup_leith_tools() {
+  if [ -f "$HOME/projects/tools/shell/tools.sh" ]; then
+    . "$HOME/projects/tools/shell/tools.sh"
+  fi
+}
+
 set_key_bindings() {
   bindkey -e
 
@@ -283,6 +309,10 @@ set_timezone() {
 }
 
 setup_credentials() {
+  if command -v op > /dev/null; then
+    eval "$(op completion zsh)"; compdef _op op
+  fi
+
   if [ -f ~/.credentials ]; then
     . ~/.credentials
   fi
@@ -312,4 +342,5 @@ disable_nanny_mode
 setup_credentials
 setup_plugins
 setup_applications
+setup_leith_tools
 
