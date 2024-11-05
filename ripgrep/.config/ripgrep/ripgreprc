@@ -1,9 +1,13 @@
 --max-columns=150
+--max-columns-preview
 
 # Derpal
 
 --type-add
 php:*.{php,phar,inc,module,install}
+
+--type-add
+web:*.{html,css,js}*
 
 # Mimic colors from ag.
 
