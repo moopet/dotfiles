@@ -8,7 +8,6 @@ alias pacman='pacman --color=always'
 alias vi="$EDITOR"
 alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
 alias co='git co'
-alias t='tmux attach'
 alias shortwave='flatpak run de.haeckerfelix.Shortwave'
 
 if command -v nvim; then
@@ -32,6 +31,14 @@ case $OSTYPE in
     alias chrome-no-cors='open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir=/tmp/chrome_dev_test --disable-web-security'
   ;;
 esac
+
+t() {
+  if command -v zellij >/dev/null; then
+    zellij attach || zellij
+  else
+    tmux attach || tmux
+  fi
+}
 
 git() {
   if [ "$1" = "cd" ]; then
