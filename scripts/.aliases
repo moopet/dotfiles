@@ -10,7 +10,7 @@ alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
 alias co='git co'
 alias shortwave='flatpak run de.haeckerfelix.Shortwave'
 
-if command -v nvim; then
+if command -v nvim >/dev/null; then
   alias vim='nvim'
 fi
 

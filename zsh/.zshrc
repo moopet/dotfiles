@@ -15,9 +15,17 @@ setup_zsh() {
 }
 
 setup_plugins() {
-  . $ZSH/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-  . $ZSH/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-  fpath=($ZSH/plugins/zsh-completions/src $fpath)
+  if [ -f "$ZSH/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]; then
+    . "$ZSH/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+  fi
+
+  if [ -f "$ZSH/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    . "$ZSH/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  fi
+
+  if [ -d "$ZSH/plugins/zsh-completions/src" ]; then
+    fpath=($ZSH/plugins/zsh-completions/src $fpath)
+  fi
 }
 
 setup_grep() {
