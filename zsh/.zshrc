@@ -198,10 +198,6 @@ setup_fuzzy_finder() {
   if [ -f ~/.fzf.zsh ]; then
     . ~/.fzf.zsh
   fi
-
-  if command -v fzf >/dev/null; then
-    source <(fzf --zsh)
-  fi
 }
 
 funky_motd() {
