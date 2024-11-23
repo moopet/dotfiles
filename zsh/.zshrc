@@ -273,7 +273,7 @@ setup_applications() {
   fi
 }
 
-setup_leith_tools() {
+setup_personal_tools() {
   if [ -f "$HOME/projects/tools/shell/tools.sh" ]; then
     . "$HOME/projects/tools/shell/tools.sh"
   fi
@@ -338,5 +338,5 @@ disable_nanny_mode
 setup_credentials
 setup_plugins
 setup_applications
-setup_leith_tools
+setup_personal_tools
 
