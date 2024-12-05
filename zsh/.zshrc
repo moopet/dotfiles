@@ -298,7 +298,7 @@ set_key_bindings() {
     if [ "$OSTYPE" = "linux-gnu" ]; then
       # xinitrc/xsessionrc don't work on PopOS :/
       if command -v setxkbmap > /dev/null; then
-        setxkbmap -option caps:escape
+        setxkbmap -option caps:escape 2>/dev/null
       fi
     fi
   fi
