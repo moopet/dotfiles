@@ -82,7 +82,7 @@
 	default = current
 
 [user]
-  email = ben.sinclair@leith.co.uk
+  email = ben@moopet.net
   name = Ben Sinclair
 [filter "lfs"]
 	required = true
