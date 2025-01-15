@@ -112,6 +112,10 @@ setup_path() {
     PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
   fi
 
+  if command -v composer > /dev/null; then
+    PATH=$(composer global config bin-dir --absolute --quiet):$PATH
+  fi
+  
   export PATH
 }
 
@@ -220,21 +224,13 @@ funky_motd() {
 }
 
 display_host_info() {
-  # My work laptop has a dumb corporate name.
-  if [[ "$(hostname)" =~ "\.LUM-UK$" ]]; then
-    funky_motd "Macbook"
-  elif [[ "$(hostname)" =~ "^LUM-UK" ]]; then
-    funky_motd "Macbook"
-  elif [[ "$(hostname)" =~ "\.local$" ]]; then
-    funky_motd "Macbook"
-  elif [ -n "$SSH_CLIENT" -o -n "$SSH_TTY" ]; then
-    funky_motd "$(hostname)"
+  funky_motd "$(hostname)"
+}
 
+setup_wsl() {
   # WSL leaves you in the stupid Windows home.
-  elif [ -d /mnt/c/Windows ]; then
+  if [ -d /mnt/c/Windows ]; then
     cd
-
-    funky_motd "arcade"
   fi
 }
 
@@ -294,7 +290,7 @@ set_key_bindings() {
     if [ "$OSTYPE" = "linux-gnu" ]; then
       # xinitrc/xsessionrc don't work on PopOS :/
       if command -v setxkbmap > /dev/null; then
-        setxkbmap -option caps:escape
+        setxkbmap -option caps:escape 2>/dev/null
       fi
     fi
   fi
@@ -339,4 +335,5 @@ setup_credentials
 setup_plugins
 setup_applications
 setup_personal_tools
+setup_wsl
 
