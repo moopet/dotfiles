@@ -20,8 +20,6 @@ for package in $(find . -maxdepth 1 -type d \! -name \.git \! -name \. -exec bas
   $stow "$package"
 done
 
-vim +PlugInstall +qall
-
 warn_if_missing() {
   if ! command -v "$1" >/dev/null; then
     if [ -z "$started" ]; then
@@ -34,12 +32,8 @@ warn_if_missing() {
 }
 
 warn_if_missing bat
-warn_if_missing delta git-delta
-warn_if_missing dunk
 warn_if_missing fzf
-warn_if_missing gitmux
-warn_if_missing pipx
 warn_if_missing rg ripgrep
 warn_if_missing starship
-warn_if_missing tmux
+warn_if_missing zellij
 warn_if_missing zsh

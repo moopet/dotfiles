@@ -9,6 +9,7 @@ alias vi="$EDITOR"
 alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
 alias co='git co'
 alias shortwave='flatpak run de.haeckerfelix.Shortwave'
+alias undock='docker stop $(docker ps -a -q)'
 
 if command -v nvim >/dev/null; then
   alias vim='nvim'
@@ -79,3 +80,4 @@ if command -v mysql >/dev/null; then
     alias mysqldump='docker run -it --rm joseluisq/mysql-client mysqldump'
   fi
 fi
+

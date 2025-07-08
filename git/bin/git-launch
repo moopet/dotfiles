@@ -1,0 +1,15 @@
+#!/bin/sh
+
+url=$(git remote -v | awk '/origin/ && /fetch/ {gsub(":", "/"); gsub("git@", "https://"); gsub("\\.git", ""); print $2 }')
+
+if command -v explorer.exe > /dev/null; then
+  explorer.exe "$url"
+elif command -v gnome-open > /dev/null; then
+  gnome-open "$url"
+elif command -v open > /dev/null; then
+  open "$url"
+elif command -v xdg-open > /dev/null; then
+  xdg-open "$url"
+else
+  printf "$url\n"
+fi

@@ -1,6 +1,7 @@
 export LC_CTYPE=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
 export DISABLE_AUTO_TITLE=true
+export NODE_VERSION=20.18.3
 
 set -o noclobber
 
@@ -171,7 +172,7 @@ setup_node_environment() {
   fi
 
   if command -v nvm >/dev/null; then
-    nvm use node >/dev/null
+    nvm use ${NODE_VERSION:-node} >/dev/null
   fi
 
   if [ -s "$HOME/.bun/_bun" ]; then
