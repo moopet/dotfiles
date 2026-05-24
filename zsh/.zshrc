@@ -238,14 +238,22 @@ funky_motd() {
   printer="cat"
   filter="cat"
 
-  if command -v toilet >/dev/null 2>&1; then
-    printer="toilet -t -f future"
-  elif command -v figlet >/dev/null 2>&1; then
-    printer="figlet"
-  fi
+  if [[ "$TERM" == "linux" ]] || [[ "$(tty 2>/dev/null)" == /dev/tty* ]]; then
+    if command -v toilet >/dev/null 2>&1; then
+      printer="toilet -t --metal"
+    elif command -v figlet >/dev/null 2>&1; then
+      printer="figlet"
+    fi
+  else
+    if command -v toilet >/dev/null 2>&1; then
+      printer="toilet -t -f future"
+    elif command -v figlet >/dev/null 2>&1; then
+      printer="figlet"
+    fi
 
-  if command -v lolcat >/dev/null 2>&1; then
-    filter="lolcat -S $(hostname | sha1sum | tr -d '[a-f]' | cut -b-4)"
+    if command -v lolcat >/dev/null 2>&1; then
+      filter="lolcat -S $(hostname | sha1sum | tr -d '[a-f]' | cut -b-4)"
+    fi
   fi
 
   eval "echo $text | $printer | $filter"
