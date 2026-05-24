@@ -9,7 +9,8 @@ alias vi="$EDITOR"
 alias tree='tree -C -I $(git check-ignore * 2>/dev/null | tr "\n" "|").git'
 alias co='git co'
 alias shortwave='flatpak run de.haeckerfelix.Shortwave'
-alias undock='docker stop $(docker ps -a -q)'
+alias undock='docker stop $(docker ps -q)'
+alias tunnel='ssh -t -R 80:localhost:8080 proxy.tunnl.gg'
 
 if command -v nvim >/dev/null; then
   alias vim='nvim'
@@ -79,7 +80,7 @@ esac
 }
 
 if command -v mysql >/dev/null; then
-  if mysql --version | grep -i macos >/dev/null; then
+  if mysql --version 2>&1 | grep -i macos >/dev/null; then
     alias mysql='docker run -it --rm joseluisq/mysql-client mysql'
     alias mysqldump='docker run -it --rm joseluisq/mysql-client mysqldump'
   fi

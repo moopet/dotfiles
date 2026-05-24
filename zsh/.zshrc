@@ -365,4 +365,6 @@ setup_plugins
 setup_applications
 setup_personal_tools
 setup_wsl
+setup_android
+setup_wget
 
