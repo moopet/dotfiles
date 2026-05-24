@@ -3,16 +3,41 @@ export LC_ALL=en_GB.UTF-8
 export DISABLE_AUTO_TITLE=true
 export NODE_VERSION=20.18.3
 
-set -o noclobber
-
 setup_zsh() {
   export ZSH=$HOME/.zsh
 
-  export HISTFILE=$ZSH/.zsh_history
-  export HISTSIZE=10000
-  export SAVEHIST=10000
+  : "${XDG_CONFIG_HOME:=$HOME/.config}"
+  : "${XDG_CACHE_HOME:=$HOME/.cache}"
+  : "${XDG_DATA_HOME:=$HOME/.local/share}"
+
+  export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME
+
+  zmodload zsh/complist
+  autoload -U compinit && compinit
+  autoload -U colors && colors
+
+  zstyle ':completion:*' menu select
+  zstyle ':completion:*' special-dirs true
+  zstyle ':completion:*' list-colors ${(s:.:)LS_COLORS} ma=0\;33
+  zstyle ':completion:*' file-list true
+  zstyle ':completion:*' squeeze-slashes false
+
+  setopt no_case_glob no_case_match
+  setopt auto_menu menu_complete
+  set -o noclobber
+  set -o rmstarsilent
+  setopt interactive_comments
+}
+
+setup_history() {
+  HISTFILE=$XDG_CACHE_HOME/.zsh_history
+  HISTCONTROL=ignoreboth
+  HISTSIZE=10000
+  SAVEHIST=10000
   setopt HIST_IGNORE_ALL_DUPS
   setopt HIST_FIND_NO_DUPS
+  setopt append_history inc_append_history share_history
+  export LESSHISTFILE="$XDG_CACHE_HOME/less_history"
 }
 
 setup_plugins() {
@@ -35,11 +60,10 @@ setup_grep() {
   fi
 }
 
-setup_x() {
-  if [ "$OSTYPE" = "linux-gnu"  -a -z "$DISPLAY" -a -n "$SSH_CLIENT" ]; then
-    export DISPLAY="$(echo "$SSH_CLIENT" | cut -f1 -d\ ):0.0"
-  elif [ "$OSTYPE" = "linux-gnu"  -a -z "$DISPLAY" ]; then
-    export DISPLAY="192.168.0.46:0.0"
+setup_android() {
+  if [ -d /opt/android-sdk ]; then
+    export ANDROID_HOME="/opt/android-sdk"
+    export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$PATH"
   fi
 }
 
@@ -200,28 +224,27 @@ setup_fuzzy_finder() {
     export FZF_DEFAULT_COMMAND="rg --files"
   fi
 
-  if [ -f ~/.fzf.zsh ]; then
-    . ~/.fzf.zsh
+  if command -v fzf >/dev/null; then
+    . <(fzf --zsh)
   fi
 }
 
 funky_motd() {
+  text="${*:-$(hostname)}"
   printer="cat"
   filter="cat"
 
-  if command -v toilet >/dev/null; then
+  if command -v toilet >/dev/null 2>&1; then
     printer="toilet -t -f future"
-  elif command -v figlet >/dev/null; then
+  elif command -v figlet >/dev/null 2>&1; then
     printer="figlet"
   fi
 
-  if command -v lolcat >/dev/null; then
-    filter="lolcat -S $(hostname | shasum | tr -d '[a-f]' | cut -b-4)"
+  if command -v lolcat >/dev/null 2>&1; then
+    filter="lolcat -S $(hostname | sha1sum | tr -d '[a-f]' | cut -b-4)"
   fi
 
-  printf "\n"
-  eval "echo $* | $printer | $filter"
-  printf "\n"
+  eval "echo $text | $printer | $filter"
 }
 
 display_host_info() {
@@ -301,6 +324,11 @@ set_timezone() {
   export TZ='Europe/London'
 }
 
+setup_wget() {
+  export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+  alias wget='wget --hsts-file="$XDG_STATE_HOME/wget-hsts"'
+}
+
 setup_credentials() {
   if command -v op > /dev/null; then
     eval "$(op completion zsh)"; compdef _op op
@@ -318,6 +346,7 @@ disable_nanny_mode() {
 
 display_host_info
 setup_zsh
+setup_history
 setup_node_environment 
 setup_python_environment 
 setup_fuzzy_finder 
@@ -328,7 +357,6 @@ setup_editor
 setup_prompt
 setup_aliases
 setup_autocomplete
-setup_x
 set_key_bindings
 set_timezone
 disable_nanny_mode
