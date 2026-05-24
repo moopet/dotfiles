@@ -137,6 +137,10 @@ setup_path() {
     PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
   fi
 
+  if [ -d "$HOME/.opencode/bin" ]; then
+    PATH="$PATH:/home/moopet/.opencode/bin:$PATH"
+  fi
+
   if command -v composer > /dev/null; then
     PATH=$(composer global config bin-dir --absolute --quiet):$PATH
   fi
